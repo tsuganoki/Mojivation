@@ -26,7 +26,7 @@ class User(db.Model):
         """Provide helpful representation when printed."""
         return f"<User user_id={self.user_id} email={self.email}>"
 
-class Task(db.model):
+class Task(db.Model):
 	"""tasks stored in to-do website"""
 
 	__tablename__ = "tasks"
@@ -34,18 +34,18 @@ class Task(db.model):
 	task_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
 	msg = db.Column(db.String(264))
 	user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'))
-	is_complete = db.Column(db.boolean)
+	is_complete = db.Column(db.Boolean)
 	due_date = db.Column(db.DateTime)
 
 
-    def __repr__(self):
-    	return f"<Task task_id{self.task_id} msg {self.msg[:16]}>"
+	def __repr__(self):
+		return f"<Task task_id{self.task_id} msg {self.msg[:16]}>"
 
 
-    user = db.relationship("User", backref=db.backref("tasks", order_by=task_id))
+	user = db.relationship("User", backref=db.backref("tasks", order_by=task_id))
 
 
-class Collect(db.model):
+class Collect(db.Model):
 	"""Kao-moji collected by users"""
 
 	__tablename__ = "collects"
@@ -56,18 +56,20 @@ class Collect(db.model):
 	collect_date = db.Column(db.DateTime)
 
 	def __repr__(self):
-        """Provide helpful representation when printed."""
-        return f"<Collects collect_id={self.collect_id} user_id={self.user_id}>"
+		"""Provide helpful representation when printed."""
+		return f"<Collects collect_id={self.collect_id} user_id={self.user_id}>"
 
-    kaos = db.relationship("Kaos",backref=db.backref("collects",order_by=collect_id))
+	kaos = db.relationship("Kao",backref=db.backref("collects",order_by=collect_id))
 
-class Kao(db.model):
+
+
+class Kao(db.Model):
 	"""unicode kaomoji and their ids"""
 
-    __tablename__ = "kaos"
+	__tablename__ = "kaos"
 
-    kao_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
-    kao = db.Column(db.String(128))
+	kao_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
+	kao = db.Column(db.String(128),nullable=False)
 
 
 ##############################################################################
@@ -77,7 +79,7 @@ def connect_to_db(app):
     """Connect the database to our Flask app."""
 
     # Configure to use our PstgreSQL database
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///ratings'
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///kao_project'
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     db.app = app
     db.init_app(app)
