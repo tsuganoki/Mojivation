@@ -34,12 +34,12 @@ class Task(db.Model):
 	task_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
 	msg = db.Column(db.String(264))
 	user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'))
-	is_complete = db.Column(db.Boolean)
-	due_date = db.Column(db.DateTime)
+	is_complete = db.Column(db.Boolean, nullable=False, default=False)
+	due_date = db.Column(db.DateTime, default=False)
 
 
 	def __repr__(self):
-		return f"<Task task_id{self.task_id} msg {self.msg[:16]}>"
+		return f"<Task task_id {self.task_id} msg {self.msg[:16]}>"
 
 
 	user = db.relationship("User", backref=db.backref("tasks", order_by=task_id))
@@ -69,7 +69,7 @@ class Kao(db.Model):
 	__tablename__ = "kaos"
 
 	kao_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
-	kao = db.Column(db.String(128),nullable=False)
+	kao = db.Column(db.String(64),nullable=False)
 
 
 ##############################################################################

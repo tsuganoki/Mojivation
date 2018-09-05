@@ -2,13 +2,24 @@
 <head>
    <title>{% block title %}template title {% endblock %}</title>
 
+   <link rel="stylesheet" href="/static/css/site.css">
+
+
 </head>
 <body>
-	<h1>{% block h1-heading %}HEADING {% endblock %}</h1>
+	<h1>{% block h1_heading %}HEADING {% endblock %}</h1>
 
+  <a href="/login"> Login</a> 
+
+  <a href="/logout"> Logout</a>
+
+  <p>{% if session.get("current_user") %} 
+    current user id is: {{ session.get("current_user") }}
+   {% endif %}
+  </p>
 	  {% with messages = get_flashed_messages() %}
       {% for message in messages %}
-          <div class="alert alert-warning flash">{{ message }}</div>
+          <div class="flash">{{ message }}</div>
       {% endfor %}
   {% endwith %}
 

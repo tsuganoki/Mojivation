@@ -1,0 +1,36 @@
+
+
+{% extends 'base.html' %}
+{% block title %}Register{% endblock %}
+
+{% block h1_heading %}Login{% endblock %}
+
+{% block content %} 
+
+
+
+<form action='/login_confirm' method="GET" name='login'>
+	<table>
+		<tr>
+			<td>Username</td>
+			<td> <input type="textbox" name="username"></td></tr>
+		<tr>
+			<td>Password</td>
+			<td><input type="password" name="password"></td>
+		</tr>
+		<tr><td> 
+			<input type="submit" value="login">
+		</td><td></td></tr>
+	</table>
+</form>
+
+</p>
+
+
+<div class="register-div">
+	<a href="/register">
+		Register
+	</a>
+</div>
+
+ {% endblock %}

@@ -1,0 +1,37 @@
+
+
+{% extends 'base.html' %}
+{% block title %}Register{% endblock %}
+
+{% block h1_heading %}Register{% endblock %}
+
+{% block content %} 
+
+<form action='/register_confirm' method="POST">
+	<table>
+		<tr>
+			<td>Username</td>
+			<td> <input type="textbox" name="username" required pattern=".{5,}"></td></tr>
+		<tr>
+			<td>E-mail</td>
+			<td> <input type="textbox" name="email" required pattern=".{5,}"></td></tr>
+		<tr>
+			<td>Password</td>
+			<td><input type="password" name="password1" required pattern=".{5,}"></td></tr>
+		<tr>
+
+			<td>Retype Password</td>
+			<td><input type="password" name="password2" required pattern=".{5,}"></td></tr>
+		<tr>
+			<td> 
+			<input type="submit" value="Register">
+		</td><td></td></tr>
+	</table>
+</form>
+
+</p>
+
+
+
+
+ {% endblock %}

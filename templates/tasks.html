@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+
+{% block title %} Tasks {% endblock %}
+
+{% block h1_heading %}Tasks {% endblock %}
+
+
+{% block content %} 
+
+<a href="/new_task"><button id="add-a-task-btn">Add a Task</button></a>
+<div class="quick-add">
+	<form method="POST" action="/quick-add">
+		<input type="text_box" name="new_task_msg">
+		<!-- For quick add, I'll need to figure out how to use default values -->
+		<input type="submit" value="Quick Add">
+		<br><span id="quick-add-info">* Quick add due date auto completes to today</span>
+	</form>
+</div>
+
+<div class="uncompleted-tasks">
+	<h2>Uncompleted</h2>
+
+	<ul>
+		{% for task in tasks %}
+			{% if task.is_complete == False %}
+			<form action="/complete-task" method="POST">
+				<input hidden 
+					   name="task_id" 
+					   value={{task.task_id}}>
+			<li><input type=submit name="complete" value="Done"> {{task.msg}} 
+			{% endif %}
+			</li>
+		{% endfor %}
+	</ul>
+</div>
+
+<div class="completed-tasks">
+	
+	<h2>Completed</h2>
+
+	<ul>
+		{% for task in tasks %}
+		{% if task.is_complete%}
+		<li>
+			<form action="/undo_complete" method="POST">
+				<input hidden name="task_id" value={{task.task_id}}>
+				<input type=submit value="Undo">
+			 	{{task.msg}}
+			</form>
+		</li>
+
+		{% endif %}
+		{% endfor %}
+	</ul>
+</div>
+
+ {% endblock %}

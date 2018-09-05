@@ -1,0 +1,25 @@
+body {
+  font-family: sans-serif;
+  margin-left: 20px;
+}
+
+ul{
+	list-style-type: none
+
+}
+
+#quick-add-info{
+	font-size: .7em;
+}
+
+#add-a-task-btn {
+
+	font-size: 1.1em;
+	margin:10px;
+	margin-bottom: 1.3em;
+}
+
+.register-div{
+
+	margin: 10px,0px;
+}
