@@ -21,6 +21,7 @@ class User(db.Model):
     username = db.Column(db.String(64))
     email = db.Column(db.String(64), nullable=True)
     password = db.Column(db.String(64), nullable=True)
+    timezone = db.Column(db.String(32), default="US/Pacific")
     
     def __repr__(self):
         """Provide helpful representation when printed."""

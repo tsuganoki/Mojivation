@@ -11,17 +11,30 @@
 	<table>
 		<tr>
 			<td>Username</td>
-			<td> <input type="textbox" name="username" required pattern=".{5,}"></td></tr>
+			<td> <input type="textbox" 
+						name="username" required 
+						pattern=".{3,}"></td></tr>
 		<tr>
 			<td>E-mail</td>
-			<td> <input type="textbox" name="email" required pattern=".{5,}"></td></tr>
+			<td> <input type="email" 
+						name="email" 
+						required></td></tr>
 		<tr>
-			<td>Password</td>
-			<td><input type="password" name="password1" required pattern=".{5,}"></td></tr>
+			<td>Password
+				<br><span id="small-text">
+					At least 5 characters
+				</span></td>
+			<td> <input type="password" 
+						name="password1" 
+						required 
+						pattern=".{5,}"></td></tr>
 		<tr>
 
 			<td>Retype Password</td>
-			<td><input type="password" name="password2" required pattern=".{5,}"></td></tr>
+			<td> <input type="password" 
+						name="password2" 
+						required 
+						pattern=".{5,}"></td></tr>
 		<tr>
 			<td> 
 			<input type="submit" value="Register">

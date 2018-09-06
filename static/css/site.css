@@ -1,13 +1,17 @@
 body {
   font-family: sans-serif;
-  margin-left: 20px;
+  margin-left: 15px;
 }
 
-ul{
+ul {
 	list-style-type: none
 
 }
+.home-page-mantra{
+	font-size: 2em;
+	margin: 60px 60px;
 
+}
 #quick-add-info{
 	font-size: .7em;
 }
@@ -22,4 +26,38 @@ ul{
 .register-div{
 
 	margin: 10px,0px;
+}
+
+#small-text {
+	font-size: 0.5em;
+
+}
+.header-bar{
+	margin:10px;
+	margin-left: 0;
+	padding: 10px 40px;
+	background-color: #b7b9bc;
+	text-align: right;
+}
+.header-bar-item{
+	margin: 0 8px;
+
+}
+.uncompleted-tasks{
+
+	display: inline-block;
+	margin: 20px;
+	width:300px;
+}
+.later-tasks{
+
+	display: inline-block;
+	margin: 20px;
+	width:300px;
+
+}
+
+.completed-task-li{
+	color:grey;
+	font-size:0.8em;
 }

@@ -10,7 +10,7 @@
 <a href="/new_task"><button id="add-a-task-btn">Add a Task</button></a>
 <div class="quick-add">
 	<form method="POST" action="/quick-add">
-		<input type="text_box" name="new_task_msg">
+		<input type="text_box" required name="new_task_msg">
 		<!-- For quick add, I'll need to figure out how to use default values -->
 		<input type="submit" value="Quick Add">
 		<br><span id="quick-add-info">* Quick add due date auto completes to today</span>
@@ -18,11 +18,11 @@
 </div>
 
 <div class="uncompleted-tasks">
-	<h2>Uncompleted</h2>
+	<h2>Due today</h2>
 
 	<ul>
 		{% for task in tasks %}
-			{% if task.is_complete == False %}
+			{% if task.is_complete == False and task.due_date <= some_var %}
 			<form action="/complete-task" method="POST">
 				<input hidden 
 					   name="task_id" 
@@ -30,24 +30,44 @@
 			<li><input type=submit name="complete" value="Done"> {{task.msg}} 
 			{% endif %}
 			</li>
+		</form>
 		{% endfor %}
 	</ul>
 </div>
 
+<div class="later-tasks">
+	<h2> Due Later</h2>
+	<ul>
+	{% for task in tasks %}
+			{% if task.is_complete == False  and task.due_date > some_var %}
+				<form action="/complete-task" method="POST">
+					<input hidden 
+						   name="task_id" 
+						   value={{task.task_id}}>
+				<li><input type=submit name="complete" value="Done"> {{task.msg}} 
+				 </form>
+			{% endif %}
+			</li>
+		{% endfor %}
+</ul>
+</div>
+
 <div class="completed-tasks">
 	
-	<h2>Completed</h2>
+	<h3>Completed</h3>
 
 	<ul>
 		{% for task in tasks %}
-		{% if task.is_complete%}
-		<li>
+		{% if task.is_complete %}
 			<form action="/undo_complete" method="POST">
-				<input hidden name="task_id" value={{task.task_id}}>
-				<input type=submit value="Undo">
+				<input hidden name="task_id" 
+				value={{task.task_id}}>
+				<input hidden name="potato" value="apple">
+		<li class="completed-task-li">
+				<input type="submit" value="Undo">
 			 	{{task.msg}}
-			</form>
 		</li>
+			</form>
 
 		{% endif %}
 		{% endfor %}

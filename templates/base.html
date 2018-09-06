@@ -7,15 +7,32 @@
 
 </head>
 <body>
+
+
+
+
+<div class="header-bar">
+
+
+  <span class="current-user header-bar-item">
+    {% if session.get("current_username") %} 
+    You are logged in as: <a href="/user-info">{{ session.get("current_username") }}</a>
+   {% endif %}
+  </span>
+  <span class="header-bar-item"> <a href="/tasks">Tasks</a>
+  </span>
+  <span class="login header-bar-item">
+    <a href="/login"> Login</a> 
+  </span>
+  <span class="logout header-bar-item"> 
+    <a href="/logout"> Logout</a>
+  </span>
+</div>
+
 	<h1>{% block h1_heading %}HEADING {% endblock %}</h1>
 
-  <a href="/login"> Login</a> 
+  <p>
 
-  <a href="/logout"> Logout</a>
-
-  <p>{% if session.get("current_user") %} 
-    current user id is: {{ session.get("current_user") }}
-   {% endif %}
   </p>
 	  {% with messages = get_flashed_messages() %}
       {% for message in messages %}

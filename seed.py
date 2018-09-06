@@ -11,7 +11,13 @@ from server import app
 
 import datetime
 
+def delete_everything():
+    Collect.query.delete()
+    Kao.query.delete()
+    Task.query.delete()
+    User.query.delete()
 
+    
 def load_users():
     """Load users from u.user into database."""
 
@@ -19,7 +25,7 @@ def load_users():
 
     # Delete all rows in table, so if we need to run this a second time,
     # we won't be trying to add duplicate users
-    User.query.delete()
+    # User.query.delete()
 
 
     # Read u.user file and insert data
@@ -42,7 +48,8 @@ def load_users():
 def load_tasks():
     """Load movies from u.item into database."""
 
-    Task.query.delete()
+    # Task.query.delete()
+
 
     for row in open("seed_data/u.tasks"):
         row = row.rstrip()
@@ -54,8 +61,8 @@ def load_tasks():
 
         if due_date_string: #8/29/2018
             due_date = datetime.datetime.strptime(due_date_string,"%m/%d/%Y") 
-            print("task date string is ", due_date_string)
-            print("task datetime object is ", due_date)
+            # print("task date string is ", due_date_string)
+            # print("task datetime object is ", due_date)
         else:
             released_date = None
 
@@ -75,8 +82,8 @@ def load_collects():
     """Load collects from u.collects into database."""
 
 
-    Collect.query.delete()
-    for row in open("seed_data/u.collects"):
+    # Collect.query.delete()
+    for i, row in enumerate(open("seed_data/u.collects")):
         row = row.rstrip()
 
         user_id, kao_id, timestamp = row.split("|")
@@ -87,7 +94,8 @@ def load_collects():
             date = None
 
 
-        collect = Collect(user_id=user_id,
+        collect = Collect(collect_id = i+1,
+                        user_id=user_id,
                         kao_id=kao_id,
                         collect_date=collect_date
                         )
@@ -97,12 +105,13 @@ def load_collects():
 
 def load_kaos():
 	"""Load kaos from u.kaos into database"""
-	Kao.query.delete()
+	# Kao.query.delete()
 
-	for kao in open("seed_data/u.kaos"):
+	for i, kao in enumerate(open("seed_data/u.kaos")):
 		kao = kao.rstrip()
 
-		kao = Kao(kao=kao)
+		kao = Kao(kao_id=i+1, 
+                  kao=kao)
 		db.session.add(kao)
 	db.session.commit()
 	print("Kaos Loaded")
@@ -148,7 +157,17 @@ def set_val_collect_id():
     db.session.execute(query, {'new_id': max_id + 1})
     db.session.commit()
 
+def set_val_kao_id():
+    """Set value for the next collect_id after seeding database"""
 
+    # Get the Max collect_id in the database
+    result = db.session.query(func.max(Kao.kao_id)).one()
+    max_id = int(result[0])
+
+    # Set the value for the next collect_id to be max_id + 1
+    query = "SELECT setval('kaos_kao_id_seq', :new_id)"
+    db.session.execute(query, {'new_id': max_id + 1})
+    db.session.commit()
 
 if __name__ == "__main__":
     connect_to_db(app)
@@ -157,8 +176,12 @@ if __name__ == "__main__":
     db.create_all()
 
     # Import different types of data
-    # load_users()
-    # load_tasks()
-    load_collects()
+    delete_everything()
+    load_users()
+    load_tasks()
     load_kaos()
-    # set_val_user_id()
+    load_collects()
+    set_val_user_id()
+    set_val_task_id()
+    set_val_collect_id()
+    set_val_kao_id()

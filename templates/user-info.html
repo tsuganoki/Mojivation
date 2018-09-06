@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block title %} User Info {% endblock %}
+
+{% block h1_heading %}User Info {% endblock %}
+
+
+{% block content %} 
+
+<p>username: {{user.username}}</p>
+<p>email: {{user.email}}</p> 
+
+<p>Change email</p>
+<p>change password</p>
+<p>change timezone</p>
+
+{% endblock %}

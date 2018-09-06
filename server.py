@@ -31,7 +31,7 @@ def index():
 @app.route("/register")
 def register():
     """register a new account"""
-    if session.get("current_user"):
+    if session.get("current_user_id"):
         return redirect("/tasks")
     return render_template("register.html")
 
@@ -61,7 +61,9 @@ def register_confirm():
         db.session.add(user)
         # Once we're done, we should commit our work
         db.session.commit()
-        session["current_user"] = user.user_id
+        session["current_user_id"] = user.user_id
+        session["current_username"] = current_user.username
+
         return redirect("/tasks")
 
 
@@ -71,7 +73,7 @@ def register_confirm():
 @app.route('/login')
 def login():
     """Homepage."""
-    if session.get("current_user"):
+    if session.get("current_user_id"):
         return redirect("/tasks")
 
     return render_template("login.html")
@@ -88,7 +90,8 @@ def login_confirm():
         user_pwd = current_user.password
 
         if user_pwd == pwd_input:
-            session["current_user"] = user_id
+            session["current_user_id"] = user_id
+            session["current_username"] = current_user.username
             # redirect_route = 'user/' + user_id
             flash("You are now logged in")
             return redirect("/tasks")
@@ -103,12 +106,15 @@ def login_confirm():
 @app.route("/logout")
 def logout():
     """Logout of web app"""
-    if session["current_user"]:
-        del session["current_user"]
+    if session.get("current_username"):
+        print("potato\npotato]npotato")
+        del session["current_username"]
+        del session["current_user_id"]
         flash("You are now logged out")
         return redirect("/")
     else:
-        return redirect("/login")
+        print("alphabet\nalphabet\nalphabet\nalphabet\n")
+        return redirect("/")
 
 
 
@@ -116,11 +122,18 @@ def logout():
 @app.route('/tasks')
 def view_tasks():
     """Homepage."""
-    if session["current_user"]:
-        user = User.query.get(session["current_user"])
+    if session.get("current_user_id"):
+        user = User.query.get(session["current_user_id"])
         tasks = user.tasks
-        return render_template("tasks.html", tasks=tasks)
+        now = datetime.datetime.now()
+        print("day is: ",now.day)
+        print("month is: ",now.month)
+        print("year is: ",now.year)
+        print (now.strftime("%Y-%m-%d %H:%M"))
+
+        return render_template("tasks.html", tasks=tasks,some_var=now)
     else:
+        flash("Please log in to use that feature")
         return redirect("/")
         
     # current_user = User.query.filter_by(username=username_input).first()
@@ -129,9 +142,10 @@ def view_tasks():
 @app.route("/new_task")
 def new_task():
     """page for adding new tasks"""
-    if session["current_user"]:
+    if session.get("current_user_id"):
         return render_template("new_task.html")
     else:
+        flash("Please log in to use that feature")
         return redirect("/")
 
 
@@ -140,8 +154,8 @@ def new_task():
 def add_new_task():
     """Adds a new task to a user's task list"""
 
-    if session["current_user"]:
-        user = User.query.get(session["current_user"])
+    if session.get("current_user_id"):
+        user = User.query.get(session["current_user_id"])
         task_msg_input = request.form.get("msg")
 
         if request.form.get("today"):
@@ -160,7 +174,7 @@ def add_new_task():
 
         task = Task(msg=task_msg_input,
                     due_date = task_duedate_input,
-                    user_id=session["current_user"])
+                    user_id=session["current_user_id"])
 
 
         db.session.add(task)
@@ -170,6 +184,7 @@ def add_new_task():
 
 
     else:
+        flash("Please log in to use that feature")
         return redirect("/")
 
 
@@ -177,8 +192,8 @@ def add_new_task():
 def quick_add():
     """Quickly adds a new task to a user's task list"""
 
-    if session["current_user"]:
-        user = User.query.get(session["current_user"])
+    if session.get("current_user_id"):
+        user = User.query.get(session["current_user_id"])
         task_msg_input = request.form.get("new_task_msg")
 
         task_duedate_input = datetime.datetime.now()
@@ -186,7 +201,7 @@ def quick_add():
 
         task = Task(msg=task_msg_input,
                     due_date = task_duedate_input,
-                    user_id=session["current_user"])
+                    user_id=session["current_user_id"])
 
 
         db.session.add(task)
@@ -198,6 +213,7 @@ def quick_add():
 
 
     else:
+        flash("Please log in to use that feature")
         return redirect("/")
 
 
@@ -205,7 +221,7 @@ def quick_add():
 def complete_task():
     """Adds a new task to a user's task list"""
 
-    if session["current_user"]:
+    if session.get("current_user_id"):
         task_id = int(request.form.get("task_id"))
 
 
@@ -213,6 +229,7 @@ def complete_task():
         # A line of code the changes the task to is_complete = False
         # user.no_of_logins += 1
         task.is_complete = True
+        print("complete-task route runs if you see: Watermelon")
         db.session.commit()
 
         print("taskid: ",task_id," - Task: ", task, "is_complete: ",task.is_complete)
@@ -222,22 +239,34 @@ def complete_task():
 def undo_complete():
     """Adds a new task to a user's task list"""
 
-    if session["current_user"]:
+    if session.get("current_user_id"):
         task_id = int(request.form.get("task_id"))
 
-
         task = Task.query.get(task_id)
+        # print("the task is: ",task.msg)
         # A line of code the changes the task to is_complete = False
-        # user.no_of_logins += 1
         task.is_complete = False
+
         db.session.commit()
 
-        print("taskid: ",task_id," - Task: ", task, "is_complete: ",task.is_complete)
+        # print("taskid: ",task_id," - Task: ", task, "is_complete: ",task.is_complete)
         return redirect("/tasks")
         
 
     else:
+        flash("Please log in to use that feature")
         return redirect("/")
+
+
+
+@app.route("/user-info")
+def user_info():
+    """lets a user change their info"""
+
+    if session.get("current_user_id"):
+        user = User.query.get(int(session["current_user_id"]))
+        return render_template("user-info.html",user=user)
+
 
 if __name__ == "__main__":
     # We have to set debug=True here, since it has to be True at the
