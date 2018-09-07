@@ -48,11 +48,12 @@ ul {
 .today-tasks, .later-tasks{
 
 	display: inline-block;
-	margin:5px;
+	margin: 5px;
 	width:340px;
 	background-color: #b7b9bc;
 	padding:0 15px;
-}
+	vertical-align:top;
+	}
 
 
 .completed-task-li{
