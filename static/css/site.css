@@ -1,12 +1,14 @@
 body {
   font-family: sans-serif;
   margin-left: 15px;
+  font-size:0.8em;
 }
 
 ul {
 	list-style-type: none
 
 }
+
 .home-page-mantra{
 	font-size: 2em;
 	margin: 60px 60px;
@@ -43,19 +45,15 @@ ul {
 	margin: 0 8px;
 
 }
-.uncompleted-tasks{
+.today-tasks, .later-tasks{
 
 	display: inline-block;
-	margin: 20px;
-	width:300px;
+	margin:5px;
+	width:340px;
+	background-color: #b7b9bc;
+	padding:0 15px;
 }
-.later-tasks{
 
-	display: inline-block;
-	margin: 20px;
-	width:300px;
-
-}
 
 .completed-task-li{
 	color:grey;

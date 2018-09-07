@@ -18,9 +18,9 @@ class User(db.Model):
     __tablename__ = "users"
 
     user_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
-    username = db.Column(db.String(64))
-    email = db.Column(db.String(64), nullable=True)
-    password = db.Column(db.String(64), nullable=True)
+    username = db.Column(db.String(64), unique=True)
+    email = db.Column(db.String(64), nullable=False, unique=True)
+    password = db.Column(db.String(64), nullable=False)
     timezone = db.Column(db.String(32), default="US/Pacific")
     
     def __repr__(self):

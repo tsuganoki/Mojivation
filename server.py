@@ -9,6 +9,8 @@ from flask_debugtoolbar import DebugToolbarExtension
 from model import User, Task, Collect, Kao, connect_to_db, db
 
 import datetime
+import pytz
+import helper
 
 
 
@@ -62,7 +64,7 @@ def register_confirm():
         # Once we're done, we should commit our work
         db.session.commit()
         session["current_user_id"] = user.user_id
-        session["current_username"] = current_user.username
+        session["current_username"] = user.username
 
         return redirect("/tasks")
 
@@ -125,13 +127,15 @@ def view_tasks():
     if session.get("current_user_id"):
         user = User.query.get(session["current_user_id"])
         tasks = user.tasks
-        now = datetime.datetime.now()
-        print("day is: ",now.day)
-        print("month is: ",now.month)
-        print("year is: ",now.year)
-        print (now.strftime("%Y-%m-%d %H:%M"))
+        # now = datetime.datetime.now()
+        # today= datetime.datetime.date(now)
+        # print("day is: ",now.day)
+        # print("month is: ",now.month)
+        # print("year is: ",now.year)
+        # print (now.strftime("%Y-%m-%d %H:%M"))
+        midnight = helper.get_midnight()
 
-        return render_template("tasks.html", tasks=tasks,some_var=now)
+        return render_template("tasks.html", tasks=tasks,some_var=midnight)
     else:
         flash("Please log in to use that feature")
         return redirect("/")
@@ -157,13 +161,16 @@ def add_new_task():
     if session.get("current_user_id"):
         user = User.query.get(session["current_user_id"])
         task_msg_input = request.form.get("msg")
+        midnight = helper.get_midnight()
+
+
 
         if request.form.get("today"):
             print("if statement: today")
-            task_duedate_input = datetime.datetime.now()
+            task_duedate_input = midnight
 
         elif request.form.get("duedate") == "":
-            task_duedate_input = datetime.datetime.now()
+            task_duedate_input = midnight
 
         else:
             task_duedate_input = request.form.get("duedate")
@@ -196,11 +203,12 @@ def quick_add():
         user = User.query.get(session["current_user_id"])
         task_msg_input = request.form.get("new_task_msg")
 
-        task_duedate_input = datetime.datetime.now()
+        midnight = helper.get_midnight()
+
 
 
         task = Task(msg=task_msg_input,
-                    due_date = task_duedate_input,
+                    due_date = midnight,
                     user_id=session["current_user_id"])
 
 
