@@ -9,9 +9,12 @@
 
 <a href="/new_task"><button id="add-a-task-btn">Add a Task</button></a>
 <div class="quick-add">
-	<form method="POST" action="/quick-add">
-		<input type="text_box" required name="new_task_msg">
-		<!-- For quick add, I'll need to figure out how to use default values -->
+	<form method="POST" action="/add_new_task">
+		<input type="text_box" 
+			   required 
+			   name="msg">
+
+		<input hidden name="duedate" value="">
 		<input type="submit" value="Quick Add">
 		<br><span id="quick-add-info">* Quick add due date auto completes to today</span>
 	</form>
@@ -22,7 +25,7 @@
 
 	<ul>
 		{% for task in tasks %}
-			{% if task.is_complete == False and task.due_date <= some_var %}
+			{% if task.is_complete == False and task.due_date <= midnight %}
 			<form action="/complete-task" method="POST">
 				<input hidden 
 					   name="task_id" 
@@ -39,7 +42,7 @@
 	<h2> Due Later</h2>
 	<ul>
 	{% for task in tasks %}
-			{% if task.is_complete == False  and task.due_date > some_var %}
+			{% if task.is_complete == False  and task.due_date > midnight %}
 				<form action="/complete-task" method="POST">
 					<input hidden 
 						   name="task_id" 

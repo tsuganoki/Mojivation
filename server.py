@@ -44,7 +44,7 @@ def index():
 
 @app.route("/register")
 def register():
-    """register a new account"""
+    """displays page to register a new account"""
     if session.get("current_user_id"):
         return redirect("/tasks")
     return render_template("register.html")
@@ -139,15 +139,9 @@ def view_tasks():
     if session.get("current_user_id"):
         user = User.query.get(session["current_user_id"])
         tasks = user.tasks
-        # now = datetime.datetime.now()
-        # today= datetime.datetime.date(now)
-        # print("day is: ",now.day)
-        # print("month is: ",now.month)
-        # print("year is: ",now.year)
-        # print (now.strftime("%Y-%m-%d %H:%M"))
         midnight = helper.get_midnight()
 
-        return render_template("tasks.html", tasks=tasks,some_var=midnight)
+        return render_template("tasks.html", tasks=tasks,midnight=midnight)
     else:
         flash("Please log in to use that feature")
         return redirect("/")
@@ -207,34 +201,34 @@ def add_new_task():
         return redirect("/")
 
 
-@app.route("/quick-add", methods=["POST"])
-def quick_add():
-    """Quickly adds a new task to a user's task list"""
+# @app.route("/quick-add", methods=["POST"])
+# def quick_add():
+#     """Quickly adds a new task to a user's task list"""
 
-    if session.get("current_user_id"):
-        user = User.query.get(session["current_user_id"])
-        task_msg_input = request.form.get("new_task_msg")
+#     if session.get("current_user_id"):
+#         user = User.query.get(session["current_user_id"])
+#         task_msg_input = request.form.get("new_task_msg")
 
-        midnight = helper.get_midnight()
-
-
-
-        task = Task(msg=task_msg_input,
-                    due_date = midnight,
-                    user_id=session["current_user_id"])
+#         midnight = helper.get_midnight()
 
 
-        db.session.add(task)
-        print("task is: ",task)
-        db.session.commit()
+
+#         task = Task(msg=task_msg_input,
+#                     due_date = midnight,
+#                     user_id=session["current_user_id"])
 
 
-        return redirect("/tasks")
+#         db.session.add(task)
+#         print("task is: ",task)
+#         db.session.commit()
 
 
-    else:
-        flash("Please log in to use that feature")
-        return redirect("/")
+#         return redirect("/tasks")
+
+
+#     else:
+#         flash("Please log in to use that feature")
+#         return redirect("/")
 
 
 @app.route("/complete-task", methods=["POST"])
@@ -286,6 +280,16 @@ def user_info():
     if session.get("current_user_id"):
         user = User.query.get(int(session["current_user_id"]))
         return render_template("user-info.html",user=user)
+
+
+
+
+
+
+
+
+
+
 
 
 if __name__ == "__main__":
