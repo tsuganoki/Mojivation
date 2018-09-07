@@ -11,6 +11,7 @@ from model import User, Task, Collect, Kao, connect_to_db, db
 import datetime
 import pytz
 import helper
+import random
 
 
 
@@ -28,7 +29,18 @@ app.jinja_env.undefined = StrictUndefined
 @app.route('/')
 def index():
     """Homepage."""
-    return render_template("index.html")
+    kao_dict = {
+        "shrug": u"¯\_(ツ)_/¯ Guess we can be productive today",
+        "supportive": u"~(˘▽˘~) I know you can do it!",
+        "dog": u" ∪･ω･∪ Today's Oppawtunities are full of pet-tential",
+        "boxer": u"(งಠ_ಠ)ง It's the eye of the tiger, it's the thrill of the fight...",
+        "mage": u"(ﾉ>ω<)ﾉ :｡･:*:･ﾟ’★,｡･:*:･ﾟ’☆ Abracadabra! Lets be productive!",
+        "bear": u"ʕ •̀ ω •́ ʔ Keep going! You can bear it!",
+        "allie": u"╰(°ロ°)╯ Do all the things!"
+        }
+    slogan = random.choice(list(kao_dict.values() ) ) 
+    print(slogan)
+    return render_template("index.html",slogan=slogan)  
 
 @app.route("/register")
 def register():
