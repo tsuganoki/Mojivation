@@ -2,6 +2,7 @@ body {
   font-family: sans-serif;
   margin-left: 15px;
   font-size:0.8em;
+  background-color: #e0e0e0;
 }
 
 ul {
@@ -38,24 +39,38 @@ ul {
 	margin:10px;
 	margin-left: 0;
 	padding: 10px 40px;
-	background-color: #b7b9bc;
+	background-color: #ffffff;
 	text-align: right;
 }
 .header-bar-item{
 	margin: 0 8px;
 
 }
+.quick-add{
+	padding:10px;
+	padding-left: 40px;	
+	background-color: #ffffff;
+
+}
 .today-tasks, .later-tasks{
 
 	display: inline-block;
 	margin: 5px;
+
 	width:340px;
-	background-color: #b7b9bc;
+	background-color: #ffffff;
 	padding:0 15px;
 	vertical-align:top;
 	}
 
+.completed-tasks{
+	padding:10px;
+	background-color: #ffffff;
+	margin:5px;
+	padding:10px 15px;
+	width:340px;
 
+}
 .completed-task-li{
 	color:grey;
 	font-size:0.8em;

@@ -2,23 +2,19 @@
 
 {% block title %} Tasks {% endblock %}
 
-{% block h1_heading %}Tasks {% endblock %}
+{% block h1_heading %}
+	All Tasks
+{% endblock %}
 
 
 {% block content %} 
 
-<a href="/new_task"><button id="add-a-task-btn">Add a Task</button></a>
-<div class="quick-add">
-	<form method="POST" action="/add_new_task">
-		<input type="text_box" 
-			   required 
-			   name="msg">
-
-		<input hidden name="duedate" value="">
-		<input type="submit" value="Quick Add">
-		<br><span id="quick-add-info">* Quick add due date auto completes to today</span>
-	</form>
+<div class="add-a-task">
+	<a href="/new_task"><button id="add-a-task-btn">Add a Task</button></a>
 </div>
+
+
+
 
 <div class="today-tasks">
 	<h2>Due Today</h2>
@@ -36,6 +32,20 @@
 		</form>
 		{% endfor %}
 	</ul>
+
+	<div class="quick-add">
+		<form method="POST" action="/add_new_task">
+			<input type="text_box" 
+				   required 
+				   name="msg">
+
+			<input hidden name="duedate" value="">
+			<input type="submit" value="Quick Add">
+			<p id="quick-add-info">
+				* Quick add due date auto completes to today
+			</p>
+		</form>
+	</div>
 </div>
 
 <div class="later-tasks">
@@ -55,9 +65,13 @@
 </ul>
 </div>
 
+
+
+
+
 <div class="completed-tasks">
 	
-	<h3>Completed</h3>
+	<h3>Completed potato</h3>
 
 	<ul>
 		{% for task in tasks %}
@@ -75,6 +89,7 @@
 		{% endif %}
 		{% endfor %}
 	</ul>
+	<a href="/clear-completed">Clear Completed</a>
 </div>
 
  {% endblock %}

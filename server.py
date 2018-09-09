@@ -121,13 +121,11 @@ def login_confirm():
 def logout():
     """Logout of web app"""
     if session.get("current_username"):
-        print("potato\npotato]npotato")
         del session["current_username"]
         del session["current_user_id"]
         flash("You are now logged out")
         return redirect("/")
     else:
-        print("alphabet\nalphabet\nalphabet\nalphabet\n")
         return redirect("/")
 
 
@@ -243,10 +241,8 @@ def complete_task():
         # A line of code the changes the task to is_complete = False
         # user.no_of_logins += 1
         task.is_complete = True
-        print("complete-task route runs if you see: Watermelon")
         db.session.commit()
 
-        print("taskid: ",task_id," - Task: ", task, "is_complete: ",task.is_complete)
         return redirect("/tasks")
 
 @app.route("/undo_complete", methods=["POST"])
@@ -267,6 +263,22 @@ def undo_complete():
         return redirect("/tasks")
         
 
+    else:
+        flash("Please log in to use that feature")
+        return redirect("/")
+
+
+@app.route("/clear-completed")
+def clear_completed():
+
+    if session.get("current_user_id"):
+        user_id = int(session.get("current_user_id"))
+        
+        completed_tasks = Task.query.filter_by(user_id=user_id,is_complete=True)
+        for task in completed_tasks:
+            db.session.delete(task)
+        db.session.commit()
+        return redirect("/tasks")
     else:
         flash("Please log in to use that feature")
         return redirect("/")
