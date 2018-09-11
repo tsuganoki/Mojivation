@@ -9,8 +9,9 @@ from flask_debugtoolbar import DebugToolbarExtension
 from model import User, Task, Collect, Kao, connect_to_db, db
 
 import datetime
+from datetime import timedelta
 import pytz
-import helper
+import timehelpers
 import random
 
 
@@ -137,7 +138,7 @@ def view_tasks():
     if session.get("current_user_id"):
         user = User.query.get(session["current_user_id"])
         tasks = user.tasks
-        midnight = helper.get_midnight()
+        midnight = timehelpers.get_midnight()
 
         return render_template("tasks.html", tasks=tasks,midnight=midnight)
     else:
@@ -165,7 +166,8 @@ def add_new_task():
     if session.get("current_user_id"):
         user = User.query.get(session["current_user_id"])
         task_msg_input = request.form.get("msg")
-        midnight = helper.get_midnight()
+        
+        midnight = timehelpers.get_midnight()
 
 
 
@@ -207,7 +209,7 @@ def add_new_task():
 #         user = User.query.get(session["current_user_id"])
 #         task_msg_input = request.form.get("new_task_msg")
 
-#         midnight = helper.get_midnight()
+#         midnight = timehelpers.get_midnight()
 
 
 
