@@ -1,9 +1,11 @@
 from datetime import date,time,datetime,tzinfo,timedelta
-from pytz import timezone
+# from pytz import timezone
 import pytz
 
 #Days start at 0 for monday
 DAYS = ["monday","tuesday","wednesday","thursday","friday","saturday","sunday"]
+TIMEZONES = [zone.rstrip() for zone in open("seed_data/u.timezones")]
+
 # today = datetime.date.today()
 # weekday = DAYS[today.weekday()]
 
@@ -17,18 +19,7 @@ DAYS = ["monday","tuesday","wednesday","thursday","friday","saturday","sunday"]
 
 # Notes on localizing and adjusting timezones
 
-# def convert_PST(dtime):
-# 	PST_time = dtime + timedelta(hours=-8)
-# 	PST_time = timezone("US/Pacific").localize(PST_time)
-# 	return PST_time
 
-# pst_now = convert_PST(now)
-
-# pst_now.tzinfo
-# <DstTzInfo 'US/Pacific' PDT-1 day, 17:00:00 DST>
-
-# pst_now.tzinfo.zone
-# 'US/Pacific'
 
 
 # You can create a datetime object with a built in 
@@ -38,7 +29,7 @@ DAYS = ["monday","tuesday","wednesday","thursday","friday","saturday","sunday"]
 
 # timezones
 UTC = pytz.utc
-EST = timezone('US/Eastern')
+EST = pytz.timezone('US/Eastern')
 
 def get_midnight():
 	today = datetime.today()
@@ -51,3 +42,38 @@ def get_midnight():
 
 
 print(get_midnight())
+
+
+def get_user_midnight(user):
+	"""Returns UTC datetime corresponding to user's midnight on that day"""
+	now = datetime.now()
+	utc = pytz.utc
+	user_zone = pytz.timezone(user.timezone)
+
+	now_local_UTC = utc.localize(now)
+
+	user_normalized_time = user_zone.normalize(now_local_UTC)
+	user_normalized_time.date()
+	user_midnight = datetime(user_normalized_time.year,
+							 user_normalized_time.month,
+							 user_normalized_time.day,
+							 0,0,0)
+
+	return user_zone.localize(user_midnight)
+
+
+
+
+
+def user_time_to_UTC(due_date,user):
+	pass
+
+	
+
+
+def localize_to_user_timezone(dt, user):
+  utc = pytz.utc
+  dt = utc.localize(dt)
+  user_zone = pytz.timezone(user.timezone)
+  user_time= user_zone.normalize(dt)
+  return user_time

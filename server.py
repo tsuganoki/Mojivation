@@ -48,7 +48,9 @@ def register():
     """displays page to register a new account"""
     if session.get("current_user_id"):
         return redirect("/tasks")
-    return render_template("register.html")
+
+    timezones = timehelpers.TIMEZONES
+    return render_template("register.html", timezones=timezones)
 
 
 @app.route("/register_confirm", methods=["POST"])
@@ -58,6 +60,7 @@ def register_confirm():
     email_input = request.form.get("email")
     password_input1 = request.form.get("password1")
     password_input2 = request.form.get("password2")
+    timezone_input = request.form.get("timezone")
     if password_input1 != password_input2:
         flash("Sorry, your passwords must match")
         return redirect("/register")
@@ -71,7 +74,8 @@ def register_confirm():
     else:
         user = User(username=username_input,
                     email=email_input,
-                    password=password_input1)
+                    password=password_input1,
+                    timezone=timezone_input)
         # We need to add to the session or it won't ever be stored
         db.session.add(user)
         # Once we're done, we should commit our work
@@ -166,27 +170,31 @@ def add_new_task():
     if session.get("current_user_id"):
         user = User.query.get(session["current_user_id"])
         task_msg_input = request.form.get("msg")
-        
-        midnight = timehelpers.get_midnight()
+
+        midnight_tonight = timehelpers.get_user_midnight(user)
 
 
 
         if request.form.get("today"):
             print("if statement: today")
-            task_duedate_input = midnight
+            duedate_datetime_localized = midnight_tonight
 
         elif request.form.get("duedate") == "":
-            task_duedate_input = midnight
+            duedate_datetime_localized = midnight_tonight
 
         else:
-            task_duedate_input = request.form.get("duedate")
-            print("original due_date: ", task_duedate_input)
-            task_duedate_input = datetime.datetime.strptime(task_duedate_input,"%Y-%m-%d") 
-            print("due_date after strptime: ",task_duedate_input)
+            duedate_input = request.form.get("duedate")
+            # print("original due_date: ", duedate_input)
+            duedate_datetime = datetime.datetime.strptime(duedate_input,"%Y-%m-%d") 
+            user_zone = pytz.timezone(user.timezone)
+            duedate_datetime_localized = user_zone.localize(duedate_datetime)
+
+            # print("due_date after strptime: ",duedate_input)
+
 
 
         task = Task(msg=task_msg_input,
-                    due_date = task_duedate_input,
+                    due_date = duedate_datetime_localized,
                     user_id=session["current_user_id"])
 
 

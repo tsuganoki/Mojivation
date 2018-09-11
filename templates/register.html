@@ -27,14 +27,30 @@
 			<td> <input type="password" 
 						name="password1" 
 						required 
-						pattern=".{5,}"></td></tr>
+						pattern=".{5,}">
+			</td>
+		</tr>
 		<tr>
 
 			<td>Retype Password</td>
 			<td> <input type="password" 
 						name="password2" 
 						required 
-						pattern=".{5,}"></td></tr>
+						pattern=".{5,}">
+			</td>
+		</tr>
+		<tr>
+
+			<td>Timezone</td>
+			<td> 
+				<select name="timezone" required>
+					{% for zone in timezones %}
+					<option value={{zone}}>{{zone}}</option>
+					{% endfor %}
+
+				</select>
+			</td>
+		</tr>
 		<tr>
 			<td> 
 			<input type="submit" value="Register">
