@@ -6,6 +6,10 @@ import pytz
 DAYS = ["monday","tuesday","wednesday","thursday","friday","saturday","sunday"]
 TIMEZONES = [zone.rstrip() for zone in open("seed_data/u.timezones")]
 
+# KAOS_TUPLE = [enumerate(kao.rstrip()) for kao in open("seed_data/u.kaos")]
+
+
+
 # today = datetime.date.today()
 # weekday = DAYS[today.weekday()]
 
