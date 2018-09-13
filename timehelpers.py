@@ -48,10 +48,10 @@ def get_midnight():
 print(get_midnight())
 
 
-def get_user_midnight(user):
+def get_user_midnight(tz_string):
 	"""Returns UTC datetime corresponding to user's midnight on that day"""
 	utc = pytz.utc
-	user_zone = pytz.timezone(user.timezone)
+	user_zone = pytz.timezone(tz_string)
 
 	user_normalized_time = datetime.now().astimezone(user_zone)
 
@@ -62,6 +62,15 @@ def get_user_midnight(user):
 	return user_zone.localize(user_midnight)
 
 
+def get_user_EOD(tz_string):
+	"""returns user's EOD in UTC"""
+	now = datetime.now()
+	EOD = get_user_midnight_utc(now,tz_string) + timedelta(days=1)
+	utc = pytz.utc
+
+	return EOD
+
+
 def get_user_midnight_utc(dt,tz_string):
 	"""returns a UTC time corresponding to a midnight in user's current timezone"""
 
@@ -69,7 +78,7 @@ def get_user_midnight_utc(dt,tz_string):
 	user_today = dt.astimezone(user_zone)
 	user_midnight = datetime(user_today.year,user_today.month,user_today.day)
 
-	user_midnight_utc = user_midnight + (user_zone).utcoffset(user_midnight)
+	user_midnight_utc = user_midnight - (user_zone).utcoffset(user_midnight)
 	return user_midnight_utc
 
 
@@ -78,15 +87,13 @@ def get_user_midnight_utc(dt,tz_string):
 # est.utcoffset(now)
 
 
-def user_time_to_UTC(due_date,user):
-	pass
 
 	
 
 
-def localize_to_user_timezone(dt, user):
-  utc = pytz.utc
-  dt = utc.localize(dt)
-  user_zone = pytz.timezone(user.timezone)
-  user_time= user_zone.normalize(dt)
-  return user_time
+# def localize_to_user_timezone(dt, user):
+#   utc = pytz.utc
+#   dt = utc.localize(dt)
+#   user_zone = pytz.timezone(user.timezone)
+#   user_time= user_zone.normalize(dt)
+#   return user_time

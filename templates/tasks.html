@@ -21,7 +21,7 @@
 
 	<ul>
 		{% for task in tasks %}
-			{% if task.is_complete == False and task.due_date <= midnight %}
+			{% if task.is_complete == False and task.due_date <= EOD %}
 			<form action="/complete-task" method="POST">
 				<input hidden 
 					   name="task_id" 
@@ -52,7 +52,7 @@
 	<h2> Due Later</h2>
 	<ul>
 	{% for task in tasks %}
-			{% if task.is_complete == False  and task.due_date > midnight %}
+			{% if task.is_complete == False  and task.due_date > EOD %}
 				<form action="/complete-task" method="POST">
 					<input hidden 
 						   name="task_id" 

@@ -142,17 +142,12 @@ def view_tasks():
     if session.get("current_user_id"):
         user = User.query.get(session["current_user_id"])
         tasks = user.tasks
-        # midnight = timehelpers.get_midnight()
+
         user_tz_str = user.timezone
-        now = datetime.datetime.now()
-        print(now.ctime())
-        user_midnight_utc = timehelpers.get_user_midnight_utc(now,user_tz_str) 
-        print(user_midnight_utc.ctime())
-        nxt_midnight = user_midnight_utc + timedelta(days=1)
-        print(nxt_midnight.ctime())
+        EOD = timehelpers.get_user_EOD(user_tz_str)
 
 
-        return render_template("tasks.html", tasks=tasks,midnight=nxt_midnight)
+        return render_template("tasks.html", tasks=tasks,EOD=EOD)
     else:
         flash("Please log in to use that feature")
         return redirect("/")
