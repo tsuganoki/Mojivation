@@ -170,6 +170,11 @@ def add_new_task():
     if session.get("current_user_id"):
         user = User.query.get(session["current_user_id"])
         task_msg_input = request.form.get("msg")
+        is_repeating_input = request.form.get("repeating")
+
+        is_repeating = True if is_repeating_input == "True" else False
+        print(is_repeating)
+        # i = 5 if a > 7 else 0
 
         midnight_tonight = timehelpers.get_user_midnight(user)
 
@@ -194,6 +199,7 @@ def add_new_task():
 
 
         task = Task(msg=task_msg_input,
+                    is_repeating=is_repeating,
                     due_date = duedate_datetime_localized,
                     user_id=session["current_user_id"])
 
