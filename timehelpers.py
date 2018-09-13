@@ -62,16 +62,14 @@ def get_user_midnight(user):
 	return user_zone.localize(user_midnight)
 
 
-def get_user_midnight_utc(dt,user_id):
+def get_user_midnight_utc(dt,tz_string):
 	"""returns a UTC time corresponding to a midnight in user's current timezone"""
 
-
-	user = User.query.get(int(user_id))
-	user_zone = pytz.timezone(user.timezone)
+	user_zone = pytz.timezone(tz_string)
 	user_today = dt.astimezone(user_zone)
-	user_midnight = datetime.datetime(user_today.year,user_today.month,user_today.day)
+	user_midnight = datetime(user_today.year,user_today.month,user_today.day)
 
-	user_midnight_utc = user_midnight + (PST).utcoffset(user_midnight)
+	user_midnight_utc = user_midnight + (user_zone).utcoffset(user_midnight)
 	return user_midnight_utc
 
 

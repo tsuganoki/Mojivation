@@ -142,9 +142,17 @@ def view_tasks():
     if session.get("current_user_id"):
         user = User.query.get(session["current_user_id"])
         tasks = user.tasks
-        midnight = timehelpers.get_midnight()
+        # midnight = timehelpers.get_midnight()
+        user_tz_str = user.timezone
+        now = datetime.datetime.now()
+        print(now.ctime())
+        user_midnight_utc = timehelpers.get_user_midnight_utc(now,user_tz_str) 
+        print(user_midnight_utc.ctime())
+        nxt_midnight = user_midnight_utc + timedelta(days=1)
+        print(nxt_midnight.ctime())
 
-        return render_template("tasks.html", tasks=tasks,midnight=midnight)
+
+        return render_template("tasks.html", tasks=tasks,midnight=nxt_midnight)
     else:
         flash("Please log in to use that feature")
         return redirect("/")
@@ -173,34 +181,25 @@ def add_new_task():
         is_repeating_input = request.form.get("repeating")
 
         is_repeating = True if is_repeating_input == "True" else False
-        print(is_repeating)
-        # i = 5 if a > 7 else 0
-
-        midnight_tonight = timehelpers.get_user_midnight(user)
 
 
-
-        if request.form.get("today"):
-            print("if statement: today")
-            duedate_datetime_localized = midnight_tonight
-
-        elif request.form.get("duedate") == "":
-            duedate_datetime_localized = midnight_tonight
+        if request.form.get("today") or request.form.get("duedate") == "":
+            duedate_input = datetime.datetime.now()
 
         else:
             duedate_input = request.form.get("duedate")
+            duedate_input = datetime.datetime.strptime(duedate_input,"%Y-%m-%d") 
+
             # print("original due_date: ", duedate_input)
-            duedate_datetime = datetime.datetime.strptime(duedate_input,"%Y-%m-%d") 
-            user_zone = pytz.timezone(user.timezone)
-            duedate_datetime_localized = user_zone.localize(duedate_datetime)
+            # user_zone = pytz.timezone(user.timezone)
+            # duedate_datetime_localized = user_zone.localize(duedate_datetime)
 
-            # print("due_date after strptime: ",duedate_input)
-
-
+        user_tz_str = user.timezone
+        due_date = timehelpers.get_user_midnight_utc(duedate_input,user_tz_str)
 
         task = Task(msg=task_msg_input,
                     is_repeating=is_repeating,
-                    due_date = duedate_datetime_localized,
+                    due_date = due_date,
                     user_id=session["current_user_id"])
 
 
