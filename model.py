@@ -36,6 +36,7 @@ class Task(db.Model):
 	msg = db.Column(db.String(264))
 	user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'))
 	is_complete = db.Column(db.Boolean, nullable=False, default=False)
+	is_repeating = db.Column(db.Boolean, default=False)
 	due_date = db.Column(db.DateTime, default=False)
 
 
