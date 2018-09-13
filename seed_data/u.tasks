@@ -1,10 +1,14 @@
-1|maybe do some yoga|7|T|08/29/2018
-2|eat a broccoli|7|F|02/02/2018
-3|world conquest|8|F|01/01/2099
-4|finish the thing|3|T|02/02/2019
-5|make the phone call to Starworld Advertising|2|F|06/04/2018
-6|fill in the details on my resume about my cake business|2|F|11/19/2018
-7|do the other thing|3|T|11/11/2018
-8|buy milk|4|T|09/02/2018
-9|take meds|6|T|09/01/2018
-10|figure out FTL travel|8|F|01/01/2099
+1|maybe do some yoga|7|T|F|08/29/2018
+2|eat a broccoli|7|F|F|02/02/2018
+3|world conquest|8|F|F|01/01/2099
+4|finish the thing|3|T|F|02/02/2019
+5|make the phone call to Starworld Advertising|2|F|F|06/04/2018
+6|fill in the details on my resume about my cake business|2|F|T|11/19/2018
+7|do the other thing|3|T|T|11/11/2018
+8|buy milk|4|T|F|09/02/2018
+9|take meds|6|T|F|09/01/2018
+10|figure out FTL travel|8|F|F|01/01/2099
+11|open the box|17|T|F|9/11/2018
+12|oh shit close the box|16|F|F|9/11/2018
+13|preserve hope for all of humanity|16|F|F|9/11/2019
+14|eat bao|17|F|F|9/16/2018

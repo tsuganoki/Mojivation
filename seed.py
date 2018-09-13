@@ -31,12 +31,13 @@ def load_users():
     # Read u.user file and insert data
     for row in open("seed_data/u.user"):
         row = row.rstrip()
-        user_id, username, email, password = row.split("|")
+        user_id, username, email, password,timezone = row.split("|")
 
         user = User(user_id=int(user_id),
         			username=username,
                     email=email,
-                    password=password)
+                    password=password,
+                    timezone=timezone)
 
         # We need to add to the session or it won't ever be stored
         db.session.add(user)
@@ -53,11 +54,17 @@ def load_tasks():
 
     for row in open("seed_data/u.tasks"):
         row = row.rstrip()
-        task_id,msg, user_id, is_complete,due_date_string = row.split("|")
+        task_id,msg, user_id, is_complete,is_repeating,due_date_string = row.split("|")
+
         if is_complete == 'T':
-        	is_complete= True
+            is_complete = True
         else:
-        	is_complete=False
+            is_complete = False
+
+        if is_repeating == 'T':
+        	is_repeating = True
+        else:
+        	is_repeating = False
 
         if due_date_string: #8/29/2018
             due_date = datetime.datetime.strptime(due_date_string,"%m/%d/%Y") 
@@ -71,6 +78,7 @@ def load_tasks():
         			msg=msg,
                     user_id=int(user_id),
                     is_complete=is_complete,
+                    is_repeating=is_repeating,
                     due_date=due_date)
         db.session.add(task)
     db.session.commit()
