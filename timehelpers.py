@@ -1,4 +1,10 @@
 from datetime import date,time,datetime,tzinfo,timedelta
+
+from model import User, Task, Collect, Kao, connect_to_db, db
+from sqlalchemy import func
+# from server import app
+
+
 # from pytz import timezone
 import pytz
 
@@ -19,8 +25,6 @@ TIMEZONES = [zone.rstrip() for zone in open("seed_data/u.timezones")]
 # nyd = date(today.year, 1, 1)  # get New Year Day for the same year
 
 
-
-
 # Notes on localizing and adjusting timezones
 
 
@@ -32,6 +36,8 @@ TIMEZONES = [zone.rstrip() for zone in open("seed_data/u.timezones")]
 # >>> utc_dt = datetime(2002, 10, 27, 6, 0, 0, tzinfo=utc)
 
 # timezones
+
+
 UTC = pytz.utc
 EST = pytz.timezone('US/Eastern')
 
@@ -45,7 +51,7 @@ def get_midnight():
 	return midnight
 
 
-print(get_midnight())
+print("UTC midnight: ", get_midnight().ctime())
 
 
 def get_user_midnight(tz_string):
@@ -86,14 +92,23 @@ def get_user_midnight_utc(dt,tz_string):
 # OFFSET IS IMPORTant
 # est.utcoffset(now)
 
-
-
-	
-
-
 # def localize_to_user_timezone(dt, user):
 #   utc = pytz.utc
 #   dt = utc.localize(dt)
 #   user_zone = pytz.timezone(user.timezone)
 #   user_time= user_zone.normalize(dt)
 #   return user_time
+
+
+def reset_repeating_tasks():
+	repeating_tasks = Task.query.filter_by(is_repeating=True, is_complete=True).all()
+	for task in repeating_tasks:
+		task.is_complete = False
+		db.session.commit()
+
+
+
+def test_func():
+	print("test_func has run.")
+
+test_func()

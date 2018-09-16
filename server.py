@@ -2,7 +2,7 @@
 from jinja2 import StrictUndefined
 
 from flask import (Flask, render_template, redirect, request, flash,
-                   session)
+                   session, jsonify)
 
 from flask_debugtoolbar import DebugToolbarExtension
 
@@ -146,6 +146,7 @@ def view_tasks():
         user_tz_str = user.timezone
         EOD = timehelpers.get_user_EOD(user_tz_str)
 
+        
 
         return render_template("tasks.html", tasks=tasks,EOD=EOD)
     else:
@@ -154,6 +155,24 @@ def view_tasks():
         
     # current_user = User.query.filter_by(username=username_input).first()
 
+@app.route("/reset-repeating")
+def reset_repeating():
+
+    """reset repeating tasks"""
+    
+    timehelpers.reset_repeating_tasks()
+    return "repeating tasks reset"
+
+
+
+# @app.route("/get-tasks.json")
+# def get_tasks():
+#     # user = User.query.get(session["current_user_id"])
+#     user = User.query.get(21)
+#     tasks = user.tasks
+#     for task in tasks:
+#         print (task)
+#     return jsonify(tasks)
 
 @app.route("/new_task")
 def new_task():
@@ -302,7 +321,6 @@ def user_info():
     if session.get("current_user_id"):
         user = User.query.get(int(session["current_user_id"]))
         return render_template("user-info.html",user=user)
-
 
 
 
