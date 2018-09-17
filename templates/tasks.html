@@ -19,7 +19,7 @@
 
 <div class="today-tasks">
 	<h2>Due Today</h2>
-
+	EOD is: {{EOD}}
 	<ul>
 		{% for task in tasks %}
 			{% if task.is_complete == False and task.due_date <= EOD %}

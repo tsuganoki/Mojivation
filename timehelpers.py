@@ -21,8 +21,9 @@ TODAYS_KAO = {"date": datetime.now(),
 # the date. 
 
 
-def my_function():
-	TODAYS_KAO["date"] = datetime.now()
+def check_remaining_tasks(something):
+	pass	
+
 
 # KAOS_TUPLE = [enumerate(kao.rstrip()) for kao in open("seed_data/u.kaos")]
 
@@ -103,6 +104,10 @@ def get_user_midnight_utc(dt,tz_string):
 
 	user_midnight_utc = user_midnight - (user_zone).utcoffset(user_midnight)
 	return user_midnight_utc
+
+
+def add_24_hrs(dt_obj):
+	return dt_obj + timedelta(hours=24)
 
 
 
