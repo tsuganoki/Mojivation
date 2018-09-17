@@ -62,6 +62,8 @@ def load_tasks():
             is_complete = True
         else:
             is_complete = False
+        
+        is_private = True if is_private == "T" else False
 
         if is_repeating == 'T':
         	is_repeating = True

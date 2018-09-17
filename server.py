@@ -157,22 +157,31 @@ def view_tasks():
 
 @app.route("/reset-repeating")
 def reset_repeating():
-
     """reset repeating tasks"""
-    
+
     timehelpers.reset_repeating_tasks()
     return "repeating tasks reset"
 
 
 
-# @app.route("/get-tasks.json")
-# def get_tasks():
-#     # user = User.query.get(session["current_user_id"])
-#     user = User.query.get(21)
-#     tasks = user.tasks
-#     for task in tasks:
-#         print (task)
-#     return jsonify(tasks)
+@app.route("/get-tasks.json")
+def get_tasks():
+    # user = User.query.get(session["current_user_id"])
+    user = User.query.get(21)
+    tasks = user.tasks
+    for task in tasks:
+        print (task)
+
+    my_tasks_list = [  
+       {"msg":task.msg, 
+        "is_complete":task.is_complete,
+        "due_date":task.due_date,
+        "is_repeating":task.is_repeating,
+        "user_id":task.user_id}  for task in tasks]
+
+    return jsonify(my_tasks_list)   
+
+
 
 @app.route("/new_task")
 def new_task():
