@@ -11,6 +11,18 @@ import pytz
 #Days start at 0 for monday
 DAYS = ["monday","tuesday","wednesday","thursday","friday","saturday","sunday"]
 TIMEZONES = [zone.rstrip() for zone in open("seed_data/u.timezones")]
+TODAYS_KAO = {"date": datetime.now(),
+				"kao_id": 2}
+
+# check condition each time a task is completed
+# if no tasks pending, then do kao-logic
+# then check the date against the previously stored date and either 
+# use the same kao-moji or select a different one, and update
+# the date. 
+
+
+def my_function():
+	TODAYS_KAO["date"] = datetime.now()
 
 # KAOS_TUPLE = [enumerate(kao.rstrip()) for kao in open("seed_data/u.kaos")]
 
@@ -108,7 +120,3 @@ def reset_repeating_tasks():
 
 
 
-def test_func():
-	print("test_func has run.")
-
-test_func()

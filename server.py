@@ -19,7 +19,30 @@ import random
 app = Flask(__name__)
 
 # Required to use Flask sessions and the debug toolbar
-app.secret_key = "FixMePOTATO"
+import sys
+import os.path
+
+
+def install_secret_key(app, filename='secretkey'):
+    """Configure the SECRET_KEY from a file
+    in the instance directory.
+
+    If the file does not exist, print instructions
+    to create it from a shell with a random key,
+    then exit.
+
+    """
+    filename = os.path.join(app.instance_path, filename)
+    try:
+        app.config['SECRET_KEY'] = open(filename, 'rb').read()
+    except IOError:
+        print( 'Error: No secret key. Create it with:')
+        if not os.path.isdir(os.path.dirname(filename)):
+            print ('mkdir -p', os.path.dirname(filename))
+        print ('head -c 24 /dev/urandom >', filename)
+        sys.exit(1)
+install_secret_key(app)
+# app.secret_key = 
 
 # Normally, if you use an undefined variable in Jinja2, it fails
 # silently. This is horrible. Fix this so that, instead, it raises an
@@ -207,18 +230,18 @@ def add_new_task():
 
 
         if request.form.get("today") or request.form.get("duedate") == "":
+            user_tz_str = user.timezone
+            due_date = timehelpers.get_user_midnight_utc(duedate_input,user_tz_str)
             duedate_input = datetime.datetime.now()
 
         else:
             duedate_input = request.form.get("duedate")
             duedate_input = datetime.datetime.strptime(duedate_input,"%Y-%m-%d") 
+            duedate = (due_date_input)
 
             # print("original due_date: ", duedate_input)
             # user_zone = pytz.timezone(user.timezone)
             # duedate_datetime_localized = user_zone.localize(duedate_datetime)
-
-        user_tz_str = user.timezone
-        due_date = timehelpers.get_user_midnight_utc(duedate_input,user_tz_str)
 
         task = Task(msg=task_msg_input,
                     is_repeating=is_repeating,
