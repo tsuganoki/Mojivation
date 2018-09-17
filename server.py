@@ -12,6 +12,7 @@ import datetime
 from datetime import timedelta
 import pytz
 import timehelpers
+import task_logic
 import random
 
 # Required to use Flask sessions and the debug toolbar
@@ -181,7 +182,6 @@ def view_tasks():
 @app.route("/reset-repeating")
 def reset_repeating():
     """reset repeating tasks"""
-
     timehelpers.reset_repeating_tasks()
     return "repeating tasks reset"
 
@@ -189,20 +189,11 @@ def reset_repeating():
 
 @app.route("/get-tasks.json")
 def get_tasks():
-    # user = User.query.get(session["current_user_id"])
-    user = User.query.get(21)
-    tasks = user.tasks
-    for task in tasks:
-        print (task)
+    user = User.query.get(session["current_user_id"])
+    # user = User.query.get(21)
+    task_dict = task_logic.convert_tasklist_to_dict(user.tasks)
 
-    my_tasks_list = [  
-       {"msg":task.msg, 
-        "is_complete":task.is_complete,
-        "due_date":task.due_date,
-        "is_repeating":task.is_repeating,
-        "user_id":task.user_id}  for task in tasks]
-
-    return jsonify(my_tasks_list)   
+    return jsonify(task_dict)   
 
 
 
@@ -299,8 +290,12 @@ def complete_task():
         task = Task.query.get(task_id)
         # A line of code the changes the task to is_complete = False
         # user.no_of_logins += 1
-        task.is_complete = True
-        db.session.commit()
+        if task.is_repeating == True:
+            task.due_date = timehelpers.add_24_hrs(task.due_date)
+            db.session.commit()
+        else:
+            task.is_complete = True
+            db.session.commit()
 
         return redirect("/tasks")
 
