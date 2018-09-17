@@ -1,16 +1,24 @@
 console.log('POTATO');
 
-let myFruit = "plum";
-$.('#enddiv').addClass("blue-bg")
+// let myFruit = "plum";
 
-allTasks = $.get("/get-tasks.json")
-let todayTasks = document.querySelector('#today-tasks')
+// $(document).ready(
+// 	function() {
+// 	$('#this_div').text = "this text has been changed";
+// 	}
+// );
+
+
+
+
+// allTasks = $.get("/get-tasks.json")
+// let todayTasks = document.querySelector('#today-tasks')
 
 
 // let enddiv = document.querySelector('#enddiv')
 // enddiv.innerHTML('hello')
 
-let enddiv = document.querySelector('#enddiv');
+let enddiv = document.querySelector('#this_div');
 enddiv.innerText = "APPLE"
 
-// logBtn.innerText = 'Log Off'
+// // logBtn.innerText = 'Log Off'

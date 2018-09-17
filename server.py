@@ -14,13 +14,13 @@ import pytz
 import timehelpers
 import random
 
+# Required to use Flask sessions and the debug toolbar
+import sys
+import os.path
 
 
 app = Flask(__name__)
 
-# Required to use Flask sessions and the debug toolbar
-import sys
-import os.path
 
 
 def install_secret_key(app, filename='secretkey'):
@@ -229,16 +229,14 @@ def add_new_task():
         is_repeating = True if is_repeating_input == "True" else False
 
 
+        user_tz_str = user.timezone
         if request.form.get("today") or request.form.get("duedate") == "":
-            user_tz_str = user.timezone
-            due_date = timehelpers.get_user_midnight_utc(duedate_input,user_tz_str)
             duedate_input = datetime.datetime.now()
+            due_date = timehelpers.get_user_midnight_utc(duedate_input,user_tz_str)
 
         else:
             duedate_input = request.form.get("duedate")
-            duedate_input = datetime.datetime.strptime(duedate_input,"%Y-%m-%d") 
-            duedate = (due_date_input)
-
+            due_date = timehelpers.convert_date_string_to_localized_datetime(duedate_input,user_tz_str)
             # print("original due_date: ", duedate_input)
             # user_zone = pytz.timezone(user.timezone)
             # duedate_datetime_localized = user_zone.localize(duedate_datetime)
