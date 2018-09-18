@@ -109,7 +109,7 @@ def register_confirm():
         flash("Sorry, your passwords must match")
         return redirect("/register")
 
-    elif email_input == User.query.filter_by(email=email_input):
+    elif email_input == User.query.filter_by(email=email_input).first():
         flash("Sorry, your email is already in use")
         return redirect("/register")
         
@@ -191,8 +191,7 @@ def view_tasks():
     user = User.query.get(session["current_user_id"])
     tasks = user.tasks
 
-    user_tz_str = user.timezone
-    EOD = timehelpers.get_user_EOD(user_tz_str)
+    EOD = timehelpers.get_user_EOD(user.timezone)
 
     return render_template("tasks.html", tasks=tasks,EOD=EOD)
 
@@ -349,13 +348,27 @@ def clear_completed():
     return redirect("/tasks")
 
 
+@app.route("/check-today")
+@login_required
+def check_today():
+    user = User.query.get(session.get("current_user_id"))
+    tasks = user.tasks
+
+    eod = timehelpers.get_user_EOD(user.timezone)
+
+    something = timehelpers.check_remaining_tasks(tasks,eod)
+    print(something)
+    return redirect("/tasks")
+
+
+
 
 @app.route("/user-info")
 @login_required
 def user_info():
     """lets a user change their info"""
 
-    user = User.query.get(int(session["current_user_id"]))
+    user = User.query.get(session["current_user_id"])
     return render_template("user-info.html",user=user)
 
 

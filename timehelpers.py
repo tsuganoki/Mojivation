@@ -22,12 +22,16 @@ LAST_WEEKS_KAOS = {}
 # the date. 
 
 
-def check_remaining_tasks(something):
-	pass	
+def check_remaining_tasks(tasks,EOD):
+	for task in tasks:
+		if task.due_date < EOD and task.is_complete == False:
+			print("there are some tasks remaining")
+			return False 
+	return True
 
 def check_kao_date():
 	pass
-	
+
 def award_kao():
 	pass
 

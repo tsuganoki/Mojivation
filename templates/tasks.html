@@ -18,7 +18,7 @@
 
 <div class="today-tasks">
 	<h2>Due Today</h2>
-	<span id="EOD-span">EOD is: {{EOD}}</span>
+	<span id="EOD-span" class="small-text">EOD is: {{EOD}} UTC</span> 
 	<ul>
 		{% for task in tasks %}
 			{% if task.is_complete == False and task.due_date <= EOD %}
