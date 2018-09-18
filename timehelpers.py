@@ -24,6 +24,8 @@ TODAYS_KAO = {"date": datetime.now(),
 def check_remaining_tasks(something):
 	pass	
 
+def select_new_kao():
+	pass
 
 # KAOS_TUPLE = [enumerate(kao.rstrip()) for kao in open("seed_data/u.kaos")]
 

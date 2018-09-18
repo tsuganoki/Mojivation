@@ -80,14 +80,19 @@ def register():
 @app.route("/register_confirm", methods=["POST"])
 def register_confirm():
     """Confirm a new account registration"""
+
+
     username_input = request.form.get("username")
     email_input = request.form.get("email")
     password_input1 = request.form.get("password1")
     password_input2 = request.form.get("password2")
     timezone_input = request.form.get("timezone")
+
+
     if password_input1 != password_input2:
         flash("Sorry, your passwords must match")
         return redirect("/register")
+
     elif email_input == User.query.filter_by(email=email_input):
         flash("Sorry, your email is already in use")
         return redirect("/register")
@@ -100,10 +105,13 @@ def register_confirm():
                     email=email_input,
                     password=password_input1,
                     timezone=timezone_input)
+
+
         # We need to add to the session or it won't ever be stored
         db.session.add(user)
         # Once we're done, we should commit our work
         db.session.commit()
+
         session["current_user_id"] = user.user_id
         session["current_username"] = user.username
 

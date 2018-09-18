@@ -2,12 +2,11 @@ console.log('POTATO');
 
 // let myFruit = "plum";
 
-// $(document).ready(
-// 	function() {
-// 	$('#this_div').text = "this text has been changed";
-// 	}
+// $(document).ready(function() {
+// 		}
 // );
 
+	$('#this_div').html("this text has been changed to <a href=\"http://google.com\">A LINK TO GOOGLE</a>");
 
 
 
@@ -18,7 +17,7 @@ console.log('POTATO');
 // let enddiv = document.querySelector('#enddiv')
 // enddiv.innerHTML('hello')
 
-let enddiv = document.querySelector('#this_div');
-enddiv.innerText = "APPLE"
+// let enddiv = document.querySelector('#this_div');
+// enddiv.innerText = "APPLE"
 
 // // logBtn.innerText = 'Log Off'

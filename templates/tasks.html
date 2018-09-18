@@ -2,7 +2,6 @@
 
 {% block title %} Tasks {% endblock %}
 
-  <script src="jquery-3.3.1.min.js"> </script>
 {% block h1_heading %}
 	All Tasks
 {% endblock %}
@@ -19,7 +18,7 @@
 
 <div class="today-tasks">
 	<h2>Due Today</h2>
-	EOD is: {{EOD}}
+	<span id="EOD-span">EOD is: {{EOD}}</span>
 	<ul>
 		{% for task in tasks %}
 			{% if task.is_complete == False and task.due_date <= EOD %}
@@ -93,13 +92,13 @@
 	<a href="/clear-completed">Clear Completed</a>
 </div>
 
- <script src="/static/js/tasks.js"> </script>
 
-<span id="this_div">
+<div id="this_div">
 	a random div
-</span>
+</div>
 
 
+ <script src="/static/js/tasks.js"> </script>
 
  {% endblock %}
  
