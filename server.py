@@ -200,6 +200,7 @@ def view_tasks():
     # current_user = User.query.filter_by(username=username_input).first()
 
 @app.route("/reset-repeating")
+@login_required
 def reset_repeating():
     """reset repeating tasks"""
     timehelpers.reset_repeating_tasks()
@@ -208,6 +209,7 @@ def reset_repeating():
 
 
 @app.route("/get-tasks.json")
+@login_required
 def get_tasks():
     user = User.query.get(session["current_user_id"])
     # user = User.query.get(21)
@@ -218,6 +220,7 @@ def get_tasks():
 
 
 @app.route("/new_task")
+@login_required
 def new_task():
     """page for adding new tasks"""
 
@@ -226,6 +229,7 @@ def new_task():
 
 
 @app.route("/add_new_task", methods=["POST"])
+@login_required
 def add_new_task():
     """Adds a new task to a user's task list"""
 
@@ -263,6 +267,8 @@ def add_new_task():
 
 
 # @app.route("/quick-add", methods=["POST"])
+# @login_required
+# @login_required
 # def quick_add():
 #     """Quickly adds a new task to a user's task list"""
 
@@ -293,80 +299,64 @@ def add_new_task():
 
 
 @app.route("/complete-task", methods=["POST"])
+@login_required
 def complete_task():
     """Adds a new task to a user's task list"""
 
-    if session.get("current_user_id"):
-        task_id = int(request.form.get("task_id"))
+    task_id = int(request.form.get("task_id"))
 
 
-        task = Task.query.get(task_id)
-        # A line of code the changes the task to is_complete = False
-        # user.no_of_logins += 1
-        if task.is_repeating == True:
-            task.due_date = timehelpers.add_24_hrs(task.due_date)
-            db.session.commit()
-        else:
-            task.is_complete = True
-            db.session.commit()
+    task = Task.query.get(task_id)
+    # A line of code the changes the task to is_complete = False
+    # user.no_of_logins += 1
+    if task.is_repeating == True:
+        task.due_date = timehelpers.add_24_hrs(task.due_date)
+        db.session.commit()
+    else:
+        task.is_complete = True
+        db.session.commit()
 
-        return redirect("/tasks")
+    return redirect("/tasks")
 
 @app.route("/undo_complete", methods=["POST"])
+@login_required
 def undo_complete():
     """Adds a new task to a user's task list"""
 
-    if session.get("current_user_id"):
-        task_id = int(request.form.get("task_id"))
+    task_id = int(request.form.get("task_id"))
 
-        task = Task.query.get(task_id)
-        # print("the task is: ",task.msg)
-        # A line of code the changes the task to is_complete = False
-        task.is_complete = False
+    task = Task.query.get(task_id)
+    # print("the task is: ",task.msg)
+    # A line of code the changes the task to is_complete = False
+    task.is_complete = False
 
-        db.session.commit()
+    db.session.commit()
 
-        # print("taskid: ",task_id," - Task: ", task, "is_complete: ",task.is_complete)
-        return redirect("/tasks")
+    # print("taskid: ",task_id," - Task: ", task, "is_complete: ",task.is_complete)
+    return redirect("/tasks")
         
-
-    else:
-        flash("Please log in to use that feature")
-        return redirect("/")
-
 
 @app.route("/clear-completed")
+@login_required
 def clear_completed():
 
-    if session.get("current_user_id"):
-        user_id = int(session.get("current_user_id"))
-        
-        completed_tasks = Task.query.filter_by(user_id=user_id,is_complete=True)
-        for task in completed_tasks:
-            db.session.delete(task)
-        db.session.commit()
-        return redirect("/tasks")
-    else:
-        flash("Please log in to use that feature")
-        return redirect("/")
+    user = User.query.get(session["current_user_id"])
+    
+    completed_tasks = Task.query.filter_by(user_id=user.user_id,is_complete=True)
+    for task in completed_tasks:
+        db.session.delete(task)
+    db.session.commit()
+    return redirect("/tasks")
 
 
 
 @app.route("/user-info")
+@login_required
 def user_info():
     """lets a user change their info"""
 
-    if session.get("current_user_id"):
-        user = User.query.get(int(session["current_user_id"]))
-        return render_template("user-info.html",user=user)
-
-
-
-
-
-
-
-
+    user = User.query.get(int(session["current_user_id"]))
+    return render_template("user-info.html",user=user)
 
 
 
