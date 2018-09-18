@@ -13,6 +13,7 @@ DAYS = ["monday","tuesday","wednesday","thursday","friday","saturday","sunday"]
 TIMEZONES = [zone.rstrip() for zone in open("seed_data/u.timezones")]
 TODAYS_KAO = {"date": datetime.now(),
 				"kao_id": 2}
+LAST_WEEKS_KAOS = {}
 
 # check condition each time a task is completed
 # if no tasks pending, then do kao-logic
@@ -23,6 +24,12 @@ TODAYS_KAO = {"date": datetime.now(),
 
 def check_remaining_tasks(something):
 	pass	
+
+def check_kao_date():
+	pass
+	
+def award_kao():
+	pass
 
 def select_new_kao():
 	pass

@@ -2,7 +2,10 @@
 from jinja2 import StrictUndefined
 
 from flask import (Flask, render_template, redirect, request, flash,
-                   session, jsonify)
+                   session, jsonify, g, url_for)
+
+from functools import wraps
+
 
 from flask_debugtoolbar import DebugToolbarExtension
 
@@ -50,6 +53,19 @@ install_secret_key(app)
 # error.
 app.jinja_env.undefined = StrictUndefined
 
+# @app.before_request
+# def before_request():
+#     if not session.get("current_user_id") and (request.endpoint != '/login' or request.endpoint != '/' ):
+#         flash("Please log in to use that feature")
+#         return redirect("/login")
+def login_required(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if not session.get("current_user_id"):
+            flash("You must be logged in to use that feature")
+            return redirect(url_for('login', next=request.url))
+        return f(*args, **kwargs)
+    return decorated_function
 
 @app.route('/')
 def index():
@@ -154,6 +170,7 @@ def login_confirm():
         flash("Login failed - username not recognized")
         return render_template('login.html')
 
+
 @app.route("/logout")
 def logout():
     """Logout of web app"""
@@ -167,23 +184,18 @@ def logout():
 
 
 
-
 @app.route('/tasks')
+@login_required
 def view_tasks():
     """Homepage."""
-    if session.get("current_user_id"):
-        user = User.query.get(session["current_user_id"])
-        tasks = user.tasks
+    user = User.query.get(session["current_user_id"])
+    tasks = user.tasks
 
-        user_tz_str = user.timezone
-        EOD = timehelpers.get_user_EOD(user_tz_str)
+    user_tz_str = user.timezone
+    EOD = timehelpers.get_user_EOD(user_tz_str)
 
-        
+    return render_template("tasks.html", tasks=tasks,EOD=EOD)
 
-        return render_template("tasks.html", tasks=tasks,EOD=EOD)
-    else:
-        flash("Please log in to use that feature")
-        return redirect("/")
         
     # current_user = User.query.filter_by(username=username_input).first()
 
@@ -208,11 +220,8 @@ def get_tasks():
 @app.route("/new_task")
 def new_task():
     """page for adding new tasks"""
-    if session.get("current_user_id"):
-        return render_template("new_task.html")
-    else:
-        flash("Please log in to use that feature")
-        return redirect("/")
+
+    return render_template("new_task.html")
 
 
 
@@ -220,41 +229,37 @@ def new_task():
 def add_new_task():
     """Adds a new task to a user's task list"""
 
-    if session.get("current_user_id"):
-        user = User.query.get(session["current_user_id"])
-        task_msg_input = request.form.get("msg")
-        is_repeating_input = request.form.get("repeating")
+    user = User.query.get(session["current_user_id"])
+    task_msg_input = request.form.get("msg")
+    is_repeating_input = request.form.get("repeating")
 
-        is_repeating = True if is_repeating_input == "True" else False
-
-
-        user_tz_str = user.timezone
-        if request.form.get("today") or request.form.get("duedate") == "":
-            duedate_input = datetime.datetime.now()
-            due_date = timehelpers.get_user_midnight_utc(duedate_input,user_tz_str)
-
-        else:
-            duedate_input = request.form.get("duedate")
-            due_date = timehelpers.convert_date_string_to_localized_datetime(duedate_input,user_tz_str)
-            # print("original due_date: ", duedate_input)
-            # user_zone = pytz.timezone(user.timezone)
-            # duedate_datetime_localized = user_zone.localize(duedate_datetime)
-
-        task = Task(msg=task_msg_input,
-                    is_repeating=is_repeating,
-                    due_date = due_date,
-                    user_id=session["current_user_id"])
+    is_repeating = True if is_repeating_input == "True" else False
 
 
-        db.session.add(task)
-        db.session.commit()
-        print(Task.query.all())
-        return redirect("/tasks")
-
+    user_tz_str = user.timezone
+    if request.form.get("today") or request.form.get("duedate") == "":
+        duedate_input = datetime.datetime.now()
+        due_date = timehelpers.get_user_midnight_utc(duedate_input,user_tz_str)
 
     else:
-        flash("Please log in to use that feature")
-        return redirect("/")
+        duedate_input = request.form.get("duedate")
+        due_date = timehelpers.convert_date_string_to_localized_datetime(duedate_input,user_tz_str)
+        # print("original due_date: ", duedate_input)
+        # user_zone = pytz.timezone(user.timezone)
+        # duedate_datetime_localized = user_zone.localize(duedate_datetime)
+
+    task = Task(msg=task_msg_input,
+                is_repeating=is_repeating,
+                due_date = due_date,
+                user_id=session["current_user_id"])
+
+
+    db.session.add(task)
+    db.session.commit()
+    print(Task.query.all())
+    return redirect("/tasks")
+
+
 
 
 # @app.route("/quick-add", methods=["POST"])
