@@ -23,10 +23,14 @@ LAST_WEEKS_KAOS = {}
 
 
 def check_remaining_tasks(tasks,EOD):
+	print("EOD is: ",EOD.ctime())
 	for task in tasks:
-		if task.due_date < EOD and task.is_complete == False:
-			print("there are some tasks remaining")
+		print(task.due_date.ctime())
+		if task.due_date <= EOD and task.is_complete == False:
+
+			print("there are some tasks remaining for today")
 			return False 
+	print("there are no tasks remaining for today")
 	return True
 
 def check_kao_date():
@@ -66,6 +70,7 @@ def select_new_kao():
 
 UTC = pytz.utc
 EST = pytz.timezone('US/Eastern')
+PST = pytz.timezone('US/Pacific')
 
 def get_midnight():
 	today = datetime.today()
@@ -80,25 +85,25 @@ def get_midnight():
 print("UTC midnight: ", get_midnight().ctime())
 
 
-def get_user_midnight(tz_string):
-	"""Returns UTC datetime corresponding to user's midnight on that day"""
-	utc = pytz.utc
-	user_zone = pytz.timezone(tz_string)
+# def get_user_midnight(tz_string):
+# 	"""Returns UTC datetime corresponding to user's midnight on that day"""
+# 	utc = pytz.utc
+# 	user_zone = pytz.timezone(tz_string)
 
-	user_normalized_time = datetime.now().astimezone(user_zone)
+# 	user_normalized_time = datetime.now().astimezone(user_zone)
 
-	user_midnight = datetime(user_normalized_time.year,
-							 user_normalized_time.month,
-							 user_normalized_time.day)
+# 	user_midnight = datetime(user_normalized_time.year,
+# 							 user_normalized_time.month,
+# 							 user_normalized_time.day)
 
-	return user_zone.localize(user_midnight)
+# 	return user_zone.localize(user_midnight)
 
 
 def get_user_EOD(tz_string):
 	"""returns user's EOD in UTC"""
 	now = datetime.now()
-	EOD = get_user_midnight_utc(now,tz_string) + timedelta(days=1)
-	utc = pytz.utc
+	EOD = add_24_hrs(get_user_midnight_utc(now,tz_string))
+	# utc = pytz.utc
 
 	return EOD
 
@@ -107,7 +112,7 @@ def convert_date_string_to_localized_datetime(datetime_string,tz_string):
 	tz = pytz.timezone(tz_string)
 	due_date = tz.localize(date_obj)
 
-	return due_date + timedelta(days=1)
+	return add_24_hrs(due_date)
 
 
 def get_user_midnight_utc(dt,tz_string):

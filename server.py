@@ -353,11 +353,12 @@ def clear_completed():
 def check_today():
     user = User.query.get(session.get("current_user_id"))
     tasks = user.tasks
+    
 
     eod = timehelpers.get_user_EOD(user.timezone)
 
-    something = timehelpers.check_remaining_tasks(tasks,eod)
-    print(something)
+    boole = timehelpers.check_remaining_tasks(tasks,eod)
+    print(boole)
     return redirect("/tasks")
 
 
