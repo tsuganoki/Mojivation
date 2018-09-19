@@ -246,7 +246,9 @@ def add_new_task():
 
     else:
         duedate_input = request.form.get("duedate")
+        print("input received: ",duedate_input)
         due_date = timehelpers.convert_date_string_to_localized_datetime(duedate_input,user_tz_str)
+        print("due_date converted to: ", due_date)
         # print("original due_date: ", duedate_input)
         # user_zone = pytz.timezone(user.timezone)
         # duedate_datetime_localized = user_zone.localize(duedate_datetime)
@@ -255,11 +257,12 @@ def add_new_task():
                 is_repeating=is_repeating,
                 due_date = due_date,
                 user_id=session["current_user_id"])
+    print("due_date in task: ",task.due_date)
 
 
     db.session.add(task)
     db.session.commit()
-    print(Task.query.all())
+    # print(Task.query.all())
     return redirect("/tasks")
 
 
@@ -325,10 +328,7 @@ def undo_complete():
     task_id = int(request.form.get("task_id"))
 
     task = Task.query.get(task_id)
-    # print("the task is: ",task.msg)
-    # A line of code the changes the task to is_complete = False
     task.is_complete = False
-
     db.session.commit()
 
     # print("taskid: ",task_id," - Task: ", task, "is_complete: ",task.is_complete)

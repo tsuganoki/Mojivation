@@ -106,7 +106,9 @@ def convert_date_string_to_localized_datetime(datetime_string,tz_string):
 	date_obj = datetime.strptime(datetime_string,"%Y-%m-%d") 
 	tz = pytz.timezone(tz_string)
 	due_date = tz.localize(date_obj)
-	return due_date
+
+	return due_date + timedelta(days=1)
+
 
 def get_user_midnight_utc(dt,tz_string):
 	"""returns a UTC time corresponding to a midnight in user's current timezone"""
