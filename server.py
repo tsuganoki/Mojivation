@@ -45,6 +45,7 @@ def install_secret_key(app, filename='secretkey'):
             print ('mkdir -p', os.path.dirname(filename))
         print ('head -c 24 /dev/urandom >', filename)
         sys.exit(1)
+        
 install_secret_key(app)
 # app.secret_key = 
 

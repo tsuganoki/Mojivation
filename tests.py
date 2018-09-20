@@ -1,8 +1,8 @@
 from unittest import TestCase
 from server import app
-from model import connect_to_db, db
+from model import connect_to_db, db, example_data
 from flask import session
-
+# potato
 
 class FlaskTestsBasic(TestCase):
     """Flask tests."""
@@ -23,30 +23,78 @@ class FlaskTestsBasic(TestCase):
         self.assertIn(b"class=\"home-page-mantra\"", result.data)
 
 
-
-
-class FlaskTestsLoggedIn(TestCase):
-    """Flask tests with user logged in to session."""
+class FlaskTestsDatabase(TestCase):
+    """Flask tests that use the database."""
 
     def setUp(self):
         """Stuff to do before every test."""
 
-        app.config['TESTING'] = True
-        # app.config['SECRET_KEY'] = 'key'
+        # Get the Flask test client
         self.client = app.test_client()
+        app.config['TESTING'] = True
 
-        with self.client as c:
-            with c.session_transaction() as sess:
-                sess['current_user_id'] = 1
-                
+        # Connect to test database
+        connect_to_db(app, "postgresql:///testdb")
+
+        # Create tables and add sample data
+        db.create_all()
+        example_data()
+
     def tearDown(self):
-        pass
-    def test_tasks(self):
-        """Test task page."""
+        """Do at end of every test."""
 
-        result = self.client.get("/tasks")
-        self.assertIn(b"All Tasks", result.data)
-        self.assertIn(b"Due Today", result.data)
+        db.session.remove()
+        db.drop_all()
+        db.engine.dispose()
+
+    def test_users_list(self):
+        """Test departments page."""
+
+        result = self.client.get("/users")
+        self.assertIn(b"bobrules", result.data)
+
+    def test_departments_details(self):
+        """Test departments page."""
+
+        result = self.client.get("/users/task")
+        self.assertIn(b"eat bao", result.data)
+
+
+# class FlaskTestsLoggedIn(TestCase):
+#     """Flask tests with user logged in to session."""
+
+#     def setUp(self):
+#         """Stuff to do before every test."""
+
+#         app.config['TESTING'] = True
+#         # app.config['SECRET_KEY'] = 'key'
+#         self.client = app.test_client()
+
+#         # Connect to test database
+
+#         with self.client as c:
+#             with c.session_transaction() as sess:
+#                 sess['current_user_id'] = 1
+#         # test needs to connect to db
+                
+#     def tearDown(self):
+#         """Do at end of every test."""
+
+#         db.session.remove()
+#         db.drop_all()
+#         db.engine.dispose()
+
+#     def test_tasks(self):
+#         """Test task page."""
+
+#         result = self.client.get("/tasks")
+#         self.assertIn(b"All Tasks", result.data)
+#         self.assertIn(b"Due Today", result.data)
+
+
+
+
+
 
     # def test_login(self):
     #     """Test login page."""

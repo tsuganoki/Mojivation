@@ -1,7 +1,7 @@
 """Models and database functions for Tilia's project."""
 
 from flask_sqlalchemy import SQLAlchemy
-
+import datetime
 # This is the connection to the PostgreSQL database; we're getting this through
 # the Flask-SQLAlchemy helper library. On this, we can find the `session`
 # object, where we do most of our interactions (like committing, etc.)
@@ -77,11 +77,35 @@ class Kao(db.Model):
 ##############################################################################
 # Helper functions
 
-def connect_to_db(app):
+def example_data():
+    """Create some sample data."""
+
+    # In case this is run more than once, empty out existing data
+    User.query.delete()
+    Task.query.delete()
+
+    # Add sample employees and departments
+    bob = User(username='bobrules', email='bob@gmail.com', password='abc123', timezone="US/Pacific")
+    qian = User(username='qian', email='qian@weibo.cn', password='YarHekjanyighd1', timezone="Asia/Taipei")
+    tilia = User(username='tilia', email='somedude@tilia.com', password='kaosrgreat', timezone="US/Pacific")
+
+    starworld = Task(msg='make the phone call to Starworld Advertising', user_id=bob,
+			is_complete=False, is_repeating=False, due_date=(datetime.datetime(2018,9,30,7)))
+    bao = Task(msg='eat bao', user_id=qian, 
+			is_complete=False, is_repeating=False, due_date=(datetime.datetime(2018,9,30,16)))
+    kao = Task(msg='write Kao selection features', user_id=tilia, 
+			is_complete=False, is_repeating=False, due_date=(datetime.datetime(2018,10,30,7)))
+    tilia_tests = Task(msg='write some tests', user_id=tilia, 
+			is_complete=False, is_repeating=False, due_date=(datetime.datetime(2018,10,7,7)))
+
+    db.session.add_all([bob, qian, tilia, starworld, bao, kao, tilia_tests])
+    db.session.commit()
+
+def connect_to_db(app, db_uri='postgresql:///kao_project'):
     """Connect the database to our Flask app."""
 
     # Configure to use our PstgreSQL database
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///kao_project'
+    app.config['SQLALCHEMY_DATABASE_URI'] = db_uri
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     db.app = app
     db.init_app(app)

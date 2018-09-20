@@ -11,7 +11,7 @@ import pytz
 #Days start at 0 for monday
 DAYS = ["monday","tuesday","wednesday","thursday","friday","saturday","sunday"]
 TIMEZONES = [zone.rstrip() for zone in open("seed_data/u.timezones")]
-TODAYS_KAO = {"date": datetime.now(),
+TODAYS_KAO = {"date": datetime(2018,9,18,0,0),
 				"kao_id": 2}
 LAST_WEEKS_KAOS = {}
 
@@ -34,7 +34,12 @@ def check_remaining_tasks(tasks,EOD):
 	return True
 
 def check_kao_date():
-	pass
+	"""returns True if current kao is still active"""
+	now = datetime.now()
+	if now <= add_24_hrs(TODAYS_KAO.get("date")):
+		return True
+	else:
+		return False
 
 def award_kao():
 	pass
