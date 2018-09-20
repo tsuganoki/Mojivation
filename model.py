@@ -81,21 +81,21 @@ def example_data():
     """Create some sample data."""
 
     # In case this is run more than once, empty out existing data
-    # User.query.delete()
-    # Task.query.delete()
+    User.query.delete()
+    Task.query.delete()
 
     # Add sample employees and departments
     bob = User(username='bobrules', email='bob@gmail.com', password='abc123', timezone="US/Pacific")
     qian = User(username='qian', email='qian@weibo.cn', password='YarHekjanyighd1', timezone="Asia/Taipei")
     tilia = User(username='tilia', email='somedude@tilia.com', password='kaosrgreat', timezone="US/Pacific")
 
-    starworld = Task(msg='make the phone call to Starworld Advertising', user_id=bob.user_id,
+    starworld = Task(msg='make the phone call to Starworld Advertising', user=bob,
             is_complete=False, is_repeating=False, due_date=(datetime.datetime(2018,9,30,7)))
-    bao = Task(msg='eat bao', user_id=qian.user_id, 
+    bao = Task(msg='eat bao', user=qian, 
             is_complete=False, is_repeating=False, due_date=(datetime.datetime(2018,9,30,16)))
-    kao = Task(msg='write Kao selection features', user_id=tilia.user_id, 
+    kao = Task(msg='write Kao selection features', user=tilia, 
             is_complete=False, is_repeating=False, due_date=(datetime.datetime(2018,10,30,7)))
-    tilia_tests = Task(msg='write some tests', user_id=tilia.user_id, 
+    tilia_tests = Task(msg='write some tests', user=tilia, 
             is_complete=False, is_repeating=False, due_date=(datetime.datetime(2018,10,7,7)))
 
     db.session.add_all([bob, qian, tilia, starworld, bao, kao, tilia_tests])

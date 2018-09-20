@@ -1,6 +1,6 @@
 from unittest import TestCase
 from server import app
-from model import connect_to_db, db, example_data
+from model import connect_to_db, db, example_data, User, Task
 from flask import session
 # potato
 
@@ -37,7 +37,7 @@ class FlaskTestsDatabase(TestCase):
         connect_to_db(app, "postgresql:///testdb")
 
         # Create tables and add sample data
-        db.drop_all()
+        # db.drop_all()
         db.create_all()
         example_data()
 
@@ -49,16 +49,25 @@ class FlaskTestsDatabase(TestCase):
         db.engine.dispose()
 
     def test_users_list(self):
-        """Test departments page."""
-
-        result = self.client.get("/users")
-        self.assertIn(b"bobrules", result.data)
+        """Test users db."""
+        bob = User.query.filter_by(username="bobrules").first()
+        # result = self.client.get("/users")
+        self.assertIn("bobrules", bob.username)
 
     def test_departments_details(self):
-        """Test departments page."""
+        """Test tasks page."""
 
-        result = self.client.get("/users/task")
-        self.assertIn(b"eat bao", result.data)
+        qian = User.query.filter_by(username="qian").first()
+
+        all_tasks = Task.query.all()
+        
+        bao_user_id = all_tasks[1].user_id
+        print("baouser id: ",bao_user_id)
+        # print(User.query.get(bao_user_id))
+
+
+        # print(all_tasks)
+        self.assertIn("eat bao", qian.tasks[0].msg)
 
 
 # class FlaskTestsLoggedIn(TestCase):
