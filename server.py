@@ -45,7 +45,7 @@ def install_secret_key(app, filename='secretkey'):
             print ('mkdir -p', os.path.dirname(filename))
         print ('head -c 24 /dev/urandom >', filename)
         sys.exit(1)
-        
+
 install_secret_key(app)
 # app.secret_key = 
 
@@ -199,12 +199,6 @@ def view_tasks():
         
     # current_user = User.query.filter_by(username=username_input).first()
 
-@app.route("/reset-repeating")
-@login_required
-def reset_repeating():
-    """reset repeating tasks"""
-    timehelpers.reset_repeating_tasks()
-    return "repeating tasks reset"
 
 
 
@@ -307,13 +301,13 @@ def complete_task():
     """Adds a new task to a user's task list"""
 
     task_id = int(request.form.get("task_id"))
-
+    user = User.query.get(session.get("current_user_id"))
 
     task = Task.query.get(task_id)
     # A line of code the changes the task to is_complete = False
     # user.no_of_logins += 1
     if task.is_repeating == True:
-        task.due_date = timehelpers.add_24_hrs(task.due_date)
+        task.due_date = timehelpers.get_user_tomorrow_EOD(user.timezone)
         db.session.commit()
     else:
         task.is_complete = True

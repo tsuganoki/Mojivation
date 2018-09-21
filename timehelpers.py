@@ -87,7 +87,7 @@ def get_midnight():
 	return midnight
 
 
-print("UTC midnight: ", get_midnight().ctime())
+# print("UTC midnight: ", get_midnight().ctime())
 
 
 # def get_user_midnight(tz_string):
@@ -147,11 +147,11 @@ def add_24_hrs(dt_obj):
 #   return user_time
 
 
-def reset_repeating_tasks():
-	repeating_tasks = Task.query.filter_by(is_repeating=True, is_complete=True).all()
-	for task in repeating_tasks:
-		task.is_complete = False
-		db.session.commit()
+def get_user_tomorrow_EOD(tz_string):
+	"""takes in a user's timezone and returns tomorrow's EOD"""
 
-
-
+	tz = pytz.timezone
+	now = datetime.now()
+	EOD = add_24_hrs(get_user_midnight_utc(now,tz_string))
+	tomorrow_EOD = add_24_hrs(EOD)
+	return tomorrow_EOD
