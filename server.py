@@ -81,7 +81,7 @@ def index():
         "allie": u"╰(°ロ°)╯ Do all the things!"
         }
     slogan = random.choice(list(kao_dict.values() ) ) 
-    print(slogan)
+    # print(slogan)
     return render_template("index.html",slogan=slogan)  
 
 @app.route("/register")
