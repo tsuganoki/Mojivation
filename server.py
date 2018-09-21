@@ -330,9 +330,10 @@ def undo_complete():
     return redirect("/tasks")
         
 
-@app.route("/clear-completed")
+
+@app.route("/clear-all-completed")
 @login_required
-def clear_completed():
+def clear_all_completed():
 
     user = User.query.get(session["current_user_id"])
     
@@ -340,6 +341,19 @@ def clear_completed():
     for task in completed_tasks:
         db.session.delete(task)
     db.session.commit()
+    return redirect("/tasks")
+
+@app.route("/delete-task-<task_id>")
+@login_required
+def delete_task(task_id):
+
+    user = User.query.get(session["current_user_id"])
+    
+    task = Task.query.get(task_id)
+    print(task)
+    db.session.delete(task)
+    db.session.commit()
+
     return redirect("/tasks")
 
 

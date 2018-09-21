@@ -26,7 +26,12 @@
 				<input hidden 
 					   name="task_id" 
 					   value={{task.task_id}}>
-			<li><input type=submit name="complete" value="Done"> {{task.msg}} 
+			<li>
+			  <input type=submit name="complete" value="Done"> 
+			  {{task.msg}} 
+			  <a href="/delete-task-{{task.task_id}}">
+			  	<i class="fa fa-times-circle-o ex-cirle" aria-hidden="true" alttext="delete task"></i>
+			  </a>
 			{% endif %}
 			</li>
 		</form>
@@ -59,7 +64,12 @@
 					<input hidden 
 						   name="task_id" 
 						   value={{task.task_id}}>
-				<li><input type=submit name="complete" value="Done"> {{task.msg}} 
+				<li>
+					<input type=submit name="complete" value="Done"> 
+					{{task.msg}} 
+					<a href="/delete-task-{{task.task_id}}">
+					  	<i class="fa fa-times-circle-o ex-cirle" aria-hidden="true" alttext="delete task"></i>
+					</a>
 				 </form>
 			{% endif %}
 			</li>
@@ -85,13 +95,16 @@
 		<li class="completed-task-li">
 				<input type="submit" value="Undo">
 			 	{{task.msg}}
+			 	<a href="/delete-task-{{task.task_id}}">
+				  	<i class="fa fa-times-circle-o ex-cirle" aria-hidden="true" alttext="delete task"></i>
+				</a>
 		</li>
 			</form>
 
 		{% endif %}
 		{% endfor %}
 	</ul>
-	<a href="/clear-completed">Clear Completed</a>
+	<a href="/clear-all-completed">Clear Completed</a>
 </div>
 
 

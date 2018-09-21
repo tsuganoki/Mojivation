@@ -84,3 +84,10 @@ ul {
 .blue-bg{
 	background-color: blue;
 }
+/*
+.half-transparent{
+	opacity:0.5;
+}*/
+.fa-times-circle-o{
+	color: #AAAAAA;
+}
