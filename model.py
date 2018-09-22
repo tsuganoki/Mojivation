@@ -41,7 +41,7 @@ class Task(db.Model):
 
 
     def __repr__(self):
-        return f"<Task task_id {self.task_id} msg {self.msg[:16]}>"
+        return f"<Task task_id {self.task_id} msg: \'{self.msg[:16]}\' r:{self.is_repeating} c:{self.is_complete}>"
 
 
     user = db.relationship("User", backref=db.backref("tasks", order_by=task_id))
@@ -91,6 +91,8 @@ def example_data():
 
     starworld = Task(msg='make the phone call to Starworld Advertising', user=bob,
             is_complete=False, is_repeating=False, due_date=(datetime.datetime(2018,9,30,7)))
+    repeating = Task(msg='clean kitchen at the end of the day', user=bob,
+            is_complete=False, is_repeating=True, due_date=(datetime.datetime(2018,9,22,7)))
     bao = Task(msg='eat bao', user=qian, 
             is_complete=False, is_repeating=False, due_date=(datetime.datetime(2018,9,30,16)))
     kao = Task(msg='write Kao selection features', user=tilia, 

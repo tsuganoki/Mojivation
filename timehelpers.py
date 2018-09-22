@@ -22,8 +22,10 @@ LAST_WEEKS_KAOS = {}
 # the date. 
 
 
-def check_remaining_tasks(tasks,EOD):
-	print("EOD is: ",EOD.ctime())
+def check_remaining_tasks(tasks,tz_string):
+	
+	# print("EOD is: ",EOD.ctime())
+	EOD = get_user_EOD(tz_string)
 	for task in tasks:
 		print(task.due_date.ctime())
 		if task.due_date <= EOD and task.is_complete == False:

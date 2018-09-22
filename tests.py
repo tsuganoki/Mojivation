@@ -3,6 +3,7 @@ from server import app
 from model import connect_to_db, db, example_data, User, Task
 from flask import session
 from server import install_secret_key
+import timehelpers
 
 class FlaskTestsBasic(TestCase):
     """Flask tests."""
@@ -90,6 +91,8 @@ class FlaskTestsLoggedIn(TestCase):
         with self.client as c:
             with c.session_transaction() as sess:
                 sess['current_user_id'] = 1
+
+                
     def tearDown(self):
         """Do at end of every test."""
 
@@ -99,10 +102,32 @@ class FlaskTestsLoggedIn(TestCase):
 
     def test_task_page(self):
         """Test logged in viewing Task page."""
-        # print("session is: ", session.get("current_user_id"))
+  
         result = self.client.get("/tasks")
 
         self.assertIn(b"All Tasks", result.data)
+
+    def test_check_remaining_tasks(self):
+        """test for the check remaining tasks function"""
+        # print("session is: ", session.get("current_user_id"))
+        # all_users = User.query.all()
+        # all_tasks = Task.query.all()
+        # for i in all_tasks:
+        #     print (i)
+        # for i in all_users:
+        #     print (i)
+
+        bob = User.query.filter_by(email="bob@gmail.com").first()
+        print(bob)
+        for i in bob.tasks:
+            print(i)
+        # check_remaining_tasks(tasks,tz_string)
+        self.assertIs(timehelpers.check_remaining_tasks(bob.tasks,bob.timezone),False)
+
+    def test_assign_kaos:
+        """Test that a kao can be assigned""
+
+
 
 if __name__ == "__main__":
     import unittest
