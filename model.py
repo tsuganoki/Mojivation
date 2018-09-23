@@ -2,6 +2,7 @@
 
 from flask_sqlalchemy import SQLAlchemy
 import datetime
+# from seed import load_kaos
 # This is the connection to the PostgreSQL database; we're getting this through
 # the Flask-SQLAlchemy helper library. On this, we can find the `session`
 # object, where we do most of our interactions (like committing, etc.)
@@ -83,6 +84,7 @@ def example_data():
     # In case this is run more than once, empty out existing data
     User.query.delete()
     Task.query.delete()
+    Kao.query.delete()
 
     # Add sample employees and departments
     bob = User(username='bobrules', email='bob@gmail.com', password='abc123', timezone="US/Pacific")
@@ -99,6 +101,24 @@ def example_data():
             is_complete=False, is_repeating=False, due_date=(datetime.datetime(2018,10,30,7)))
     tilia_tests = Task(msg='write some tests', user=tilia, 
             is_complete=False, is_repeating=False, due_date=(datetime.datetime(2018,10,7,7)))
+
+    # collect1 = Collect(user=bob,
+    #                     kao_id=55,
+    #                     collect_date=datetime.datetime(2018, 9, 20,3,5,2)
+    #                     )
+    # collect2 = Collect(user=bob,
+    #                     kao_id=130,
+    #                     collect_date=datetime.datetime(2018, 9, 21,3,2,2)
+    #                     )
+    # collect3 = Collect(user=bob,
+    #                     kao_id=293,
+    #                     collect_date=datetime.datetime(2018, 9, 22,12,5)
+    #                     )
+
+
+    # load_kaos()
+
+
 
     db.session.add_all([bob, qian, tilia, starworld, bao, kao, tilia_tests])
     # db.session.commit()

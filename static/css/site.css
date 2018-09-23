@@ -96,3 +96,24 @@ a.ex-cirle.hover{
 	color: #AAAAAA;
 
 }
+.collect{
+	margin: 5px 0;
+}
+.collects,  .user-info-settings {
+	display:inline-block;
+	margin:20px;
+	padding:20px;
+	background-color: #ffffff;
+	vertical-align:top;
+
+}
+.collects{
+	width:7	0%;
+}
+
+.kao {
+	font-family: monospace;
+	font-size:1.5em;
+	/*padding-bottom: 15px;*/
+
+}

@@ -43,6 +43,10 @@ def check_kao_date():
 	else:
 		return False
 
+def get_todays_kao():
+	return 111
+
+
 def award_kao():
 	pass
 

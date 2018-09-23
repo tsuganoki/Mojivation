@@ -7,11 +7,31 @@
 
 {% block content %} 
 
-<p>username: {{user.username}}</p>
-<p>email: {{user.email}}</p> 
 
-<p>Change email</p>
-<p>change password</p>
-<p>change timezone</p>
+<div class="collects">
+	<h3> Your collected Kao-moji 	</h3>
 
+	{% for collect in collects %}
+	<div class="collect">
+		<span class="kao">
+			{{collect.kaos.kao}}
+		</span>
+		<br>
+		<span class="collect-date small-text">
+			{{collect.collect_date}}
+		</span>
+	</div>
+	{% endfor %}
+
+
+</div>
+<div class="user-info-settings">
+	<h3> User Settings </h3>
+	<p>username: {{user.username}}</p>
+	<p>email: {{user.email}}</p> 
+
+	<p>Change email</p>
+	<p>change password</p>
+	<p>change timezone</p>
+</div>
 {% endblock %}

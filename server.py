@@ -175,7 +175,7 @@ def login_confirm():
 @app.route("/logout")
 def logout():
     """Logout of web app"""
-    if session.get("current_username"):
+    if session.get("current_user_id"):
         del session["current_username"]
         del session["current_user_id"]
         flash("You are now logged out")
@@ -370,6 +370,24 @@ def check_today():
     print(boole)
     return redirect("/tasks")
 
+@app.route("/collect-kao")
+@login_required
+def collect_kao():
+    user = User.query.get(session.get("current_user_id"))
+
+    todays_kao_id = timehelpers.get_todays_kao()
+    collect = Collect(user_id=user.user_id,
+                      kao_id=todays_kao_id,
+                      collect_date=datetime.datetime.now()
+                      )
+
+    db.session.add(collect)
+    print(collect)
+    # db.session.commit()
+    flash(f"You have collected a kao-moji: {Kao.query.get(todays_kao_id).kao}")
+
+    return redirect("/tasks")
+
 
 
 
@@ -379,7 +397,10 @@ def user_info():
     """lets a user change their info"""
 
     user = User.query.get(session["current_user_id"])
-    return render_template("user-info.html",user=user)
+    collects = Collect.query.filter_by(user_id=user.user_id)
+    # for collect in collects:
+    #     print (collect.kaos.kao)
+    return render_template("user-info.html",user=user, collects=collects)
 
 
 
