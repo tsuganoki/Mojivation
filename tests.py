@@ -123,9 +123,6 @@ class FlaskTestsDatabase(TestCase):
                 sess['current_user_id'] = "1"
                 sess['current_username'] = "bobrules"
 
-            data = {'msg': 'make smores cupcakes',
-                    'repeating': "False",
-                    'duedate':'2018-12-31'}
 
             result = c.post('/add_new_task',
                             data = {'msg': 'make smores cupcakes',
@@ -137,10 +134,42 @@ class FlaskTestsDatabase(TestCase):
             self.assertIn(b'make smores cupcakes', result.data)
 
 
+    def test_user_complete_task(self):
+        """tests that user can complete a task"""
+
+        with self.client as c:
+            with c.session_transaction() as sess:
+                sess['current_user_id'] = "1"
+                sess['current_username'] = "bobrules"
 
 
+            result = c.post('/complete-task',
+                            data = {'task_id': '1'},
+                            follow_redirects=True
+                            )
+            task = Task.query.get(1)
+            self.assertEqual(task.is_complete, True)
+            # self.assertIn(b'', result.data)
 
 
+    def test_user_collect_kao(self):
+        """Tests that a user gets a kao when they complete all their tasks for the day"""
+
+        with self.client as c:
+            with c.session_transaction() as sess:
+                sess['current_user_id'] = "2"
+                sess['current_username'] = "qian"
+
+            task = Task.query.get(3)
+            print(task)
+
+            result = c.post('/complete-task',
+                            data = {'task_id': '3'},
+                            follow_redirects=True
+                            )
+            task = Task.query.get(3)
+            print(task)
+            self.assertIn(b"You have collected a kao-moji",result.data)
 
 
 

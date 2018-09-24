@@ -2,6 +2,7 @@ from datetime import date,time,datetime,tzinfo,timedelta
 
 from model import User, Task, Collect, Kao, connect_to_db, db
 from sqlalchemy import func
+from random import randint, choice
 # from server import app
 
 
@@ -11,9 +12,22 @@ import pytz
 #Days start at 0 for monday
 DAYS = ["monday","tuesday","wednesday","thursday","friday","saturday","sunday"]
 TIMEZONES = [zone.rstrip() for zone in open("seed_data/u.timezones")]
-TODAYS_KAO = {"date": datetime(2018,9,18,0,0),
-				"kao_id": 2}
-LAST_WEEKS_KAOS = {}
+LAST_WEEKS_KAOS = {
+	0 : {"date": date(2018,9,17),
+		 "kao_id": 2 },
+	1 : {"date": date(2018,9,18),
+		 "kao_id": 22 },
+	2 : {"date": date(2018,9,19),
+		 "kao_id": 23 },
+	3 : {"date": date(2018,9,20),
+		 "kao_id": 24 },
+	4 : {"date": date(2018,9,21),
+		 "kao_id": 25 },
+	5 : {"date": date(2018,9,22),
+		 "kao_id": 26 },
+	6 : {"date": date(2018,9,23),
+		 "kao_id": 27 }
+} 
 
 # check condition each time a task is completed
 # if no tasks pending, then do kao-logic
@@ -43,15 +57,45 @@ def check_kao_date():
 	else:
 		return False
 
-def get_todays_kao():
+def get_todays_kao(tz_str):
+
+	now = datetime.now()
+	tz = pytz.timezone(tz_str)
+	user_time = datetime.now().astimezone(user_zone)
+
+	user_wkday = user_time.weekday
+	something = LAST_WEEKS_KAOS[user_wkday]["date"]
+
 	return 111
+
+	if one_thing:
+		select_new_kao()
+		return new_kao_id
+	else:
+		return kao_id
 
 
 def award_kao():
 	pass
 
+def get_random_kao():
+	kaos = list(range(25))
+	new_kao = choice(kaos)
+	return new_kao
+	
+
 def select_new_kao():
-	pass
+
+	prev_kaos = []
+	for kao in LAST_WEEKS_KAOS.values():
+		prev_kaos.append(kao["kao_id"])
+
+	new_kao_id = get_random_kao()
+	if new_kao_id in prev_kaos:
+		return select_new_kao()
+    
+
+
 
 # KAOS_TUPLE = [enumerate(kao.rstrip()) for kao in open("seed_data/u.kaos")]
 

@@ -193,6 +193,7 @@ def view_tasks():
     tasks = user.tasks
 
     EOD = timehelpers.get_user_EOD(user.timezone)
+    
 
     return render_template("tasks.html", tasks=tasks,EOD=EOD)
 
@@ -230,7 +231,7 @@ def add_new_task():
     user = User.query.get(session["current_user_id"])
 
     task_msg_input = request.form.get("msg")
-    print("msg received is: ", task_msg_input)
+    # print("msg received is: ", task_msg_input)
     is_repeating_input = request.form.get("repeating")
     is_repeating = True if is_repeating_input == "True" else False
 
@@ -242,9 +243,9 @@ def add_new_task():
 
     else:
         duedate_input = request.form.get("duedate")
-        print("input received: ", duedate_input)
+        # print("input received: ", duedate_input)
         due_date = timehelpers.convert_date_string_to_localized_datetime(duedate_input,user_tz_str)
-        print("due_date converted to: ", due_date)
+        # print("due_date converted to: ", due_date)
         # print("original due_date: ", duedate_input)
         # user_zone = pytz.timezone(user.timezone)
         # duedate_datetime_localized = user_zone.localize(duedate_datetime)
@@ -253,7 +254,7 @@ def add_new_task():
                 is_repeating=is_repeating,
                 due_date = due_date,
                 user_id=session["current_user_id"])
-    print("due_date in task: ",task.due_date)
+    # print("due_date in task: ",task.due_date)
 
 
     db.session.add(task)
