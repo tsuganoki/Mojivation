@@ -228,9 +228,10 @@ def add_new_task():
     """Adds a new task to a user's task list"""
 
     user = User.query.get(session["current_user_id"])
-    task_msg_input = request.form.get("msg")
-    is_repeating_input = request.form.get("repeating")
 
+    task_msg_input = request.form.get("msg")
+    print("msg received is: ", task_msg_input)
+    is_repeating_input = request.form.get("repeating")
     is_repeating = True if is_repeating_input == "True" else False
 
 
@@ -241,7 +242,7 @@ def add_new_task():
 
     else:
         duedate_input = request.form.get("duedate")
-        print("input received: ",duedate_input)
+        print("input received: ", duedate_input)
         due_date = timehelpers.convert_date_string_to_localized_datetime(duedate_input,user_tz_str)
         print("due_date converted to: ", due_date)
         # print("original due_date: ", duedate_input)

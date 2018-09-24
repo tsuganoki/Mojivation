@@ -33,6 +33,7 @@ class FlaskTestsDatabase(TestCase):
         # Get the Flask test client
         self.client = app.test_client()
         app.config['TESTING'] = True
+        PRESERVE_CONTEXT_ON_EXCEPTION = False
 
         # Connect to test database
         connect_to_db(app, "postgresql:///testdb")
@@ -78,15 +79,15 @@ class FlaskTestsDatabase(TestCase):
         """test that a user can log in"""
 
         bob = User.query.get(1)
-        print("bob username is: ", bob.username)
-        print("bob password is: ", bob.password)
+        # print("bob username is: ", bob.username)
+        # print("bob password is: ", bob.password)
         with self.client as c:
             result = c.get('/login_confirm?username=bobrules&password=abc123',
                             follow_redirects=True
                             )
 
 
-            print(result.data)
+            # print(result.data)
             # print(sess.items())
             self.assertEqual(session['current_user_id'], "1")
 
@@ -103,21 +104,37 @@ class FlaskTestsDatabase(TestCase):
                 sess['current_user_id'] = "1"
                 sess['current_username'] = "bobrules"
  
-            print("we are logged in as user id :", sess.get("current_user_id"))
+            # print("we are logged in as user id :", sess.get("current_user_id"))
             
             result = self.client.get('/logout', follow_redirects=True)
             
 
 
             self.assertNotIn(b'current_user_id', session)
-            print("we are logged in as user id :", session.get("current_user_id"))
-            # self.assertIn(b'now Logged Out', result.data)
+            # print("we are logged in as user id :", session.get("current_user_id"))
+            self.assertIn(b'now logged out', result.data)
 
 
     def test_user_add_task(self):
-        """tests that a user can make a post request to add a task"""
+        """tests that user can POST a task to the testdb"""
 
-        pass
+        with self.client as c:
+            with c.session_transaction() as sess:
+                sess['current_user_id'] = "1"
+                sess['current_username'] = "bobrules"
+
+            data = {'msg': 'make smores cupcakes',
+                    'repeating': "False",
+                    'duedate':'2018-12-31'}
+
+            result = c.post('/add_new_task',
+                            data = {'msg': 'make smores cupcakes',
+                                    'repeating': "False",
+                                    'duedate':'2018-12-31'},
+                            follow_redirects=True
+                            )
+                # self.assertEqual(session['user_id'], '42')
+            self.assertIn(b'make smores cupcakes', result.data)
 
 
 
