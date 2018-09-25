@@ -9,7 +9,7 @@ from functools import wraps
 
 from flask_debugtoolbar import DebugToolbarExtension
 
-from model import User, Task, Collect, Kao, connect_to_db, db
+from model import User, Task, Collect, Kao, Used_Kao,connect_to_db, db
 
 import datetime
 from datetime import timedelta
@@ -403,6 +403,16 @@ def user_info():
     # for collect in collects:
     #     print (collect.kaos.kao)
     return render_template("user-info.html",user=user, collects=collects)
+
+@app.route("/select-new-kao")
+@login_required
+def select_new_kao():
+    """adds a new kao to the database"""
+
+    used_kaos = Used_Kao.query.all()
+    new_kao = timehelpers.select_new_kao(used_kaos)
+    print(Kao.query.get(new_kao).kao)
+    return redirect("/tasks")
 
 
 

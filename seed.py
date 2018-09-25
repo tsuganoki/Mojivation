@@ -3,10 +3,7 @@ from flask import (Flask, render_template, redirect, request, flash,
                    session, jsonify)
 
 from sqlalchemy import func
-from model import User
-from model import Task
-from model import Collect
-from model import Kao
+from model import User, Task, Collect, Kao, Used_Kao
 
 from model import connect_to_db, db
 from server import app
@@ -15,6 +12,7 @@ import datetime
 
 def delete_everything():
     Collect.query.delete()
+    Used_Kao.query.delete()
     Kao.query.delete()
     Task.query.delete()
     User.query.delete()
@@ -23,7 +21,7 @@ def delete_everything():
 def load_users():
     """Load users from u.user into database."""
 
-    print("Users")
+    print("Users loaded")
 
     # Delete all rows in table, so if we need to run this a second time,
     # we won't be trying to add duplicate users
@@ -63,7 +61,6 @@ def load_tasks():
         else:
             is_complete = False
         
-        is_private = True if is_private == "T" else False
 
         if is_repeating == 'T':
         	is_repeating = True
@@ -129,7 +126,16 @@ def load_kaos():
 	print("Kaos Loaded")
 
 
+def load_used_kaos():
 
+    for row in open("seed_data/u.used_kaos"):
+        row = row.rstrip()
+        kao_id, date = row.split("|")
+
+        used_kao = Used_Kao(kao_id=kao_id,date=date)
+        db.session.add(used_kao)
+    db.session.commit()
+    print("Used_Kaos Loaded")
 
 
 def set_val_user_id():
@@ -181,6 +187,7 @@ def set_val_kao_id():
     db.session.execute(query, {'new_id': max_id + 1})
     db.session.commit()
 
+
 if __name__ == "__main__":
     connect_to_db(app)
 
@@ -193,6 +200,7 @@ if __name__ == "__main__":
     load_tasks()
     load_kaos()
     load_collects()
+    load_used_kaos()
     set_val_user_id()
     set_val_task_id()
     set_val_collect_id()

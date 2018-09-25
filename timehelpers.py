@@ -12,25 +12,8 @@ import pytz
 #Days start at 0 for monday
 DAYS = ["monday","tuesday","wednesday","thursday","friday","saturday","sunday"]
 TIMEZONES = [zone.rstrip() for zone in open("seed_data/u.timezones")]
-LAST_WEEKS_KAOS = {
-	0 : {"date": date(2018,9,17),
-		 "kao_id": 2 },
-	1 : {"date": date(2018,9,18),
-		 "kao_id": 22 },
-	2 : {"date": date(2018,9,19),
-		 "kao_id": 23 },
-	3 : {"date": date(2018,9,20),
-		 "kao_id": 24 },
-	4 : {"date": date(2018,9,21),
-		 "kao_id": 25 },
-	5 : {"date": date(2018,9,22),
-		 "kao_id": 26 },
-	6 : {"date": date(2018,9,23),
-		 "kao_id": 27 }
-} 
 
 
-LAST_WEEKS_KAOS = [ 22,56,793,20,90]
 
 # check condition each time a task is completed
 # if no tasks pending, then do kao-logic
@@ -66,8 +49,6 @@ def get_todays_kao(tz_str):
 	tz = pytz.timezone(tz_str)
 	user_time = datetime.now().astimezone(user_zone)
 
-	user_wkday = user_time.weekday
-	something = LAST_WEEKS_KAOS[user_wkday]["date"]
 
 	return 111
 
@@ -87,16 +68,14 @@ def get_random_kao():
 	return new_kao
 	
 
-def select_new_kao():
+def select_new_kao(used_kaos):
 
-	prev_kaos = []
-	for kao in LAST_WEEKS_KAOS.values():
-		prev_kaos.append(kao["kao_id"])
-
-	new_kao_id = get_random_kao()
-	if new_kao_id in prev_kaos:
-		return select_new_kao()
-    
+	prev_kaos = [uk.kao_id for uk in used_kaos]
+	
+	print(prev_kaos)
+	return 111
+	
+	# used_kaos = [used_kao.kao_id for used_kao in Used_Kao.query.all()]
 
 
 

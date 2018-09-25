@@ -14,7 +14,7 @@ db = SQLAlchemy()
 # Model definitions
 
 class User(db.Model):
-    """User of to-do website."""
+    """User of Kao_to_do website."""
 
     __tablename__ = "users"
 
@@ -76,13 +76,22 @@ class Kao(db.Model):
 
 
 
-class kao_history(db.Model):
-    """table for keeping track of kao History"""
+class Used_Kao(db.Model):
+    """table for keeping track of Kao-Moji History"""
 
-    __tablename__ = "kaos"
+    __tablename__ = "used_kaos"
 
-    kao_id = db.Column(db.Integer)
-    date = db.Column(db.String(64),nullable=False)
+    date = db.Column(db.DateTime, primary_key=True)
+    kao_id = db.Column(db.Integer, db.ForeignKey('kaos.kao_id'))
+
+    def __repr__(self):
+        """Provide helpful representation when printed."""
+        return f"<Used_Kao date={self.date.ctime()} kao_id={self.kao_id}>"
+
+
+    kaos = db.relationship("Kao",backref=db.backref("used_kaos",order_by=date))
+    # kaos = db.relationship("Kao",backref=db.backref("used_kaos",order_by=collect_id))
+
 
 ##############################################################################
 # Helper functions
@@ -140,7 +149,7 @@ def example_data():
         db.session.close()     
 
 
-def connect_to_db(app, db_uri='postgresql:///kao_project'):
+def connect_to_db(app, db_uri='postgresql:///kaos'):
     """Connect the database to our Flask app."""
 
     # Configure to use our PstgreSQL database
