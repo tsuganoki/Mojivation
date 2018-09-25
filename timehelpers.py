@@ -68,12 +68,14 @@ def get_random_kao():
 	return new_kao
 	
 
-def select_new_kao(used_kaos):
+def select_new_kao(used_kaos,kaos):
 
 	prev_kaos = [uk.kao_id for uk in used_kaos]
-	
-	print(prev_kaos)
-	return 111
+
+	all_kaos = list(range(len(kaos)))
+
+	available_kaos = [x for x in all_kaos if x not in prev_kaos]
+	return choice(available_kaos)
 	
 	# used_kaos = [used_kao.kao_id for used_kao in Used_Kao.query.all()]
 

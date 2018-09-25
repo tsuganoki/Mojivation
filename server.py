@@ -410,8 +410,13 @@ def select_new_kao():
     """adds a new kao to the database"""
 
     used_kaos = Used_Kao.query.all()
-    new_kao = timehelpers.select_new_kao(used_kaos)
-    print(Kao.query.get(new_kao).kao)
+    kaos = Kao.query.all()
+    new_kao_id = timehelpers.select_new_kao(used_kaos=used_kaos,kaos=kaos)
+    new_used_kao = Used_Kao(kao_id=new_kao_id,date=timehelpers.get_midnight())
+    db.session.add(new_used_kao)
+    print(new_used_kao)
+
+
     return redirect("/tasks")
 
 

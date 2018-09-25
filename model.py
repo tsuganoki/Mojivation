@@ -86,7 +86,7 @@ class Used_Kao(db.Model):
 
     def __repr__(self):
         """Provide helpful representation when printed."""
-        return f"<Used_Kao date={self.date.ctime()} kao_id={self.kao_id}>"
+        return f"<Used_Kao date={datetime.date(self.date.year,self.date.month, self.date.day)} kao_id={self.kao_id}>"
 
 
     kaos = db.relationship("Kao",backref=db.backref("used_kaos",order_by=date))
