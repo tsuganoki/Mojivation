@@ -419,7 +419,19 @@ def select_new_kao():
 
     return redirect("/tasks")
 
+@app.route("/award-kao")
+@login_required
+def award_kao():
+    """awards the user a kao and adds to collection"""
 
+    user = User.query.get(session["current_user_id"])
+    todays_kao = timehelpers.get_todays_kao(user.timezone) # this might have to be logic that happens here
+
+    new_collect = Collect(user_id=user.user_id,
+                        kao_id=todays_kao,
+                        collect_date=collect_date)
+    
+    db.session.add(new_collect)
 
 if __name__ == "__main__":
     # We have to set debug=True here, since it has to be True at the

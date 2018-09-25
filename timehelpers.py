@@ -50,22 +50,6 @@ def get_todays_kao(tz_str):
 	user_time = datetime.now().astimezone(user_zone)
 
 
-	return 111
-
-	if one_thing:
-		select_new_kao()
-		return new_kao_id
-	else:
-		return kao_id
-
-
-def award_kao():
-	pass
-
-def get_random_kao():
-	kaos = list(range(25))
-	new_kao = choice(kaos)
-	return new_kao
 	
 
 def select_new_kao(used_kaos,kaos):
@@ -77,13 +61,6 @@ def select_new_kao(used_kaos,kaos):
 	available_kaos = [x for x in all_kaos if x not in prev_kaos]
 	return choice(available_kaos)
 	
-	# used_kaos = [used_kao.kao_id for used_kao in Used_Kao.query.all()]
-
-
-
-# KAOS_TUPLE = [enumerate(kao.rstrip()) for kao in open("seed_data/u.kaos")]
-
-
 
 # today = datetime.date.today()
 # weekday = DAYS[today.weekday()]
@@ -93,11 +70,7 @@ def select_new_kao(used_kaos,kaos):
 # %X- indicates the local time
 # nyd = date(today.year, 1, 1)  # get New Year Day for the same year
 
-
 # Notes on localizing and adjusting timezones
-
-
-
 
 # You can create a datetime object with a built in 
 # timezone by passing it in as an argument:
