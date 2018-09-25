@@ -75,6 +75,15 @@ class Kao(db.Model):
     kao = db.Column(db.String(64),nullable=False)
 
 
+
+class kao_history(db.Model):
+    """table for keeping track of kao History"""
+
+    __tablename__ = "kaos"
+
+    kao_id = db.Column(db.Integer)
+    date = db.Column(db.String(64),nullable=False)
+
 ##############################################################################
 # Helper functions
 

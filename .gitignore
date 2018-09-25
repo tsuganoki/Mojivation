@@ -2,3 +2,4 @@ env/
 instance/secretkey.txt
 instance/secretkey
 __pycache__/
+lenv/

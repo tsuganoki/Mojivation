@@ -29,6 +29,9 @@ LAST_WEEKS_KAOS = {
 		 "kao_id": 27 }
 } 
 
+
+LAST_WEEKS_KAOS = [ 22,56,793,20,90]
+
 # check condition each time a task is completed
 # if no tasks pending, then do kao-logic
 # then check the date against the previously stored date and either 
