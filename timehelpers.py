@@ -49,6 +49,8 @@ def get_todays_kao(tz_str):
 	tz = pytz.timezone(tz_str)
 	user_time = datetime.now().astimezone(user_zone)
 
+	
+
 
 	
 

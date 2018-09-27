@@ -308,13 +308,15 @@ def complete_task():
     task = Task.query.get(task_id)
     # A line of code the changes the task to is_complete = False
     # user.no_of_logins += 1
+                
     if task.is_repeating == True:
         task.due_date = timehelpers.get_user_tomorrow_EOD(user.timezone)
         db.session.commit()
     else:
         task.is_complete = True
         db.session.commit()
-
+    if timehelpers.check_remaining_tasks(user.tasks,user.timezone):
+        return redirect("/collect-kao")
     return redirect("/tasks")
 
 @app.route("/undo_complete", methods=["POST"])
@@ -378,6 +380,11 @@ def collect_kao():
     user = User.query.get(session.get("current_user_id"))
 
     todays_kao_id = timehelpers.get_todays_kao()
+
+    if Collect.query.filter_by(kao_id=todays_kao_id, user_id=user.user_id):
+        flash("You have already collected today's Moji, but good job anyways!")
+        return redirect("/tasks")
+
     collect = Collect(user_id=user.user_id,
                       kao_id=todays_kao_id,
                       collect_date=datetime.datetime.now()
@@ -386,7 +393,7 @@ def collect_kao():
     db.session.add(collect)
     print(collect)
     # db.session.commit()
-    flash(f"You have collected a kao-moji: {Kao.query.get(todays_kao_id).kao}")
+    flash(f"You have collected a Moji: {Kao.query.get(todays_kao_id).kao}")
 
     return redirect("/tasks")
 
@@ -430,8 +437,10 @@ def award_kao():
     new_collect = Collect(user_id=user.user_id,
                         kao_id=todays_kao,
                         collect_date=collect_date)
-    
+
     db.session.add(new_collect)
+
+
 
 if __name__ == "__main__":
     # We have to set debug=True here, since it has to be True at the
