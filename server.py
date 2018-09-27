@@ -361,39 +361,52 @@ def delete_task(task_id):
     return redirect("/tasks")
 
 
-@app.route("/check-today")
-@login_required
-def check_today():
-    user = User.query.get(session.get("current_user_id"))
-    tasks = user.tasks
+# @app.route("/check-today")
+# @login_required
+# def check_today():
+#     user = User.query.get(session.get("current_user_id"))
+#     tasks = user.tasks
     
 
-    eod = timehelpers.get_user_EOD(user.timezone)
+#     eod = timehelpers.get_user_EOD(user.timezone)
 
-    boole = timehelpers.check_remaining_tasks(tasks,eod)
-    print(boole)
-    return redirect("/tasks")
+#     boole = timehelpers.check_remaining_tasks(tasks,eod)
+#     print(boole)
+#     return redirect("/tasks")
 
 @app.route("/collect-kao")
 @login_required
 def collect_kao():
     user = User.query.get(session.get("current_user_id"))
+    if timehelpers.check_remaining_tasks(user.tasks,user.timezone) == False:
+        flash("nope")
+        return redirect('/tasks')
+        # gotta make sure they don't just navigate to this url
 
-    todays_kao_id = timehelpers.get_todays_kao()
 
-    if Collect.query.filter_by(kao_id=todays_kao_id, user_id=user.user_id):
-        flash("You have already collected today's Moji, but good job anyways!")
-        return redirect("/tasks")
+    user_midnight = timehelpers.get_user_midnight(user.timezone)
+    todays_kao = Used_Kao.query.filter_by(date=user_midnight).first()
+    print(todays_kao)
+    if todays_kao == None:
+        print("potato")
+        return redirect("/select-new-kao")
 
-    collect = Collect(user_id=user.user_id,
-                      kao_id=todays_kao_id,
-                      collect_date=datetime.datetime.now()
-                      )
+        # assign a new used kao here
 
-    db.session.add(collect)
-    print(collect)
-    # db.session.commit()
-    flash(f"You have collected a Moji: {Kao.query.get(todays_kao_id).kao}")
+    # print(todays_kao.kao_id, todays_kao.date)
+    # if Collect.query.filter_by(kao_id=todays_kao_id, user_id=user.user_id):
+    #     flash("You have already collected today's Moji, but good job anyways!")
+    #     return redirect("/tasks")
+
+    # collect = Collect(user_id=user.user_id,
+    #                   kao_id=todays_kao_id,
+    #                   collect_date=datetime.datetime.now()
+    #                   )
+
+    # db.session.add(collect)
+    # print(collect)
+    # # db.session.commit()
+    # flash(f"You have collected a Moji: {Kao.query.get(todays_kao_id).kao}")
 
     return redirect("/tasks")
 
@@ -419,12 +432,15 @@ def select_new_kao():
     used_kaos = Used_Kao.query.all()
     kaos = Kao.query.all()
     new_kao_id = timehelpers.select_new_kao(used_kaos=used_kaos,kaos=kaos)
-    new_used_kao = Used_Kao(kao_id=new_kao_id,date=timehelpers.get_midnight())
+    new_used_kao = Used_Kao(kao_id=new_kao_id,date=timehelpers.get_user_midnight(user.timezone))
     db.session.add(new_used_kao)
-    print(new_used_kao)
+    # db.session.commit()
+
+    print(Kao.query.get(new_used_kao.kao_id))
 
 
-    return redirect("/tasks")
+    # return redirect("/collect-kao")
+    return redirect('/tasks')
 
 @app.route("/award-kao")
 @login_required

@@ -74,6 +74,10 @@ class Kao(db.Model):
     kao_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
     kao = db.Column(db.String(64),nullable=False)
 
+    def __repr__(self):
+        """Provide helpful representation when printed."""
+        return f"<Kao kao_id={self.kao_id} {self.kao}>"
+
 
 
 class Used_Kao(db.Model):

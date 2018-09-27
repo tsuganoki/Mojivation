@@ -1,7 +1,6 @@
 from datetime import date,time,datetime,tzinfo,timedelta
 
 from model import User, Task, Collect, Kao, connect_to_db, db
-from sqlalchemy import func
 from random import randint, choice
 # from server import app
 
@@ -9,11 +8,13 @@ from random import randint, choice
 # from pytz import timezone
 import pytz
 
+from sqlalchemy import func
 #Days start at 0 for monday
 DAYS = ["monday","tuesday","wednesday","thursday","friday","saturday","sunday"]
 TIMEZONES = [zone.rstrip() for zone in open("seed_data/u.timezones")]
-
-
+UTC = pytz.timezone("UTC")
+PST = pytz.timezone("US/Pacific")
+ 
 
 # check condition each time a task is completed
 # if no tasks pending, then do kao-logic
@@ -49,18 +50,22 @@ def get_todays_kao(tz_str):
 	tz = pytz.timezone(tz_str)
 	user_time = datetime.now().astimezone(user_zone)
 
-	
+
 
 
 	
 
 def select_new_kao(used_kaos,kaos):
 
-	prev_kaos = [uk.kao_id for uk in used_kaos]
-
-	all_kaos = list(range(len(kaos)))
+	prev_kaos = set(uk.kao_id for uk in used_kaos)
+	all_kaos = set(range(len(kaos)))
 
 	available_kaos = [x for x in all_kaos if x not in prev_kaos]
+	
+	for kao_id in prev_kaos:
+		if kao_id in available_kaos:
+			print ("timehelpers.select_new_kao() has returned a duplicate :(")
+			return select_new_kao(used_kaos,kaos)
 	return choice(available_kaos)
 	
 
@@ -111,6 +116,12 @@ def get_midnight():
 # 							 user_normalized_time.day)
 
 # 	return user_zone.localize(user_midnight)
+def get_user_now(tz_string):
+	user_zone = pytz.timezone(tz_string)
+
+	user_now = datetime.now().astimezone(user_zone)
+	return date(user_now.year, user_now)
+
 
 
 def get_user_EOD(tz_string):
@@ -128,6 +139,17 @@ def convert_date_string_to_localized_datetime(datetime_string,tz_string):
 
 	return add_24_hrs(due_date)
 
+
+def get_user_midnight(tz_string):
+	"""returns a UTC time corresponding to a midnight in user's current timezone"""
+	now = datetime.now()
+	user_zone = pytz.timezone(tz_string)
+	now = UTC.localize(now)
+	user_today = now.astimezone(user_zone)
+	user_midnight = datetime(user_today.year,user_today.month,user_today.day)
+	UTC.localize(user_midnight)
+
+	return user_midnight
 
 def get_user_midnight_utc(dt,tz_string):
 	"""returns a UTC time corresponding to a midnight in user's current timezone"""

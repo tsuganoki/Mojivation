@@ -152,99 +152,45 @@ class FlaskTestsDatabase(TestCase):
             # self.assertIn(b'', result.data)
 
 
-    def test_user_collect_kao(self):
-        """Tests that a user gets a kao when they complete all their tasks for the day"""
+    # def test_user_collect_kao(self):
+    #     """Tests that a user gets a kao when they complete all their tasks for the day"""
 
-        with self.client as c:
-            with c.session_transaction() as sess:
-                sess['current_user_id'] = "2"
-                sess['current_username'] = "qian"
+    #     with self.client as c:
+    #         with c.session_transaction() as sess:
+    #             sess['current_user_id'] = "2"
+    #             sess['current_username'] = "qian"
 
-            task = Task.query.get(3)
-            print(task)
+    #         task = Task.query.get(3)
+    #         print(task)
 
-            result = c.post('/complete-task',
-                            data = {'task_id': '3'},
-                            follow_redirects=True
-                            )
-            task = Task.query.get(3)
-            print(task)
-            self.assertIn(b"You have collected a kao-moji",result.data)
+    #         result = c.post('/complete-task',
+    #                         data = {'task_id': '3'},
+    #                         follow_redirects=True
+    #                         )
+    #         task = Task.query.get(3)
+    #         print(task)
+    #         self.assertIn(b"You have collected a Moji",result.data)
 
+    # def test_select_new_kao_route(self):
+    #      with self.client as c:
+    #         with c.session_transaction() as sess:
+    #             sess['current_user_id'] = "2"
+    #             sess['current_username'] = "qian"
+    #         result = c.get("/select-new-kao")
 
+    # def test_select_new_kao_function(self):
 
-# class FlaskTestsLoggedIn(TestCase):
-#     """Flask tests with user logged in to session."""
+    #      with self.client as c:
+    #         with c.session_transaction() as sess:
+    #             sess['current_user_id'] = "2"
+    #             sess['current_username'] = "qian"
 
-#     def setUp(self):
-#         """Stuff to do before every test."""
-
-#         app.config['TESTING'] = True
-#         # install_secret_key(app)
-#         self.client = app.test_client()
-
-#         connect_to_db(app, "postgresql:///testdb")
-
-#         # Create tables and add sample data
-#         # db.drop_all()
-#         db.create_all()
-#         example_data()
-
-#         with self.client as c:
-#             with c.session_transaction() as sess:
-#                 sess['current_user_id'] = 1
-
-
-#     def tearDown(self):
-#         """Do at end of every test."""
-
-#         db.session.remove()
-#         db.drop_all()
-#         db.engine.dispose()
-
-#     def test_task_page(self):
-#         """Test logged in viewing Task page."""
-  
-#         result = self.client.get("/tasks")
-
-#         self.assertIn(b"All Tasks", result.data)
-
-#     def test_check_remaining_tasks(self):
-#         """test for the check remaining tasks function"""
-#         # print("session is: ", session.get("current_user_id"))
-#         # all_users = User.query.all()
-#         # all_tasks = Task.query.all()
-#         # for i in all_tasks:
-#         #     print (i)
-#         # for i in all_users:
-#         #     print (i)
-
-#         bob = User.query.filter_by(email="bob@gmail.com").first()
-#         # check_remaining_tasks(tasks,tz_string)
-#         self.assertIs(timehelpers.check_remaining_tasks(bob.tasks,bob.timezone),False)
-
-#     def test_add_a_task(self):
-#         """Test that a task can be added"""
-
-#         # result = self.client.post("/add_new_task", "Order a new cakepan") #how to test a post request?
-#         # self.assertIn()
-
-#     def test_complete_a_task(self):
-#         """check that a completed task is completed"""
-
-#         result = self.client.get("/complete-task")
-
-#     def test_kaos_view(self):
-#         """test the kao display functionality"""
-
-#         result = self.client.get("/user-info")
-
-#         self.assertIn(b"User Info",result.data)
-
-
-#     def test_kaos(self):
-#         """test the kao addition functionality"""
-
+    #         used_kaos = Used_Kao.query.all()
+    #         kaos = Kao.query.all()
+    #         new_kao_id = timehelpers.select_new_kao(used_kaos=used_kaos,kaos=kaos)
+            
+    #         self.assertNotIn(new_kao_id,[kao.id for kao in used_kaos])            
+    #         self.assertNotIn(new_kao_id,[kao.id for kao in kaos])            
 
 
 
