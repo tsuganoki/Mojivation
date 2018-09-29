@@ -146,11 +146,11 @@ def login():
 
     return render_template("login.html")
 
-@app.route('/login_confirm', methods = ['GET'])
+@app.route('/login_confirm', methods = ['POST'])
 def login_confirm():
     print("processes the login get request")
-    username_input = request.args.get('username')
-    pwd_input = request.args.get('password')
+    username_input = request.form.get('username')
+    pwd_input = request.form.get('password')
 
     if User.query.filter_by(username=username_input).first():
         current_user = User.query.filter_by(username=username_input).first()
