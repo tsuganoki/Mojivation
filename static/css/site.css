@@ -10,6 +10,11 @@ ul {
 
 }
 
+a:link {
+	text-decoration: none;
+}
+
+
 .home-page-mantra{
 	font-size: 2em;
 	margin: 60px 60px;

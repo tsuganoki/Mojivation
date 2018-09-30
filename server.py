@@ -263,6 +263,51 @@ def add_new_task():
     return redirect("/tasks")
 
 
+@app.route("/edit_task/<task_id>")
+@login_required
+def edit_task(task_id):
+    """lets a user edit a task"""
+
+    user = User.query.get(session["current_user_id"])
+    task = Task.query.get(task_id)
+    if task.user_id != user.user_id:
+        flash("Invalid task id")
+        return redirect('/tasks')
+
+    return render_template("edittask.html", 
+                            task=task)
+
+@app.route("/confirm-edit", methods=["POST"])
+@login_required
+def confirm_edit():
+    user = User.query.get(session["current_user_id"])
+    task = Task.query.get(int(request.form.get("task_id")))
+
+    task_msg_input = request.form.get("msg")
+    if task_msg_input != task.msg:
+        task.msg = task_msg_input
+    # print("msg received is: ", task_msg_input)
+    is_repeating_input = request.form.get("repeating")
+    is_repeating = True if is_repeating_input == "True" else False
+
+
+    user_tz_str = user.timezone
+
+    if request.form.get("today") or request.form.get("duedate") == "":
+        duedate_input = datetime.datetime.now()
+        due_date = timehelpers.get_user_midnight_utc(duedate_input,user_tz_str)
+
+    else:
+        duedate_input = request.form.get("duedate")
+        # print("input received: ", duedate_input)
+        due_date = timehelpers.convert_date_string_to_localized_datetime(duedate_input,user_tz_str)
+
+    print(task.msg)
+
+
+    db.session.commit()
+    # print(Task.query.all())
+    return redirect("/tasks")
 
 
 # @app.route("/quick-add", methods=["POST"])

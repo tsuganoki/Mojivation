@@ -2,23 +2,23 @@
 
 {% block title %} Add a Task {% endblock %}
 
-{% block h1_heading %} Add a Task {% endblock %}
+{% block h1_heading %} Edit a Task {% endblock %}
 
 
 {% block content %} 
 
-
-
-
-
-<form method="POST" action="/add_new_task">
+<form method="POST" action="/confirm-edit">
   <table>
     <tr>
       <td>Task</td>
       <td><input type="text_box" 
              name="msg"
-             size="37" 
-             required>
+             size="37"
+             value="{{task.msg}}"
+             >
+             <input 
+             value={{task.task_id}}
+             name="task_id" hidden> 
  
       </td>
     </tr>
@@ -26,7 +26,8 @@
       <td>Due date</td>
       <td><input type="date" 
              name="duedate"> <input type="time" 
-             name="duetime">
+             name="duetime"
+             value="{{task.due_date}}">
           
       </td>
     </tr>
@@ -48,7 +49,12 @@
        </td>
        <td> <input type="checkbox" 
                 value="True"
-                 name="repeating"> (Repeat daily)
+
+                 name="repeating"
+                 {% if task.is_repeating %}
+                 checked
+                 {% endif %}
+                 > (Repeat daily)
        </td>
     </tr>
     <tr><td> 
@@ -56,5 +62,6 @@
     </td><td><a href="/tasks"> Cancel</a></td></tr>
   </table>
 </form>
+
 
  {% endblock %}
