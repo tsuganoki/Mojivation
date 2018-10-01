@@ -58,7 +58,7 @@ def get_todays_kao(tz_str):
 def select_new_kao(used_kaos,kaos):
 
     prev_kaos = set(uk.kao_id for uk in used_kaos)
-    all_kaos = set(range(len(kaos)))
+    all_kaos = set(range(1,len(kaos)))
 
     available_kaos = [x for x in all_kaos if x not in prev_kaos]
     

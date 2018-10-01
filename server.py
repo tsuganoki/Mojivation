@@ -201,6 +201,12 @@ def view_tasks():
     # current_user = User.query.filter_by(username=username_input).first()
 
 
+@app.route("/tasks-js")
+@login_required
+def get_tasks_js():
+    user = User.query.get(session["current_user_id"])
+    return render_template("tasks_js.html")
+
 
 
 @app.route("/get-tasks.json")
@@ -218,8 +224,11 @@ def get_tasks():
 @login_required
 def new_task():
     """page for adding new tasks"""
+    user = User.query.get(session["current_user_id"])
 
-    return render_template("new_task.html")
+    EOD = timehelpers.get_user_EOD(user.timezone)
+
+    return render_template("new_task.html", eod=EOD)
 
 
 
@@ -284,9 +293,8 @@ def confirm_edit():
     task = Task.query.get(int(request.form.get("task_id")))
 
     task_msg_input = request.form.get("msg")
-    if task_msg_input != task.msg:
-        task.msg = task_msg_input
-    # print("msg received is: ", task_msg_input)
+    task.msg = task_msg_input
+
     is_repeating_input = request.form.get("repeating")
     is_repeating = True if is_repeating_input == "True" else False
 
@@ -303,7 +311,8 @@ def confirm_edit():
         due_date = timehelpers.convert_date_string_to_localized_datetime(duedate_input,user_tz_str)
 
     print(task.msg)
-
+    task.due_date = due_date
+    print(task.due_date)
 
     db.session.commit()
     # print(Task.query.all())
@@ -492,7 +501,13 @@ def award_kao():
 
     db.session.add(new_collect)
 
+@app.route("/google-cal-API")
+@login_required
+def google_cal_API():
 
+    my_events = "events"
+    return render_template("my_events.html",
+        events=my_events)
 
 if __name__ == "__main__":
     # We have to set debug=True here, since it has to be True at the
