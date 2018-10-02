@@ -25,8 +25,8 @@ from apiclient.discovery import build
 
 app = Flask(__name__)
 
-# service = build('calendar-json.googleapis.com', 'api_version', ...)
-
+# service = build('calendar', 'v3')
+# googleAPIKey = open(filename, 'GoogleCalendarAPI/APIkey.txt').read()
 
 def install_secret_key(app, filename='secretkey'):
     """Configure the SECRET_KEY from a file
