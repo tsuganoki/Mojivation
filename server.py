@@ -21,10 +21,11 @@ import random
 # Required to use Flask sessions and the debug toolbar
 import sys
 import os.path
-
+from apiclient.discovery import build
 
 app = Flask(__name__)
 
+# service = build('calendar-json.googleapis.com', 'api_version', ...)
 
 
 def install_secret_key(app, filename='secretkey'):

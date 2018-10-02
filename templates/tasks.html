@@ -28,10 +28,10 @@
              value={{task.task_id}}>
       <li>
         <input type=submit name="complete" value="Done"> 
-        <span class="task-msg">
-          <a href="/edit_task/{{task.task_id}}">
-          {{task.msg}}</a>
-        </span>
+        <a class="task-msg" 
+           href="/edit_task/{{task.task_id}}">
+            {{task.msg}}
+        </a>
 
         <a href="/delete-task-{{task.task_id}}">
           <i class="fa fa-times-circle-o ex-cirle" aria-hidden="true" alttext="delete task"></i>
@@ -70,8 +70,11 @@
                value={{task.task_id}}>
         <li>
           <input type=submit name="complete" value="Done"> 
-          {{task.msg}} 
-          <a href="/delete-task-{{task.task_id}}">
+          <a class="task-msg" 
+           href="/edit_task/{{task.task_id}}">
+            {{task.msg}}
+          </a>          
+        <a href="/delete-task-{{task.task_id}}">
               <i class="fa fa-times-circle-o ex-cirle" aria-hidden="true" alttext="delete task"></i>
           </a>
          </form>
@@ -98,8 +101,11 @@
         <input hidden name="potato" value="apple">
     <li class="completed-task-li">
         <input type="submit" value="Undo">
-        {{task.msg}}
-        <a href="/delete-task-{{task.task_id}}">
+          <a class="task-msg" 
+           href="/edit_task/{{task.task_id}}">
+            {{task.msg}}
+          </a>
+          <a href="/delete-task-{{task.task_id}}">
             <i class="fa fa-times-circle-o ex-cirle" aria-hidden="true" alttext="delete task"></i>
         </a>
     </li>
