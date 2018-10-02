@@ -8,6 +8,8 @@ from random import randint, choice
 # from pytz import timezone
 import pytz
 
+from rfc3339 import rfc3339 as rfc
+
 from sqlalchemy import func
 #Days start at 0 for monday
 DAYS = ["monday","tuesday","wednesday","thursday","friday","saturday","sunday"]

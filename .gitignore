@@ -2,3 +2,5 @@ env/
 instance/secretkey.txt
 instance/secretkey
 __pycache__/
+calAPI/credentials.json
+calAPI/token.json
