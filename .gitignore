@@ -7,4 +7,4 @@ credentials.json
 calAPI/token.json
 token.json
 client_secret.txt
-client_id_oAuth.txt
+client_secrets.json

@@ -22,6 +22,7 @@ class User(db.Model):
     username = db.Column(db.String(64), unique=True)
     email = db.Column(db.String(64), nullable=False, unique=True)
     password = db.Column(db.String(64), nullable=False)
+    # oAuth_token = db.Column(db.String(256), nullable=True)
     timezone = db.Column(db.String(32), default="US/Pacific")
     
     def __repr__(self):

@@ -18,6 +18,7 @@ import random
 import timehelpers
 import task_logic
 import cal
+import oAuth_flow
 
 
 
@@ -67,10 +68,12 @@ def login_required(f):
         if not session.get("current_user_id"):
             flash("You must be logged in to use that feature")
             return redirect(url_for('login', next=request.url))
+        user = User.query.get(session["current_user_id"])
         return f(*args, **kwargs)
     return decorated_function
 
 @app.route('/')
+@app.route('/index')
 def index():
     """Homepage."""
     kao_dict = {
@@ -519,14 +522,38 @@ def create_cal_event():
 
 
 
-@app.route("/google-cal-API")
+@app.route("/oAuth-authoriz")
 @login_required
-def google_cal_API():
+def google_oAuth_authorization():
+    """google oAuth authorization flow"""
 
-    my_events = "events"
-    
-    return render_template("my_events.html",
-        events=my_events)
+    flow = oAuth_flow.flow
+    authorization_url = oAuth_flow.authorization_url
+    print(authorization_url)
+# login_hint: string, Either an email address or domain. Passing this
+#  |                      hint will either pre-fill the email box on the sign-in
+#  |                      form or select the proper multi-login session, thereby
+#  |                      simplifying the login flow.
+
+    return redirect(authorization_url)
+
+
+@app.route("/oAuth-confirm")
+@login_required
+def oAuth_confirm():
+    user = User.query.get(session["current_user_id"])
+
+    token = request.args.get("code")
+    print("THE TOKEN IS: ",token)
+    # User.oAuth_token = token
+    # print(user.oAuth_token)
+    # db.session.commit()
+    # something = "getting the callback info and token"
+    if token:
+        flash("Connected to google") 
+    return redirect("/tasks")
+
+
 
 if __name__ == "__main__":
     # We have to set debug=True here, since it has to be True at the
