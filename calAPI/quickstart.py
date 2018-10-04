@@ -20,7 +20,7 @@ def main():
 
     # Call the Calendar API
     now = datetime.datetime.utcnow().isoformat() + 'Z' # 'Z' indicates UTC time
-    print('Getting the upcoming 10 events')
+    # print('Getting the upcoming 10 events')
     events_result = service.events().list(calendarId='primary', timeMin=now,
                                         maxResults=10, singleEvents=True,
                                         orderBy='startTime').execute()
@@ -38,9 +38,9 @@ def main():
     GMT_OFF = '-07:00'
 
     EVENT = {
-        'summary' : 'TILIA IS A TIME WIZARD',
-        'start'   : {'dateTime' : '2018-10-02T03:30:48{}'.format(GMT_OFF)},
-        'end'     : {'dateTime' : '2018-10-02T05:30:48{}'.format(GMT_OFF)}
+        'summary' : 'Blake is Cute',
+        'start'   : {'dateTime' : '2018-10-02T08:30:48{}'.format(GMT_OFF)},
+        'end'     : {'dateTime' : '2018-10-02T09:30:48{}'.format(GMT_OFF)}
     }
 
     ev = CAL.events().insert(calendarId='primary',

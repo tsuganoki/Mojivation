@@ -3,4 +3,6 @@ instance/secretkey.txt
 instance/secretkey
 __pycache__/
 calAPI/credentials.json
+credentials.json
 calAPI/token.json
+token.json

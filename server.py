@@ -13,10 +13,13 @@ from model import User, Task, Collect, Kao, Used_Kao,connect_to_db, db
 
 import datetime
 from datetime import timedelta
-import pytz
+import random
+
 import timehelpers
 import task_logic
-import random
+import cal
+
+
 
 # Required to use Flask sessions and the debug toolbar
 import sys
@@ -255,7 +258,6 @@ def add_new_task():
         due_date = timehelpers.convert_date_string_to_localized_datetime(duedate_input,user_tz_str)
         # print("due_date converted to: ", due_date)
         # print("original due_date: ", duedate_input)
-        # user_zone = pytz.timezone(user.timezone)
         # duedate_datetime_localized = user_zone.localize(duedate_datetime)
 
     task = Task(msg=task_msg_input,
@@ -500,11 +502,29 @@ def award_kao():
 
     db.session.add(new_collect)
 
+@app.route("/create-cal-event", methods=['POST'])
+@login_required
+def create_cal_event():
+    user = User.query.get(session["current_user_id"])
+    task_id = int(request.form.get("task_id"))
+    task = Task.query.get(task_id)
+
+
+
+    ev = cal.convert_task_to_cal_event(task,user)
+    print(ev)
+    cal.create_event(ev)
+    flash("cal event created")
+    return redirect('/tasks')
+
+
+
 @app.route("/google-cal-API")
 @login_required
 def google_cal_API():
 
     my_events = "events"
+    
     return render_template("my_events.html",
         events=my_events)
 

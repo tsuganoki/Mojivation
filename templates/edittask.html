@@ -58,10 +58,18 @@
        </td>
     </tr>
     <tr><td> 
-      <input type="submit" value="Add"> 
+      <input type="submit" value="Update"> 
     </td><td><a href="/tasks"> Cancel</a></td></tr>
   </table>
 </form>
 
+
+<form method="POST" action="/create-cal-event">
+  <input 
+  value={{task.task_id}}
+  name="task_id" hidden> 
+  <input type='submit' value="Create Google Calendar Event" class="cal-btn">
+
+</form>
 
  {% endblock %}
