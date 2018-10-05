@@ -544,7 +544,12 @@ def oAuth_confirm():
     user = User.query.get(session["current_user_id"])
 
     token = request.args.get("code")
-    print("THE TOKEN IS: ",token)
+    print("the request.args thing is: ",request.args)
+
+     # ImmutableMultiDict([
+     #    ('code', '4/cAAnkAhSKX1QEn9eU5mRO9gu-BIfwXKXZUegtALZdpCmJRLTsEC0wjFhs6bJPuHc92RU-oUxLEn0u6MfHN0dNyc'), 
+     #    ('scope', 'https://www.googleapis.com/auth/calendar')])
+    # print("THE TOKEN IS: ",token)
     # User.oAuth_token = token
     # print(user.oAuth_token)
     # db.session.commit()

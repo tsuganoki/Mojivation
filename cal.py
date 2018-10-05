@@ -6,6 +6,7 @@ from oauth2client import file, client, tools
 
 import datetime
 from rfc3339 import rfc3339 as rfc
+import jsonify
 
 
 
@@ -21,6 +22,11 @@ def convert_task_to_cal_event(task,user):
     event['end']     = { "dateTime": rfc(task.due_date) }
     event["creator"] = {"displayName": user.username }
     return event
+
+def gen_token(token):
+    token_json = jsonify({"token":token})
+    print(token_json)
+    return token_json
 
 
 def create_event(ev={}):
