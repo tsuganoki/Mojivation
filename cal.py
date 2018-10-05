@@ -12,7 +12,7 @@ import jsonify
 
 
 
-def convert_task_to_cal_event(task,user):
+def convert_task_to_cal_event(task,user,token):
 
     
     event = {}
@@ -21,9 +21,10 @@ def convert_task_to_cal_event(task,user):
     event['start']   = { "dateTime": rfc(task.due_date) }
     event['end']     = { "dateTime": rfc(task.due_date) }
     event["creator"] = {"displayName": user.username }
+    event["token"] = {gen_token_obj(token)}
     return event
 
-def gen_token(token):
+def gen_token_obj(token):
     token_json = jsonify({"token":token})
     print(token_json)
     return token_json
@@ -35,7 +36,7 @@ def create_event(ev={}):
     """
     # If modifying these scopes, delete the file token.json.
     SCOPES = 'https://www.googleapis.com/auth/calendar'
-    store = file.Storage('token.json')
+    store = file.Storage(ev["token"])
     creds = store.get()
     if not creds or creds.invalid:
         flow = client.flow_from_clientsecrets('credentials.json', SCOPES)
