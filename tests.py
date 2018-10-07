@@ -83,6 +83,7 @@ class FlaskTestsDatabase(TestCase):
         # print("bob password is: ", bob.password)
         with self.client as c:
             result = c.get('/login_confirm?username=bobrules&password=abc123',
+                    # ACTION ITEM: This is definitely going to break, login is now a post request
                             follow_redirects=True
                             )
 

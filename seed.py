@@ -10,6 +10,8 @@ from server import app
 
 import datetime
 
+import hashes
+
 def delete_everything():
     Collect.query.delete()
     Used_Kao.query.delete()
@@ -36,7 +38,7 @@ def load_users():
         user = User(user_id=int(user_id),
         			username=username,
                     email=email,
-                    password=password,
+                    password=hashes.get_hash(password),
                     timezone=timezone)
 
         # We need to add to the session or it won't ever be stored

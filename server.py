@@ -13,7 +13,6 @@ import googleapiclient.discovery
 
 from functools import wraps
 
-
 from flask_debugtoolbar import DebugToolbarExtension
 
 from model import User, Task, Collect, Kao, Used_Kao,connect_to_db, db
@@ -22,10 +21,13 @@ import datetime
 from datetime import timedelta
 import random
 
+
+# Tilia's modules
 import timehelpers
 import task_logic
 import cal
 import oAuth_flow
+import hashes
 
 
 
@@ -91,7 +93,7 @@ def index():
         "boxer": u"(งಠ_ಠ)ง It's the eye of the tiger, it's the thrill of the fight...",
         "mage": u"(ﾉ>ω<)ﾉ :｡･:*:･ﾟ’★,｡･:*:･ﾟ’☆ Abracadabra! Lets be productive!",
         "bear": u"ʕ •̀ ω •́ ʔ Keep going! You can bear it!",
-        "allie": u"╰(°ロ°)╯ Do all the things!"
+        "allieB": u"╰(°ロ°)╯ Do all the things!"
         }
     slogan = random.choice(list(kao_dict.values() ) ) 
     # print(slogan)
@@ -133,7 +135,7 @@ def register_confirm():
     else:
         user = User(username=username_input,
                     email=email_input,
-                    password=password_input1,
+                    password=hashes.get_hash(password_input1),
                     timezone=timezone_input)
 
 
@@ -166,22 +168,22 @@ def login_confirm():
     pwd_input = request.form.get('password')
 
     if User.query.filter_by(username=username_input).first():
-        current_user = User.query.filter_by(username=username_input).first()
-        user_id = str(current_user.user_id)
-        user_pwd = current_user.password
+        user = User.query.filter_by(username=username_input).first()
+        user_id = str(user.user_id)
+        user_pwd_hash = user.password
 
-        if user_pwd == pwd_input:
+        if hashes.val_hash(pwd_input,user_pwd.hash):
             session["current_user_id"] = user_id
-            session["current_username"] = current_user.username
+            session["current_username"] = user.username
             # redirect_route = 'user/' + user_id
             flash("You are now logged in")
             return redirect("/tasks")
         else:
-            flash("Login failed - wrong password")
+            flash("Login failed - invalid Username or Password")
             return render_template('login.html')
 
     else:
-        flash("Login failed - username not recognized")
+        flash("Login failed - invalid Username or Password")
         return render_template('login.html')
 
 
@@ -432,7 +434,6 @@ def delete_task(task_id):
 @login_required
 def user_info():
     """lets a user change their info"""
-
     user = User.query.get(session["current_user_id"])
     collects = Collect.query.filter_by(user_id=user.user_id)
     # for collect in collects:
@@ -526,7 +527,9 @@ def create_cal_event():
     # BUILD credentials from the DB -- ACTION ITEM (TILIA)
 
     credentials = google.oauth2.credentials.Credentials(
-    **session['credentials']) 
+    **session['credentials'])
+
+    print("session['credentials'] : ",session['credentials'])
     ## ACTUALLY TILIA ACTION ITEM IS TO PULL user token and 
     # user refresh token from DB rather than session
 
@@ -550,7 +553,7 @@ def create_cal_event():
 
 
     ev = cal.convert_task_to_cal_event(task,user)
-    # print(ev)
+    print("event object: ",ev)
     
     cal.create_event(ev,credentials)
     # flash("cal event created")

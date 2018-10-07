@@ -21,9 +21,9 @@ class User(db.Model):
     user_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
     username = db.Column(db.String(64), unique=True)
     email = db.Column(db.String(64), nullable=False, unique=True)
-    password = db.Column(db.String(64), nullable=False)
-    # oAuth_token = db.Column(db.String(256), nullable=True)
-    # oAuth_refresh_token = db.Column(db.String(256), nullable=True)
+    password = db.Column(db.String(512), nullable=False)
+    oAuth_token = db.Column(db.String(256), nullable=True)
+    oAuth_refresh_token = db.Column(db.String(256), nullable=True)
     timezone = db.Column(db.String(32), default="US/Pacific")
     
     def __repr__(self):
@@ -41,6 +41,8 @@ class Task(db.Model):
     is_complete = db.Column(db.Boolean, nullable=False, default=False)
     is_repeating = db.Column(db.Boolean, default=False)
     due_date = db.Column(db.DateTime, default=False)
+    completion_date = db.Column(db.DateTime, nullable=True)
+    
 
 
     def __repr__(self):
