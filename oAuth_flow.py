@@ -2,10 +2,10 @@ from oauth2client.client import flow_from_clientsecrets
 
 flow = flow_from_clientsecrets('client_secrets.json',
            scope='https://www.googleapis.com/auth/calendar',
-           redirect_uri='http://localhost:5000/oAuth-confirm')
+           redirect_uri='http://localhost:5000/oAuth-callback')
 
 
-flow.redirect_uri = 'http://localhost:5000/oAuth-confirm'
+flow.redirect_uri = 'http://localhost:5000/oAuth-callback'
 
 authorization_url = flow.step1_get_authorize_url()
 

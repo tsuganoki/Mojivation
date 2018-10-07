@@ -4,6 +4,13 @@ from jinja2 import StrictUndefined
 from flask import (Flask, render_template, redirect, request, flash,
                    session, jsonify, g, url_for)
 
+import os
+import requests
+
+import google.oauth2.credentials
+import google_auth_oauthlib.flow
+import googleapiclient.discovery
+
 from functools import wraps
 
 
@@ -19,6 +26,7 @@ import timehelpers
 import task_logic
 import cal
 import oAuth_flow
+
 
 
 
@@ -512,24 +520,69 @@ def create_cal_event():
     task_id = int(request.form.get("task_id"))
     task = Task.query.get(task_id)
 
+    if 'credentials' not in session:
+        return redirect('/oAuth-authorize')
+
+    # BUILD credentials from the DB -- ACTION ITEM (TILIA)
+
+    credentials = google.oauth2.credentials.Credentials(
+    **session['credentials']) 
+    ## ACTUALLY TILIA ACTION ITEM IS TO PULL user token and 
+    # user refresh token from DB rather than session
+
+
+    # files = drive.files().list().execute()
+
+    # Save credentials back to session in case access token was refreshed.
+    # ACTION ITEM: In a production app, you likely want to save these
+    #              credentials in a persistent database instead.
+
+    # session['credentials'] = credentials_to_dict(credentials)
+    session['credentials'] = {
+        'token': credentials.token,
+        'refresh_token': credentials.refresh_token,
+        'token_uri': credentials.token_uri,
+        'client_id': credentials.client_id,
+        'client_secret': credentials.client_secret,
+        'scopes': credentials.scopes}
+    # return jsonify(**files)
+
 
 
     ev = cal.convert_task_to_cal_event(task,user)
-    print(ev)
-    cal.create_event(ev)
-    flash("cal event created")
+    # print(ev)
+    
+    cal.create_event(ev,credentials)
+    # flash("cal event created")
     return redirect('/tasks')
 
 
 
-@app.route("/oAuth-authoriz")
+@app.route("/oAuth-authorize")
 @login_required
 def google_oAuth_authorization():
     """google oAuth authorization flow"""
 
-    flow = oAuth_flow.flow
-    authorization_url = oAuth_flow.authorization_url
-    print(authorization_url)
+    flow = google_auth_oauthlib.flow.Flow.from_client_secrets_file("client_secrets.json",
+     scopes=["https://www.googleapis.com/auth/calendar"])
+
+    flow.redirect_uri = url_for('oAuth_callback', _external=True)
+
+    authorization_url, state = flow.authorization_url(
+    # Enable offline access so that you can refresh an access token without
+    # re-prompting the user for permission. Recommended for web server apps.
+    access_type='offline',
+    # Enable incremental authorization. Recommended as a best practice.
+    include_granted_scopes='true')
+
+    session['state'] = state
+
+
+    # flow = oAuth_flow.flow
+
+    # authorization_url = oAuth_flow.authorization_url
+    
+    # print(authorization_url)
 # login_hint: string, Either an email address or domain. Passing this
 #  |                      hint will either pre-fill the email box on the sign-in
 #  |                      form or select the proper multi-login session, thereby
@@ -538,23 +591,52 @@ def google_oAuth_authorization():
     return redirect(authorization_url)
 
 
-@app.route("/oAuth-confirm")
+@app.route("/oAuth-callback") #this is the callback page
 @login_required
-def oAuth_confirm():
+def oAuth_callback():
     user = User.query.get(session["current_user_id"])
 
-    token = request.args.get("code")
-    print("the request.args thing is: ",request.args)
+    state = session['state']
+    flow = google_auth_oauthlib.flow.Flow.from_client_secrets_file(
+        'client_secrets.json',
+        scopes=['https://www.googleapis.com/auth/calendar'],
+        state=state)
 
-     # ImmutableMultiDict([
-     #    ('code', '4/cAAnkAhSKX1QEn9eU5mRO9gu-BIfwXKXZUegtALZdpCmJRLTsEC0wjFhs6bJPuHc92RU-oUxLEn0u6MfHN0dNyc'), 
-     #    ('scope', 'https://www.googleapis.com/auth/calendar')])
-    # print("THE TOKEN IS: ",token)
-    # User.oAuth_token = token
+    flow.redirect_uri = url_for('oAuth_callback', _external=True)
+
+    authorization_response = request.url
+    print("Authorization response(request.url", authorization_response)
+    flow.fetch_token(authorization_response=authorization_response)
+
+    # Store the credentials in the session.
+
+    ######### ACTION ITEM for developers: TILIA DO THIS ##############
+    
+    # User.oAuth_token = session['credentials']['token']
+    # User.oAuth_refresh_token = session['credentials']['refresh_token']
+
     # print(user.oAuth_token)
+    # print(user.oAuth_refresh_token)
     # db.session.commit()
-    # something = "getting the callback info and token"
-    if token:
+
+    #     Store user's access and refresh tokens in your data store if
+    #     incorporating this code into your real app.
+    credentials = flow.credentials
+    session['credentials'] = {
+        'token': credentials.token,
+        'refresh_token': credentials.refresh_token,
+        'token_uri': credentials.token_uri,
+        'client_id': credentials.client_id,
+        'client_secret': credentials.client_secret,
+        'scopes': credentials.scopes}
+
+    # session["code"] = request.args.get("code")
+    # print("the request.args thing is: ",request.args)
+    print("flow credentials are: ",flow.credentials)
+
+
+
+    if session['credentials']:
         flash("Connected to google") 
     return redirect("/tasks")
 
@@ -567,7 +649,7 @@ if __name__ == "__main__":
     app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
     # make sure templates, etc. are not cached in debug mode
     app.jinja_env.auto_reload = app.debug
-
+    os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = '1'
     connect_to_db(app)
 
     # Use the DebugToolbar
