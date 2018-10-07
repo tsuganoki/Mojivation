@@ -18,13 +18,13 @@ class User(db.Model):
 
     __tablename__ = "users"
 
-    user_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
-    username = db.Column(db.String(64), unique=True)
-    email = db.Column(db.String(64), nullable=False, unique=True)
-    password = db.Column(db.String(512), nullable=False)
-    oAuth_token = db.Column(db.String(256), nullable=True)
+    user_id         = db.Column(db.Integer, autoincrement=True, primary_key=True)
+    username        = db.Column(db.String(64), unique=True)
+    email           = db.Column(db.String(64), nullable=False, unique=True)
+    password        = db.Column(db.String(512), nullable=False)
+    oAuth_token     = db.Column(db.String(256), nullable=True)
     oAuth_refresh_token = db.Column(db.String(256), nullable=True)
-    timezone = db.Column(db.String(32), default="US/Pacific")
+    timezone        = db.Column(db.String(32), default="US/Pacific")
     
     def __repr__(self):
         """Provide helpful representation when printed."""

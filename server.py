@@ -138,12 +138,10 @@ def register_confirm():
                     password=hashes.get_hash(password_input1),
                     timezone=timezone_input)
 
-
-        # We need to add to the session or it won't ever be stored
         db.session.add(user)
-        # Once we're done, we should commit our work
         db.session.commit()
 
+        # adding user to session
         session["current_user_id"] = user.user_id
         session["current_username"] = user.username
 
@@ -193,6 +191,8 @@ def logout():
     if session.get("current_user_id"):
         del session["current_username"]
         del session["current_user_id"]
+        if session.get('credentials'):
+            del session['credentials']
         flash("You are now logged out")
         return redirect("/")
     else:
@@ -220,14 +220,15 @@ def view_tasks():
 @login_required
 def get_tasks_js():
     user = User.query.get(session["current_user_id"])
-    return render_template("tasks_js.html")
+    return render_template("tasks_js.html", EOD=2)
 
 
 
-@app.route("/get-tasks.json")
+@app.route("/get-tasks.json", methods=['GET'])
 @login_required
 def get_tasks():
     user = User.query.get(session["current_user_id"])
+    print("call made to /get-tasks.json")
     # user = User.query.get(21)
     task_dict = task_logic.convert_tasklist_to_dict(user.tasks)
 
@@ -515,50 +516,7 @@ def award_kao():
 
     db.session.add(new_collect)
 
-@app.route("/create-cal-event", methods=['POST'])
-@login_required
-def create_cal_event():
-    user = User.query.get(session["current_user_id"])
-    task_id = int(request.form.get("task_id"))
-    task = Task.query.get(task_id)
 
-    if 'credentials' not in session:
-        return redirect('/oAuth-authorize')
-
-    # BUILD credentials from the DB -- ACTION ITEM (TILIA)
-
-    credentials = google.oauth2.credentials.Credentials(
-    **session['credentials'])
-
-    print("session['credentials'] : ",session['credentials'])
-    ## ACTUALLY TILIA ACTION ITEM IS TO PULL user token and 
-    # user refresh token from DB rather than session
-
-
-    # files = drive.files().list().execute()
-
-    # Save credentials back to session in case access token was refreshed.
-    # ACTION ITEM: In a production app, you likely want to save these
-    #              credentials in a persistent database instead.
-
-    # session['credentials'] = credentials_to_dict(credentials)
-    session['credentials'] = {
-        'token': credentials.token,
-        'refresh_token': credentials.refresh_token,
-        'token_uri': credentials.token_uri,
-        'client_id': credentials.client_id,
-        'client_secret': credentials.client_secret,
-        'scopes': credentials.scopes}
-    # return jsonify(**files)
-
-
-
-    ev = cal.convert_task_to_cal_event(task,user)
-    print("event object: ",ev)
-    
-    cal.create_event(ev,credentials)
-    # flash("cal event created")
-    return redirect('/tasks')
 
 
 
@@ -614,14 +572,6 @@ def oAuth_callback():
 
     # Store the credentials in the session.
 
-    ######### ACTION ITEM for developers: TILIA DO THIS ##############
-    
-    # User.oAuth_token = session['credentials']['token']
-    # User.oAuth_refresh_token = session['credentials']['refresh_token']
-
-    # print(user.oAuth_token)
-    # print(user.oAuth_refresh_token)
-    # db.session.commit()
 
     #     Store user's access and refresh tokens in your data store if
     #     incorporating this code into your real app.
@@ -634,16 +584,68 @@ def oAuth_callback():
         'client_secret': credentials.client_secret,
         'scopes': credentials.scopes}
 
-    # session["code"] = request.args.get("code")
-    # print("the request.args thing is: ",request.args)
-    print("flow credentials are: ",flow.credentials)
+    # print("flow credentials are: ",flow.credentials)
+    # print("flow refresh token is: ", credentials.refresh_token)
 
+    ######### ACTION ITEM for developers: TILIA DO THIS ##############
+    user.oAuth_token = session['credentials']['token']
+    # User.oAuth_refresh_token = session['credentials']['refresh_token']
+    # print("refresh token: ", session['credentials']['refresh_token'])
+
+    # print(user.oAuth_token)
+    # print(user.oAuth_refresh_token)
+    db.session.commit()
 
 
     if session['credentials']:
         flash("Connected to google") 
     return redirect("/tasks")
 
+
+@app.route("/create-cal-event", methods=['POST'])
+@login_required
+def create_cal_event():
+    user = User.query.get(session["current_user_id"])
+    task_id = int(request.form.get("task_id"))
+    task = Task.query.get(task_id)
+
+    if 'credentials' not in session:
+        return redirect('/oAuth-authorize')
+
+    # BUILD credentials from the DB -- ACTION ITEM (TILIA)
+
+    credentials = google.oauth2.credentials.Credentials(
+    **session['credentials'])
+
+    print("session['credentials'] : ",session['credentials'])
+    ## ACTUALLY TILIA ACTION ITEM IS TO PULL user token and 
+    # user refresh token from DB rather than session
+
+
+    # files = drive.files().list().execute()
+
+    # Save credentials back to session in case access token was refreshed.
+    # ACTION ITEM: In a production app, you likely want to save these
+    #              credentials in a persistent database instead.
+
+    # session['credentials'] = credentials_to_dict(credentials)
+    session['credentials'] = {
+        'token': user.oAuth_token,
+        'refresh_token': credentials.refresh_token,
+        'token_uri': credentials.token_uri,
+        'client_id': credentials.client_id,
+        'client_secret': credentials.client_secret,
+        'scopes': credentials.scopes}
+    # return jsonify(**files)
+
+
+
+    ev = cal.convert_task_to_cal_event(task,user)
+    print("event object: ",ev)
+    
+    cal.create_event(ev,credentials)
+    flash("Your task was added to your calendar")
+    return redirect('/tasks')
 
 
 if __name__ == "__main__":
