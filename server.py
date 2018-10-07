@@ -172,7 +172,7 @@ def login_confirm():
         user_id = str(user.user_id)
         user_pwd_hash = user.password
 
-        if hashes.val_hash(pwd_input,user_pwd.hash):
+        if hashes.val_hash(pwd_input,user_pwd_hash):
             session["current_user_id"] = user_id
             session["current_username"] = user.username
             # redirect_route = 'user/' + user_id
@@ -310,7 +310,8 @@ def confirm_edit():
     task.msg = task_msg_input
 
     is_repeating_input = request.form.get("repeating")
-    is_repeating = True if is_repeating_input == "True" else False
+    print("isrepeating_input: ", is_repeating_input)
+    task.is_repeating = True if is_repeating_input == "True" else False
 
 
     user_tz_str = user.timezone
@@ -324,9 +325,9 @@ def confirm_edit():
         # print("input received: ", duedate_input)
         due_date = timehelpers.convert_date_string_to_localized_datetime(duedate_input,user_tz_str)
 
-    print(task.msg)
+    # print(task.msg)
     task.due_date = due_date
-    print(task.due_date)
+    # print(task.due_date)
 
     db.session.commit()
     # print(Task.query.all())
