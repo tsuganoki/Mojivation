@@ -234,7 +234,7 @@ def get_tasks():
     EOD = timehelpers.get_user_EOD(user.timezone)
     print(EOD)
 
-    data = {"tasks" : task_dict, "EOD": EOD}
+    data = {"tasks" : task_dict, "EOD": task_logic.convert_datetime_to_dict(EOD)}
     return jsonify(data)   
 
 

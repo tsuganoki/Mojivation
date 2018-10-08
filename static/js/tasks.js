@@ -3,27 +3,21 @@ $(document).ready(function() {
 	$.get('get-tasks.json', function (data) {
 
 		let tasks = data.tasks
-		let EOD = data.EOD
-		console.log(typeof(EOD))
+		let py_EOD = data.EOD
+
+		EOD = assemble_date(py_EOD)
 
 		for (let task of tasks) {
-			if (task.is_complete === false ) {
+			if (task.is_complete === false && assemble_date(task.due_date) >= EOD ) {
 				$('#today-tasks-ul').append(getIncompleteTaskHTML(task))
-
-
-
-			}
-			else if (task.is_complete) {
+			}else if (task.is_complete === false && assemble_date(task.due_date) < EOD ) {
+				$('#later-tasks-ul').append(getIncompleteTaskHTML(task))
+			}else if (task.is_complete) {
 				$('#completed-tasks-ul').append(getCompletedTaskHTML(task))
-			}
+			};
 			
 
 		};
-		
-
-		$('.test_tasks').html("TEST_TASKS")
-
-
 	})		
 });
 
@@ -68,24 +62,6 @@ function getCompletedTaskHTML (task) {
 	
 	return taskHTML;
 }
-	// {% for task in tasks %}
- //    {% if task.is_complete %}
- //      <form action="/undo_complete" method="POST">
- //        <input hidden name="task_id" 
- //        value={{task.task_id}}>
- //        <input hidden name="potato" value="apple">
- //    <li class="completed-task-li">
- //        <input type="submit" value="Undo">
- //        {{task.msg}}
- //        <a href="/delete-task-{{task.task_id}}">
- //            <i class="fa fa-times-circle-o ex-cirle" aria-hidden="true" alttext="delete task"></i>
- //        </a>
- //    </li>
- //      </form>
-
- //    {% endif %}
- //    {% endfor %}
-
 
 
 $(".task-button").click(function () {
@@ -93,6 +69,16 @@ $(".task-button").click(function () {
 
 });
 
+
+function assemble_date(dt_dict) {
+	// const d = new Date(dt_dict."year", dt_dict."month",
+	//  dt_dict."day", dt_dict."hours", dt_dict."minutes",
+	//   dt_dict."seconds", dt_dict."milliseconds");
+
+	var d = new Date(dt_dict.year, dt_dict.month, dt_dict.day, dt_dict.hours, dt_dict.minutes, dt_dict.seconds, dt_dict.milliseconds);
+
+	return d
+}
 
 
 // function updateTasks(data) {
