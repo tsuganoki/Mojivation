@@ -231,8 +231,11 @@ def get_tasks():
     print("call made to /get-tasks.json")
     # user = User.query.get(21)
     task_dict = task_logic.convert_tasklist_to_dict(user.tasks)
+    EOD = timehelpers.get_user_EOD(user.timezone)
+    print(EOD)
 
-    return jsonify(task_dict)   
+    data = {"tasks" : task_dict, "EOD": EOD}
+    return jsonify(data)   
 
 
 

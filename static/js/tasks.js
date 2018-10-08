@@ -1,38 +1,72 @@
 	console.log('POTATO'); 
 $(document).ready(function() {
 	$.get('get-tasks.json', function (data) {
-		console.log("get run")
-		console.log(data)
-		let results = data;
-		let taskHTML = "<ul>"
+
+		let tasks = data.tasks
+		let EOD = data.EOD
+		console.log(typeof(EOD))
+
+		for (let task of tasks) {
+			if (task.is_complete === false ) {
+				$('#today-tasks-ul').append(getIncompleteTaskHTML(task))
 
 
-		for (let elem of results) {
-			if (elem.is_complete) {
-				$('#completed-tasks-ul').html(displayCompleted(elem))
+
+			}
+			else if (task.is_complete) {
+				$('#completed-tasks-ul').append(getCompletedTaskHTML(task))
 			}
 			
 
 		};
-		taskHTML += "</ul>"
-		// console.log(data)
 		
 
-		$('.test_tasks').html(taskHTML)
+		$('.test_tasks').html("TEST_TASKS")
 
 
 	})		
 });
 
-function displayCompleted (task) {
-	let completedTaskHTML = '';
-	completedTaskHTML += "<b>" + task.msg + "</b>"
-	completedTaskHTML += "<li class=\"completed-task-li\"><input type=\"submit\" value=\"Undo\"><a class=\"task-msg\" href=\"/edit_task/"+ task.task_id+"\">"+task.msg+"</a><a href=\"/delete-task-"+ task.task_id+"\"><i class=\"fa fa-times-circle-o ex-cirle\" aria-hidden=\"true\" alttext=\"delete task\"></i></a></li></form>"
+function getIncompleteTaskHTML (task) {
+	let taskHTML = `
+      <form action="/complete-task" method="POST">
+        <input hidden 
+             name="task_id" 
+             value=` + task.task_id + `>
+      <li>
+        <input type=submit name="complete" value="Done"> 
+        <a class="task-msg" 
+           href="/edit_task/` + task.task_id + `">
+            ` + task.msg + `
+        </a>
 
-		// completedTaskHTML += "<form action=\"/undo_complete\" method=\"POST\"><input hidden name=\"task_id\" value="+ task.task_id +">"
-	console.log(completedTaskHTML)
+        <a href="/delete-task-` + task.task_id + `">
+          <i class="fa fa-times-circle-o ex-cirle" aria-hidden="true" alttext="delete task"></i>
+        </a>
+      </li>
+    </form>`
+
+
+	return taskHTML;
+};
+
+
+function getCompletedTaskHTML (task) {
+
+	let taskHTML = `
+	  <form action="/undo_complete" method="POST">
+			<li class="completed-task-li">
+			  <input hidden name="task_id" value=`+ task.task_id +`>
+				<input type="submit" value="Undo"><a class="task-msg" href="/edit_task/`+ task.task_id+`"> `+ task.msg+` </a>
+					<a href="/delete-task-`+ task.task_id+`">
+					<i class="fa fa-times-circle-o ex-cirle" aria-hidden="true" alttext="delete task"></i></a>
+			</li>
+		</form>`
+
+
+		// taskHTML += "<form action=\"/undo_complete\" method=\"POST\"><input hidden name=\"task_id\" value="+ task.task_id +">"
 	
-	return completedTaskHTML;
+	return taskHTML;
 }
 	// {% for task in tasks %}
  //    {% if task.is_complete %}
