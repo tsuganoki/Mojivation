@@ -650,6 +650,10 @@ def create_cal_event():
     flash("Your task was added to your calendar")
     return redirect('/tasks')
 
+@app.route("/react-demo")
+def react_demo():
+    return render_template("demo.html")
+
 
 if __name__ == "__main__":
     # We have to set debug=True here, since it has to be True at the
