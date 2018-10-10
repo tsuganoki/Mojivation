@@ -19,7 +19,7 @@ def convert_task_to_cal_event(task,user):
     event['summary'] = task.msg
 
     event['start']   = { "dateTime": rfc(task.due_date) }
-    event['end']     = { "dateTime": rfc(task.due_date) }
+    event['end']     = { "dateTime": rfc(task.due_date + datetime.timedelta(hours=1)) }
     event["creator"] = {"displayName": user.username }
     return event
 

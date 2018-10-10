@@ -145,8 +145,14 @@ def convert_date_string_to_localized_datetime(datetime_string,tz_string):
     tz = pytz.timezone(tz_string)
     due_date = tz.localize(date_obj)
 
-    return add_24_hrs(due_date)
+    return due_date
 
+def convert_time_string_to_localized_time_delta(time_string):
+    """takes a timestring in 24-hr hh:mm, and string of timezone"""
+    t = time_string.split(":")
+    t = [int(x) for x in t]
+    td = timedelta(hours=t[0],minutes=t[1])
+    return td
 
 def get_user_midnight(tz_string):
     """returns a UTC timeat midnight in UTC on a users current day"""

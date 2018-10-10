@@ -7,6 +7,7 @@ from flask import (Flask, render_template, redirect, request, flash,
 import os
 import requests
 
+
 import google.oauth2.credentials
 import google_auth_oauthlib.flow
 import googleapiclient.discovery
@@ -263,6 +264,8 @@ def add_new_task():
     is_repeating_input = request.form.get("repeating")
     is_repeating = True if is_repeating_input == "True" else False
 
+    # usr_time=13:44 
+
 
     user_tz_str = user.timezone
     if request.form.get("today") or request.form.get("duedate") == "":
@@ -276,6 +279,11 @@ def add_new_task():
         # print("due_date converted to: ", due_date)
         # print("original due_date: ", duedate_input)
         # duedate_datetime_localized = user_zone.localize(duedate_datetime)
+
+    due_time = request.form.get("due_time")
+    if due_time:
+        due_time_delta = timehelpers.convert_time_string_to_localized_time_delta(due_time)
+    due_date = due_date + due_time_delta
 
     task = Task(msg=task_msg_input,
                 is_repeating=is_repeating,
@@ -520,7 +528,29 @@ def award_kao():
     db.session.add(new_collect)
 
 
+# @app.route('/test')
+# def test_api_request():
+#   if 'credentials' not in session:
+#     return redirect('authorize')
 
+#   # Load credentials from the session.
+#   credentials = google.oauth2.credentials.Credentials(
+#       **session['credentials'])
+
+#   calendar = googleapiclient.discovery.build('calendar', 'v3', credentials=credentials)
+
+# #     CAL = build('calendar', 'v3', credentials=creds)
+
+#   # files = drive.files().list().execute()
+#   events = calendar.calendarList().get(calendarId='primary').execute()
+
+#   # Save credentials back to session in case access token was refreshed.
+#   # ACTION ITEM: In a production app, you likely want to save these
+#   #              credentials in a persistent database instead.
+#   # session['credentials'] = credentials_to_dict(credentials)
+
+
+#   return jsonify(**events)
 
 
 @app.route("/oAuth-authorize")

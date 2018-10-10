@@ -1,0 +1,26 @@
+
+{% extends 'base.html' %}
+{% block title %}Index{% endblock %}
+
+{% block h1_heading %}{% endblock %}
+
+{% block content %} 
+
+<h1>Demo: Hello</h1>
+
+  <p>I made a React component!</p>
+
+  <div id="root"> <!-- component will go in this div --> </div>
+
+  <p>Isn't it neat?</p>
+
+  <script crossorigin src="https://unpkg.com/react@16/umd/react.development.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+
+  <script src="http://unpkg.com/babel-standalone"></script>
+
+  <script src="react.jsx" type="text/jsx"></script>
+
+
+
+ {% endblock %}
