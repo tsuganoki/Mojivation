@@ -126,7 +126,7 @@ def get_now_UTC():
 def get_user_now(tz_string):
     user_zone = pytz.timezone(tz_string)
 
-    user_now = get_now_UTC().astimezone(user_zone)
+    user_now = datetime.now().astimezone(user_zone)
 
     return user_now.replace(tzinfo=None)
 

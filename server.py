@@ -283,7 +283,7 @@ def add_new_task():
     due_time = request.form.get("due_time")
     if due_time:
         due_time_delta = timehelpers.convert_time_string_to_localized_time_delta(due_time)
-    due_date = due_date + due_time_delta
+        due_date = due_date + due_time_delta
 
     task = Task(msg=task_msg_input,
                 is_repeating=is_repeating,
@@ -395,6 +395,7 @@ def complete_task():
         db.session.commit()
     else:
         task.is_complete = True
+        task.completion_date = timehelpers.get_now_UTC()
         db.session.commit()
     if timehelpers.check_remaining_tasks(user.tasks,user.timezone):
         return redirect("/collect-kao")
@@ -680,7 +681,7 @@ def create_cal_event():
     flash("Your task was added to your calendar")
     return redirect('/tasks')
 
-@app.route("/react-demo")
+@app.route("/demo")
 def react_demo():
     return render_template("demo.html")
 

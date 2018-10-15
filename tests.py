@@ -4,6 +4,7 @@ from model import connect_to_db, db, example_data, User, Task
 from flask import session
 from server import install_secret_key
 import timehelpers
+import seed
 
 # class FlaskTestsBasic(TestCase):
 #     """Flask tests."""
@@ -23,6 +24,22 @@ import timehelpers
 #         result = self.client.get("/")
 #         self.assertIn(b"class=\"home-page-mantra\"", result.data)
 
+def create_testdb():
+
+    connect_to_db(app, "postgresql:///testdb")
+    db.create_all()
+
+    # Import different types of data
+    seed.delete_everything()
+    seed.load_users()
+    seed.load_tasks()
+    seed.load_kaos()
+    seed.load_collects()
+    seed.load_used_kaos()
+    seed.set_val_user_id()
+    seed.set_val_task_id()
+    seed.set_val_collect_id()
+    seed.set_val_kao_id()
 
 class FlaskTestsDatabase(TestCase):
     """Flask tests that use the database."""
