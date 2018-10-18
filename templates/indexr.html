@@ -15,18 +15,17 @@
   <script src="static/js/index.jsx" type="text/jsx"></script>
 
   
-{% block reactjsx %} react link here {% endblock %}
 
 <!-- my own CSS -->
 
+  <link rel="stylesheet" href="/static/css/bootstrap.css">
   <link rel="stylesheet" href="/static/css/site.css">
-  
 </head>
 <body>
 
 
 
-
+<!-- 
 <div class="header-bar">
 
   <span class="TESTING"> <a href="/oAuth-authorize">authorize with oAuth</a>
@@ -47,22 +46,50 @@
       <a href="/register"> Register</a>     </span>
 
    {% endif %}
-    
+</div> -->
 
-</div>
 
-	<h1>{% block h1_heading %}HEADING {% endblock %}</h1>
 
-  <p>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <a class="navbar-brand" href="#">Mojivation</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor03" aria-controls="navbarColor03" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
 
-  </p>
+  <div class="collapse navbar-collapse" id="navbarColor03">
+    <ul class="navbar-nav ml-auto">
+      <li class="nav-item active">
+        <a class="nav-link" href="#">Tasks <span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">User</a>
+      </li>
+
+      <li class="nav-item">
+        <a class="nav-link" href="#">oAuth with Google Calendar</a>
+      </li>
+    </ul>
+    <form class="form-inline my-2 my-lg-0">
+      
+      <button class="btn btn-secondary my-2 my-sm-0" type="submit">Logout</button>
+    </form>
+  </div>
+</nav>
+
+
+
+
+
+
+
+
 	  {% with messages = get_flashed_messages() %}
       {% for message in messages %}
           <div class="flash">{{ message }}</div>
       {% endfor %}
   {% endwith %}
 
-	{% block content %} content goes here {% endblock %}
+<div id='root'></div>
 	
 	
 </body>

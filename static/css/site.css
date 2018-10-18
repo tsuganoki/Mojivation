@@ -17,7 +17,12 @@ a.task-msg {
 a:hover {
 	background-color:lightgrey;
 }
-
+/*.navbar{
+	margin-top:10px;
+}
+.navbar-light {
+	background-color: #f9f9f9 !important;
+}*/
 
 .home-page-mantra{
 	font-size: 2em;
