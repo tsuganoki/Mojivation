@@ -102,7 +102,7 @@ def index():
 @app.route('/r')
 @app.route('/indexr')
 def indexr():
-
+    flash("this is a flash message")
     return render_template("indexr.html")  
 
 @app.route('/slogan.json')

@@ -59,7 +59,7 @@
   <div class="collapse navbar-collapse" id="navbarColor03">
     <ul class="navbar-nav ml-auto">
       <li class="nav-item active">
-        <a class="nav-link" href="#">Tasks <span class="sr-only">(current)</span></a>
+        <a class="nav-link" href="/tasks">Tasks <span class="sr-only">(current)</span></a>
       </li>
       <li class="nav-item">
         <a class="nav-link" href="#">User</a>
@@ -71,7 +71,7 @@
     </ul>
     <form class="form-inline my-2 my-lg-0">
       
-      <button class="btn btn-secondary my-2 my-sm-0" type="submit">Logout</button>
+      <button class="btn btn-secondary my-2 my-sm-0" type="submit">Login</button>
     </form>
   </div>
 </nav>
@@ -82,14 +82,66 @@
 
 
 
+<div class="alert alert-dismissible alert-secondary bg-light remove">
+  <button type="button" class="close" data-dismiss="alert">&times;</button>
 
 	  {% with messages = get_flashed_messages() %}
-      {% for message in messages %}
-          <div class="flash">{{ message }}</div>
-      {% endfor %}
-  {% endwith %}
+	      {% for message in messages %}
+	          <div class="flash">{{ message }}</div>
+	      {% endfor %}
+	  {% endwith %}
+</div>
 
-<div id='root'></div>
+
+
+  <div class='home-page-mantra'><span id="slogan"></span></div>
+
+<div class="alert-secondary bg-light center remove">
+  <!-- <hr class="my-1"> -->
+  <p class='lead'>
+  	<ul class='lead-sm'>
+  		<li>Collect a Moji every day that you complete your tasks
+  		</li>
+  		<li>Set repeating tasks
+  		</li>
+  		<li>Integrate with your Google calendar
+  		</li>
+  		<li class="hidden"> .</li>
+  		<li>
+		    <a class="btn btn-primary  " href="#" role="button">Sign Up</a>
+  		</li>
+  	</ul>
+	</p>
+  <p class="lead">
+  </p>
+</div>
+
+
+<div class="modal bg-light">
+  <div class="modal-dialog bg-light" role="document">
+    <div class="modal-content bg-light">
+      <div class="modal-header">
+        <h5 class="modal-title">Modal title</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>Modal body text goes here.</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary">Save changes</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div id='root'>
+	
+	<!-- React goes here -->
+</div>
 	
 	
 </body>

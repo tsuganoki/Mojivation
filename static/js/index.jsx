@@ -1,16 +1,39 @@
 "use strict";
 
-/* component start */ // These comments are for rendering handouts!
 class Slogan extends React.Component {
+	// randomProp (obj) {
+	// 	var keys = Object.keys(obj)
+ //    return obj[keys[ keys.length * Math.random() << 0]];
+	// }
+	alertMe () {
+		console.log("ALART")
+	}
 
-
+  
   render() {
-    return <p>Hi SLOGAN!</p>;
+  	let slogans  = {
+        "shrug": "¯\_(ツ)_/¯ Guess we can be productive today",
+        "supportive": "~(˘▽˘~) I know you can do it!",
+        "dog": " ∪･ω･∪ Today's Oppawtunities are full of pet-tential",
+        "boxer": "(งಠ_ಠ)ง It's the eye of the tiger, it's the thrill of the fight...",
+        "mage": "(ﾉ>ω<)ﾉ :｡･:*:･ﾟ’★,｡･:*:･ﾟ’☆ Abracadabra! Lets be productive!",
+        "bear": "ʕ •̀ ω •́ ʔ Keep going! You can bear it!",
+        "allieB": "╰(°ロ°)╯ Do all the things!"
+        }
+    let slogan = randomProperty(slogans);
+    // console.log(slogan);
+    return <p> { randomProperty(slogans) }</p>;
+    	
+    	
+    
   }
 }
 /* component end */
 
-
+var randomProperty = function (obj) {
+    var keys = Object.keys(obj)
+    return obj[keys[ keys.length * Math.random() << 0]];
+};
 
 
 
@@ -54,17 +77,14 @@ class FetchWeatherButton extends React.Component {
 
 ReactDOM.render(
   (
-    <div>
-      <JQueryWeatherAlert />
-      <WeatherAlert />
-      <Slogan />,
-
-    </div>
+    	<Slogan slogan="¯\_(ツ)_/¯ Guess we can be productive today."/>
+      
   ),
-  document.getElementById('root'),
+  document.getElementById('slogan'),
 );
 
-
+// <JQueryWeatherAlert />
+      // <WeatherAlert />
 
 
  

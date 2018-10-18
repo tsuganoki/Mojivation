@@ -407,6 +407,11 @@ h6, .h6 {
   font-size: 1.171875rem;
   font-weight: 300;
 }
+.lead-sm {
+  font-size: 1.021875rem;
+  font-weight: 300;
+}
+
 
 .display-1 {
   font-size: 6rem;
@@ -4138,6 +4143,8 @@ input[type="button"].btn-block {
   padding-left: 0;
   margin-bottom: 0;
   list-style: none;
+  margin-right: 2rem;
+
 }
 
 .nav-link {
@@ -4238,6 +4245,8 @@ input[type="button"].btn-block {
       -ms-flex-pack: justify;
           justify-content: space-between;
   padding: 0.5rem 1rem;
+    margin-right: 1rem;
+
 }
 
 .navbar > .container,
@@ -5208,6 +5217,7 @@ input[type="button"].btn-block {
   margin-bottom: 4rem;
   background-color: #eee;
   border-radius: 0;
+  margin-right: 1rem;
 }
 
 @media (min-width: 576px) {
@@ -5225,9 +5235,11 @@ input[type="button"].btn-block {
 .alert {
   position: relative;
   padding: 0.75rem 1.25rem;
-  margin-bottom: 1rem;
+  margin: 1rem 0;
   border: 1px solid transparent;
   border-radius: 0;
+  margin-right: 1rem;
+
 }
 
 .alert-heading {
@@ -5268,6 +5280,7 @@ input[type="button"].btn-block {
   color: #7c7c7c;
   background-color: #fcfcfc;
   border-color: #fafafa;
+  margin-right: 1rem;
 }
 
 .alert-secondary hr {
@@ -6485,7 +6498,7 @@ button.bg-danger:focus {
 }
 
 .bg-light {
-  background-color: #eee !important;
+  background-color: #fff !important;
 }
 
 a.bg-light:hover, a.bg-light:focus,
