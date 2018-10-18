@@ -99,6 +99,26 @@ def index():
     slogan = random.choice(list(kao_dict.values() ) ) 
     # print(slogan)
     return render_template("index.html",slogan=slogan)  
+@app.route('/r')
+@app.route('/indexr')
+def indexr():
+
+    return render_template("indexr.html")  
+
+@app.route('/slogan.json')
+def slogan():
+    kao_dict = {
+        "shrug": u"¯\_(ツ)_/¯ Guess we can be productive today",
+        "supportive": u"~(˘▽˘~) I know you can do it!",
+        "dog": u" ∪･ω･∪ Today's Oppawtunities are full of pet-tential",
+        "boxer": u"(งಠ_ಠ)ง It's the eye of the tiger, it's the thrill of the fight...",
+        "mage": u"(ﾉ>ω<)ﾉ :｡･:*:･ﾟ’★,｡･:*:･ﾟ’☆ Abracadabra! Lets be productive!",
+        "bear": u"ʕ •̀ ω •́ ʔ Keep going! You can bear it!",
+        "allieB": u"╰(°ロ°)╯ Do all the things!"
+        }
+    random_slogan = random.choice(list(kao_dict.keys()))
+
+    return jsonify(kao_dict.get(random_slogan))
 
 @app.route("/register")
 def register():
