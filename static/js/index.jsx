@@ -1,5 +1,29 @@
 "use strict";
 
+
+class Task extends React.Component {
+
+	render() {
+		return (
+			<form action="/complete-task" method="POST">
+		        <input hidden name="task_id" value="20" />
+		      
+		        <input type="submit" name="complete" value="Done" />
+		        <a class="task-msg" 
+		           href="/edit_task/20"> 
+		            Make a Task Component
+		        </a>
+
+		        <a href="/delete-task-20">
+		          <i class="fa fa-times-circle-o ex-cirle" aria-hidden="true" alttext="delete task"></i>
+		        </a>
+
+		      
+		    </form>
+	         );
+
+	};
+}
 class Slogan extends React.Component {
 	// randomProp (obj) {
 	// 	var keys = Object.keys(obj)
@@ -12,7 +36,7 @@ class Slogan extends React.Component {
   
   render() {
   	let slogans  = {
-        "shrug": "¯\_(ツ)_/¯ Guess we can be productive today",
+        "shrug": "¯\\_(ツ)_/¯ Guess we can be productive today",
         "supportive": "~(˘▽˘~) I know you can do it!",
         "dog": " ∪･ω･∪ Today's Oppawtunities are full of pet-tential",
         "boxer": "(งಠ_ಠ)ง It's the eye of the tiger, it's the thrill of the fight...",
@@ -22,14 +46,14 @@ class Slogan extends React.Component {
         }
     let slogan = randomProperty(slogans);
     // console.log(slogan);
-    return <p> { randomProperty(slogans) }</p>;
-    	
+    return <p> { slogan }</p>;
+
     	
     
   }
 }
-/* component end */
 
+// Action Item - Put this function inside of the slogan class
 var randomProperty = function (obj) {
     var keys = Object.keys(obj)
     return obj[keys[ keys.length * Math.random() << 0]];
@@ -37,50 +61,32 @@ var randomProperty = function (obj) {
 
 
 
-/* start jQuery component */
-class JQueryWeatherAlert extends React.Component {
-  // Callback function
-  alertWeather = () => {
-    $.get('/slogan.json', data => {
-      alert("The weather will be " + data.forecast);
-    });
-  }
-
-  render() {
-    return (
-      <button onClick={this.getWeather}>
-        Get Weather with JQuery
-      </button>
-    );
-  }
-}
-/* end jQuery component */
+class App extends React.Component {
+	render () {
+		return [
+				<div>
+			    	<Slogan />
+			    	<Task />
+		    	</div>
+		]
+	}
+};
 
 
-/* start component */
-class FetchWeatherButton extends React.Component {
-  getWeather = () => {
-    fetch('/random/weather.json')
-      .then(response => response.json())
-      .then(data => alert(`The weather will be ${data.forecast}`));
-  }
 
-  render() {
-    return (
-      <button onClick={this.getWeather}>
-        Get Weather with Fetch
-      </button>
-    );
-  }
-}
-/* end component */
+// Render Home-Page Slogan
+ReactDOM.render(
+  (
+  		<Slogan />
+  ),
+  document.getElementById('slogan'),
+);
 
 ReactDOM.render(
   (
-    	<Slogan slogan="¯\_(ツ)_/¯ Guess we can be productive today."/>
-      
+  		<Task />
   ),
-  document.getElementById('slogan'),
+  document.getElementById('task'),
 );
 
 // <JQueryWeatherAlert />

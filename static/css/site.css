@@ -34,6 +34,9 @@ a:hover {
 #quick-add-info{
 	font-size: .7em;
 }
+.login-btn {
+	margin-left: 10px important;
+}
 
 #add-a-task-btn {
 
@@ -60,11 +63,24 @@ a:hover {
 	margin:10px;
 	margin-left: 0;
 	padding: 10px 40px;
+	position: relative;
 	background-color: #ffffff;
-	text-align: right;
 }
 .header-bar-item{
 	margin: 0 8px;
+	text-align: right !important;
+  /*margin-right: auto !important;*/
+
+
+}
+#Mojivation{
+  display: inline-block;
+  padding-top: 0.32421875rem;
+  padding-bottom: 0.32421875rem;
+  margin-right: 1rem;
+  font-size: 1.171875rem;
+  line-height: inherit;
+  white-space: nowrap;
 
 }
 .quick-add{
