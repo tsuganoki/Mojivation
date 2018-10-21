@@ -5,6 +5,9 @@
 {% block h1_heading %}
   All Tasks
 {% endblock %}
+{% block reactjsx %}   <script src="static/js/tasks.jsx" type="text/jsx"></script>
+{% endblock %}
+
 
 
 {% block content %} 
@@ -16,72 +19,10 @@
 
 
 
-<div class="today-tasks">
-  <h2>Due Today</h2>
-  <span id="EOD-span" class="small-text">EOD is: {{EOD}} UTC</span> 
-  <ul>
-    {% for task in tasks %}
-      {% if task.is_complete == False and task.due_date < EOD %}
-      <form action="/complete-task" method="POST">
-        <input hidden 
-             name="task_id" 
-             value={{task.task_id}}>
-      <li>
-        <input type=submit name="complete" value="Done"> 
-        <a class="task-msg" 
-           href="/edit_task/{{task.task_id}}">
-            {{task.msg}}
-        </a>
 
-        <a href="/delete-task-{{task.task_id}}">
-          <i class="fa fa-times-circle-o ex-cirle" aria-hidden="true" alttext="delete task"></i>
-        </a>
-      {% endif %}
-      </li>
-    </form>
-    {% endfor %}
-  </ul>
 
-  <div class="quick-add">
-    <form method="POST" action="/add_new_task">
-      <input type="text_box" 
-           required 
-           name="msg">
-
-      <input hidden name="duedate" value="">
-      <input type="submit" value="Quick Add">
-      <p id="quick-add-info">
-        * Quick add due date auto completes to today
-      </p>
-    </form>
-  </div>
-</div>
-
-<div class="later-tasks">
-  <h2> Due Later</h2>
-  <ul>
-  {% for task in tasks %}
-      {% if task.is_complete == False and
-      task.is_repeating == False and 
-      task.due_date >= EOD %}
-        <form action="/complete-task" method="POST">
-          <input hidden 
-               name="task_id" 
-               value={{task.task_id}}>
-        <li>
-          <input type=submit name="complete" value="Done"> 
-          <a class="task-msg" 
-           href="/edit_task/{{task.task_id}}">
-            {{task.msg}}
-          </a>          
-        <a href="/delete-task-{{task.task_id}}">
-              <i class="fa fa-times-circle-o ex-cirle" aria-hidden="true" alttext="delete task"></i>
-          </a>
-         </form>
-      {% endif %}
-      </li>
-    {% endfor %}
-</ul>
+<div id="root">
+  a random div
 </div>
 
 
@@ -117,13 +58,10 @@
 </div>
 
 
-<div id="this_div" hidden>
-  a random div
-</div>
 
-<button class="task-button">click me</button>
+<!-- <button class="task-button">click me</button>
 <div class='test_tasks'> tasks here</div>
- <script src="/static/js/tasks.js"> </script>
+ <script src="/static/js/tasks.js"> </script> -->
 
  {% endblock %}
  

@@ -1,4 +1,3 @@
-	console.log('POTATO'); 
 $(document).ready(function() {
 	$.get('get-tasks.json', function (data) {
 

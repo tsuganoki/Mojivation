@@ -4,17 +4,20 @@
 class Task extends React.Component {
 
 	render() {
+		let completeTaskRoute = this.props.task_id.toString()
+		let edit_task_route = 'edit_task/' + this.props.task_id.toString()
+		let delete_task_route = 'delete-task-' + this.props.task_id.toString()
+
 		return (
 			<form action="/complete-task" method="POST">
-		        <input hidden name="task_id" value="20" />
+		        <input hidden name="task_id" value={completeTaskRoute} />
 		      
 		        <input type="submit" name="complete" value="Done" />
-		        <a class="task-msg" 
-		           href="/edit_task/20"> 
-		            Make a Task Component
+		        <a class="task-msg" href={edit_task_route}> 
+		            {this.props.task_msg}
 		        </a>
 
-		        <a href="/delete-task-20">
+		        <a href={delete_task_route}>
 		          <i class="fa fa-times-circle-o ex-cirle" aria-hidden="true" alttext="delete task"></i>
 		        </a>
 
@@ -61,16 +64,6 @@ var randomProperty = function (obj) {
 
 
 
-class App extends React.Component {
-	render () {
-		return [
-				<div>
-			    	<Slogan />
-			    	<Task />
-		    	</div>
-		]
-	}
-};
 
 
 
@@ -84,7 +77,10 @@ ReactDOM.render(
 
 ReactDOM.render(
   (
-  		<Task />
+  		<div>
+	  		<Task task_msg=" Make a react component" task_id={40}/>
+	  		<Task task_msg=" Make another one!" task_id={41}/>
+  		</div>
   ),
   document.getElementById('task'),
 );
