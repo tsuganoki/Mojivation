@@ -6,8 +6,9 @@ class TasksPage extends React.Component {
 	render () {
 		return (
 			<div>
-				<TaskBlock blockName='Today'/>
+				<TaskBlock blockName='Today' showQuickAdd='True' />
 				<TaskBlock blockName='Later'/>
+				<FetchWeatherButton />
 			</div>
 		)
 	}
@@ -30,8 +31,7 @@ class TaskBlock extends React.Component {
 					  		)
 				}
 			  </ul>
-
-			  <QuickAdd />
+			  {this.props.showQuickAdd && <QuickAdd /> }
 
   
 			</div>
@@ -76,6 +76,23 @@ class CompleteTaskBtn extends React.Component {
 			</form>
 		)
 	}
+}
+
+
+class FetchWeatherButton extends React.Component {
+  getWeather = () => {
+    fetch('/get-tasks.json')
+      .then(response => response.json())
+      .then(data => console.log(`The tasks are ${data.tasks[1].msg}`));
+  }
+
+  render() {
+    return (
+      <button onClick={this.getWeather}>
+        Get Weather with Fetch
+      </button>
+    );
+  }
 }
 
 class Task extends React.Component {

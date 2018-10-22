@@ -16,7 +16,7 @@ def convert_datetime_to_dict(dt):
 
 def convert_tasklist_to_dict(tasklist):
 
-	task_dict = [  
+	task_dict = [
 		{"msg":task.msg, 
 		"is_complete":task.is_complete,
 		"due_date":convert_datetime_to_dict(task.due_date),
