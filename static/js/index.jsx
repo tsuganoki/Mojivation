@@ -32,9 +32,7 @@ class Slogan extends React.Component {
 	// 	var keys = Object.keys(obj)
  //    return obj[keys[ keys.length * Math.random() << 0]];
 	// }
-	alertMe () {
-		console.log("ALART")
-	}
+	
 
   
   render() {

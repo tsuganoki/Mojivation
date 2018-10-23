@@ -252,12 +252,21 @@ def get_tasks():
     print("call made to /get-tasks.json")
     # user = User.query.get(21)
     task_dict = task_logic.convert_tasklist_to_dict(user.tasks)
+
+    return jsonify(task_dict)   
+
+@app.route("/get-eod.json", methods=['GET'])
+@login_required
+def get_eod():
+    user = User.query.get(session["current_user_id"])
+    print("call made to /get-eod.json")
+    # user = User.query.get(21)
+    task_dict = task_logic.convert_tasklist_to_dict(user.tasks)
     EOD = timehelpers.get_user_EOD(user.timezone)
     print(EOD)
 
-    data = {"tasks" : task_dict, "EOD": task_logic.convert_datetime_to_dict(EOD)}
-    return jsonify(data)   
-
+    EOD_dict = task_logic.convert_datetime_to_dict(EOD)
+    return jsonify(EOD_dict)  
 
 
 @app.route("/new_task")
