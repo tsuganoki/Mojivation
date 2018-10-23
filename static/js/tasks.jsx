@@ -15,44 +15,75 @@ class TasksPage extends React.Component {
 	updateTaskData (argument) {
     	this.setState( {taskData: argument} );
 	}
+	componentDidMount () {
+		this.fetchTaskData()
+		this.fetchEOD()
+	}
+	assemble_date(dt_dict) {
+	// const d = new Date(dt_dict."year", dt_dict."month",
+	//  dt_dict."day", dt_dict."hours", dt_dict."minutes",
+	//   dt_dict."seconds", dt_dict."milliseconds");
 
+	var d = new Date(dt_dict.year, dt_dict.month, dt_dict.day, dt_dict.hours, dt_dict.minutes, dt_dict.seconds, dt_dict.milliseconds);
+
+	return d
+	}
 
 	fetchTaskData  = () => {
 		let that = this
-		console.log(this)
+		console.log("TasksPage.this: ",this)
 		fetch('/get-tasks.json')
 		.then(response => response.json())
 
 		.then(data => this.setState( {taskData:data} ) )
-		// .then(data => console.log(data) )
-
-    	console.log("fetchTaskData method has run")
 
 	}
 
 	fetchEOD () {
 		fetch('/get-eod.json')
+		.then(response => response.json())
+
+		.then(data => this.setState( {EOD:this.assemble_date(data)} ) )
+		console.log
+
+
+	}
+	getTodayTasks = (tasksData) => {
+		let todayTasks = []
+		todayTasks = tasksData.filter ( task => this.assemble_date(task.due_date) <= this.state.EOD )
+		return todayTasks
+
+
+
+	}
+	getLaterTasks = (tasksData) => {
+		let laterTasks = []
+		laterTasks = tasksData.filter ( task => this.assemble_date(task.due_date) > this.state.EOD )
+		return laterTasks
+
+
+
+	}
+	getCompletedTasks = (tasksData) => {
+		let completeTasks = []
+		completeTasks = tasksData.filter ( task => task.is_complete === true )
+		return completeTasks
+
+
 
 	}
 	render () {
 		return (
 			<div>
-				<FetchTasksBtn onClick={this.fetchTaskData} />
 
-				<TaskBlock tasks={this.state.taskData} blockName='Due Today' showQuickAdd='True' />
-				<TaskBlock tasks={this.state.taskData} blockName='Due Later'/>
-				<TaskBlock tasks={this.state.taskData} blockName="Completed" showClearCompleted="True"/>
+				<TaskBlock tasks={this.getTodayTasks(this.state.taskData)} blockName='Due Today' showQuickAdd='True' />
+				<TaskBlock tasks={this.getLaterTasks(this.state.taskData)} blockName='Due Later'/>
+				<TaskBlock tasks={this.getCompletedTasks(this.state.taskData)} blockName="Completed" showClearCompleted="True"/>
 			</div>
 		)
 	}
 }
 
-class FetchTasksBtn extends React.Component {
-		render () {
-			return <p><button onClick={this.props.onClick}>fetch Tasks </button></p>
-		}
-
-}
 
 
 class TaskBlock extends React.Component {
@@ -68,7 +99,7 @@ class TaskBlock extends React.Component {
 			  <span id="EOD-span" className="small-text remove" >EOD is:  sometime UTC</span> 
 			  <ul>
 			  	{ this.props.tasks.map ((task) => {
-								 return <li key={task.task_id}><Task task={task} msg={task.msg} task_id={task.task_id} /></li>
+								 return <li key={task.task_id}><Task task={task}/></li>
 									  	}		
 					  		)
 				}
@@ -111,7 +142,6 @@ class CompleteTaskBtn extends React.Component {
 	completeTask() {
 		// put the thing that makes it not do the thing
 		event.preventDefault()
-		alert("Completed Task")
 };
 
 
@@ -147,9 +177,9 @@ class Task extends React.Component {
 	
 
 	render() {
-		let completeTaskRoute = this.props.task_id.toString()
-		let edit_task_route = 'edit_task/' + this.props.task_id.toString()
-		let delete_task_route = 'delete-task-' + this.props.task_id.toString()
+		let completeTaskRoute = this.props.task.task_id.toString()
+		let edit_task_route = 'edit_task/' + this.props.task.task_id.toString()
+		let delete_task_route = 'delete-task-' + this.props.task.task_id.toString()
 		// let _getTasks = this.getTasks
 
 		return (
