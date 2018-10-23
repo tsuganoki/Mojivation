@@ -7,7 +7,7 @@ class TasksPage extends React.Component {
 	constructor () {
 		super ();
 		this.state = {
-				taskData: {},
+				taskData: [],
 				EOD: {}
 		};
 	}
@@ -17,8 +17,9 @@ class TasksPage extends React.Component {
 	}
 
 
-	fetchTaskData (tasksObj) {
+	fetchTaskData  = () => {
 		let that = this
+		console.log(this)
 		fetch('/get-tasks.json')
 		.then(response => response.json())
 
@@ -38,17 +39,15 @@ class TasksPage extends React.Component {
 			<div>
 				<FetchTasksBtn onClick={this.fetchTaskData} />
 
-				<TaskBlock blockName='Due Today' showQuickAdd='True' />
-				<TaskBlock blockName='Due Later'/>
-				<TaskBlock blockName="Completed" showClearCompleted="True"/>
+				<TaskBlock tasks={this.state.taskData} blockName='Due Today' showQuickAdd='True' />
+				<TaskBlock tasks={this.state.taskData} blockName='Due Later'/>
+				<TaskBlock tasks={this.state.taskData} blockName="Completed" showClearCompleted="True"/>
 			</div>
 		)
 	}
 }
 
 class FetchTasksBtn extends React.Component {
-
-
 		render () {
 			return <p><button onClick={this.props.onClick}>fetch Tasks </button></p>
 		}
@@ -58,10 +57,9 @@ class FetchTasksBtn extends React.Component {
 
 class TaskBlock extends React.Component {
 
-
 	render () {
-		let tasks = [{task_id : 40, task_msg : 'Implement states on all components ' }, 
-		{task_id : 41, task_msg : 'REACT '}]
+		// let tasks = [{task_id : 40, msg : 'Implement states on all components ' }, 
+		// {task_id : 41, msg : 'REACT '}]
 
 		return (
 
@@ -69,8 +67,8 @@ class TaskBlock extends React.Component {
 			  <h2>{this.props.blockName}</h2>
 			  <span id="EOD-span" className="small-text remove" >EOD is:  sometime UTC</span> 
 			  <ul>
-			  	{ tasks.map ((task) => {
-								  		return <li key={task.task_id}><Task task_msg={task.task_msg} task_id={task.task_id} /></li>
+			  	{ this.props.tasks.map ((task) => {
+								 return <li key={task.task_id}><Task task={task} msg={task.msg} task_id={task.task_id} /></li>
 									  	}		
 					  		)
 				}
@@ -156,9 +154,9 @@ class Task extends React.Component {
 
 		return (
 			<div>
-				<CompleteTaskBtn task_id={this.props.task_id} />
+				<CompleteTaskBtn task_id={this.props.task.task_id} />
 
-				<a className="task-msg" href={edit_task_route}>  {this.props.task_msg} </a>
+				<a className="task-msg" href={edit_task_route}>  {this.props.task.msg} </a>
 
 				<a href={delete_task_route}>
 					<i className="fa fa-times-circle-o ex-cirle" aria-hidden="true" alttext="delete task"></i>
@@ -175,8 +173,8 @@ class Task extends React.Component {
 // ReactDOM.render(
 //   (
 //   		<div>
-// 	  		<Task task_msg=" Make a react component" task_id={40}/>
-// 	  		<Task task_msg=" Make another one!" task_id={41}/>
+// 	  		<Task msg=" Make a react component" task_id={40}/>
+// 	  		<Task msg=" Make another one!" task_id={41}/>
 //   		</div>
 //   ),
 //   document.getElementById('task'),
