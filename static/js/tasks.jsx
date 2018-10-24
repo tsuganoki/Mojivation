@@ -50,7 +50,8 @@ class TasksPage extends React.Component {
 	}
 	getTodayTasks = (tasksData) => {
 		let todayTasks = []
-		todayTasks = tasksData.filter ( task => this.assemble_date(task.due_date) <= this.state.EOD )
+		todayTasks = tasksData.filter ( task => this.assemble_date(task.due_date) <= this.state.EOD 
+											&& task.is_complete === false)
 		return todayTasks
 
 
@@ -58,7 +59,9 @@ class TasksPage extends React.Component {
 	}
 	getLaterTasks = (tasksData) => {
 		let laterTasks = []
-		laterTasks = tasksData.filter ( task => this.assemble_date(task.due_date) > this.state.EOD )
+		laterTasks = tasksData.filter ( task => this.assemble_date(task.due_date) > this.state.EOD 
+											&& task.is_repeating === false 
+											&& task.is_complete === false)
 		return laterTasks
 
 
@@ -75,7 +78,6 @@ class TasksPage extends React.Component {
 	render () {
 		return (
 			<div>
-
 				<TaskBlock tasks={this.getTodayTasks(this.state.taskData)} blockName='Due Today' showQuickAdd='True' />
 				<TaskBlock tasks={this.getLaterTasks(this.state.taskData)} blockName='Due Later'/>
 				<TaskBlock tasks={this.getCompletedTasks(this.state.taskData)} blockName="Completed" showClearCompleted="True"/>
@@ -89,8 +91,7 @@ class TasksPage extends React.Component {
 class TaskBlock extends React.Component {
 
 	render () {
-		// let tasks = [{task_id : 40, msg : 'Implement states on all components ' }, 
-		// {task_id : 41, msg : 'REACT '}]
+
 
 		return (
 
@@ -148,7 +149,7 @@ class CompleteTaskBtn extends React.Component {
 	render () {
 		let completeTaskRoute = this.props.task_id.toString()
 		return (
-			<form action="/complete-task" method="POST">
+			<form className="in-line" action="/complete-task" method="POST">
 				<input hidden name="task_id" defaultValue={completeTaskRoute} />
 				<input type="submit" name="complete" value="Done" onClick={this.completeTask}/>
 			</form>
@@ -184,9 +185,7 @@ class Task extends React.Component {
 
 		return (
 			<div>
-				<CompleteTaskBtn task_id={this.props.task.task_id} />
-
-				<a className="task-msg" href={edit_task_route}>  {this.props.task.msg} </a>
+				<CompleteTaskBtn task_id={this.props.task.task_id} /> <a className="task-msg in-line" href={edit_task_route}>  {this.props.task.msg} </a>
 
 				<a href={delete_task_route}>
 					<i className="fa fa-times-circle-o ex-cirle" aria-hidden="true" alttext="delete task"></i>
