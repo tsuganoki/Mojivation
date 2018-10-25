@@ -13,58 +13,44 @@
 
   <!-- <script src="static/js/react.jsx" type="text/jsx"></script> -->
 
-  
-{% block reactjsx %} react link here {% endblock %}
+
+
+<script >const flashedMessages=[]
+            {% with messages = get_flashed_messages() %}
+              {% for message in messages %}
+                flashedMessages.push(`{{message}}`)
+              {% endfor %}
+            {% endwith %}
+
+        const session=[]
+            session.push({current_username:`{{ session.get("current_username") }}`})
+            session.push({current_user_id:`{{ session.get("current_user_id") }}`})
+
+</script>
+
+
+<script src="static/js/base.jsx" type="text/jsx"></script>
+
+{% block reactjsx %}  {% endblock %}
 
 <!-- my own CSS -->
+  <link rel="stylesheet" href="/static/css/bootstrap.css">
 
   <link rel="stylesheet" href="/static/css/site.css">
   
 </head>
+
+
 <body>
 
+<h1>{% block h1_heading %} heading {% endblock %}</h1>
 
+<div id="root">
 
-
-<div class="header-bar">
-  <ul> 
-  <span><a href="/" id="Mojivation">Mojivation</a></span>
-
-  <span class="TESTING"> <a href="/oAuth-authorize">authorize with oAuth</a></span>
-  <span class="current-user header-bar-item">
-    {% if session.get("current_username") %} 
-    You are logged in as: <a href="/user-info">{{ session.get("current_username") }}</a>
-  </span>
-  <span class="header-bar-item"> <a href="/tasks">Tasks</a>
-  </span>
-  <span class="login header-bar-item">
-  <span class="logout header-bar-item btn"> 
-    <a href="/logout"> Logout</a>
-  </span>
-  {% else %}
-  <span class="login header-bar-item">
-      <a href="/login"> Login</a>     </span>
-  <span class="register header-bar-item">
-      <a href="/register"> Register</a>     </span>
-
-   {% endif %}
-    
 
 </div>
 
-	<h1>{% block h1_heading %}HEADING {% endblock %}</h1>
-
-  <p>
-
-  </p>
-	  {% with messages = get_flashed_messages() %}
-      {% for message in messages %}
-          <div class="flash">{{ message }}</div>
-      {% endfor %}
-  {% endwith %}
-
-	{% block content %} content goes here {% endblock %}
-	
+{% block content %} base content {% endblock %} 
 	
 </body>
 </html>

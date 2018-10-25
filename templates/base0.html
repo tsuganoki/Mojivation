@@ -1,0 +1,70 @@
+<html>
+<head>
+  <title>{% block title %}template title {% endblock %}</title>
+
+  <script src="/static/js/jquery-3.3.1.min.js"> </script>
+  <script src="https://use.fontawesome.com/609238688a.js"></script>
+
+<!-- these 3 scripts are for REACT -->
+  <script crossorigin src="https://unpkg.com/react@16/umd/react.development.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+
+  <script src="http://unpkg.com/babel-standalone"></script>
+
+  <!-- <script src="static/js/react.jsx" type="text/jsx"></script> -->
+
+  
+{% block reactjsx %} react link here {% endblock %}
+
+<!-- my own CSS -->
+
+  <link rel="stylesheet" href="/static/css/site.css">
+  
+</head>
+<body>
+
+
+
+
+<div class="header-bar">
+  <ul> 
+  <span><a href="/" id="Mojivation">Mojivation</a></span>
+
+  <span class="TESTING"> <a href="/oAuth-authorize">authorize with oAuth</a></span>
+  <span class="current-user header-bar-item">
+    {% if session.get("current_username") %} 
+    You are logged in as: <a href="/user-info">{{ session.get("current_username") }}</a>
+  </span>
+  <span class="header-bar-item"> <a href="/tasks">Tasks</a>
+  </span>
+  <span class="login header-bar-item">
+  <span class="logout header-bar-item btn"> 
+    <a href="/logout"> Logout</a>
+  </span>
+  {% else %}
+  <span class="login header-bar-item">
+      <a href="/login"> Login</a>     </span>
+  <span class="register header-bar-item">
+      <a href="/register"> Register</a>     </span>
+
+   {% endif %}
+    
+
+</div>
+
+	<h1>{% block h1_heading %}HEADING {% endblock %}</h1>
+
+  <p>
+{% with messages = get_flashed_messages() %}
+      {% for message in messages %}
+          <div class="flash">{{ message }}</div>
+      {% endfor %}
+  {% endwith %}
+  </p>
+	  
+
+	{% block content %} content goes here {% endblock %}
+	
+	
+</body>
+</html>

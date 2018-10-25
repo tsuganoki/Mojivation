@@ -1,19 +1,143 @@
+<html>
+<head>
+  <title>{% block title %}template title {% endblock %}</title>
 
-{% extends 'base.html' %}
-{% block title %}Mojivation{% endblock %}
+  <script src="/static/js/jquery-3.3.1.min.js"> </script>
+  <script src="https://use.fontawesome.com/609238688a.js"></script>
+
+<!-- these 3 scripts are for REACT -->
+  <script crossorigin src="https://unpkg.com/react@16/umd/react.development.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+
+  <script src="http://unpkg.com/babel-standalone"></script>
+
+  <!-- <script src="static/js/react.jsx" type="text/jsx"></script> -->
+  <script src="static/js/index.jsx" type="text/jsx"></script>
+
+  
+
+<!-- my own CSS -->
+
+  <link rel="stylesheet" href="/static/css/bootstrap.css">
+  <link rel="stylesheet" href="/static/css/site.css">
+</head>
+<body>
 
 
-{% block reactjsx %}  <script src="static/js/index.jsx" type="text/jsx"></script> {% endblock %}
 
-{% block h1_heading %}{% endblock %}
+<!-- 
+<div class="header-bar">
 
-{% block content %} 
+  <span class="TESTING"> <a href="/oAuth-authorize">authorize with oAuth</a>
+  <span class="current-user header-bar-item">
+    {% if session.get("current_username") %} 
+    You are logged in as: <a href="/user-info">{{ session.get("current_username") }}</a>
+  </span>
+  <span class="header-bar-item"> <a href="/tasks">Tasks</a>
+  </span>
+  <span class="login header-bar-item">
+  <span class="logout header-bar-item"> 
+    <a href="/logout"> Logout</a>
+  </span>
+  {% else %}
+  <span class="login header-bar-item">
+      <a href="/login"> Login</a>     </span>
+  <span class="register header-bar-item">
+      <a href="/register"> Register</a>     </span>
+
+   {% endif %}
+</div> -->
 
 
-<div class="slogan">
-	{{slogan}}
+<!-- NAVBAR START-->
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <a class="navbar-brand" href="#">Mojivation</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor03" aria-controls="navbarColor03" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarColor03">
+    <ul class="navbar-nav ml-auto">
+      <li class="nav-item active">
+        <a class="nav-link" href="/tasks">Tasks <span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">User</a>
+      </li>
+
+      <li class="nav-item">
+        <a class="nav-link" href="#">oAuth with Google Calendar</a>
+      </li>
+    </ul>
+    <form class="form-inline my-2 my-lg-0">
+      
+      <button class="btn btn-secondary my-2 my-sm-0 login-btn" type="submit">Login</button>
+    </form>
+  </div>
+</nav>
+
+
+
+
+
+
+
+
+
+
+  <div class='home-page-mantra'><span id="slogan"></span></div>
+
+<div class="alert-secondary bg-light center remove">
+  <!-- <hr class="my-1"> -->
+  <p class='lead'>
+  	<ul class='lead-sm'>
+  		<li>Collect a Moji every day that you complete your tasks
+  		</li>
+  		<li>Set repeating tasks
+  		</li>
+  		<li>Integrate with your Google calendar
+  		</li>
+  		<li class="hidden"> .</li>
+  		<li>
+		    <a class="btn btn-primary  " href="#" role="button">Sign Up</a>
+  		</li>
+  	</ul>
+	</p>
+  <p class="lead">
+  </p>
 </div>
 
 
+<div class="modal bg-light">
+  <div class="modal-dialog bg-light" role="document">
+    <div class="modal-content bg-light">
+      <div class="modal-header">
+        <h5 class="modal-title">Modal title</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>Modal body text goes here.</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary">Save changes</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
 
- {% endblock %}
+
+<div id='root'>
+	
+	<!-- React goes here -->
+</div>
+	
+	<div id='task'>
+	
+	<!-- React goes here -->
+</div>
+</body>
+</html>

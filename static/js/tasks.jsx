@@ -96,7 +96,7 @@ class TaskBlock extends React.Component {
 		return (
 
 			<div className="today-tasks">
-			  <h2>{this.props.blockName}</h2>
+			  <h3>{this.props.blockName}</h3>
 			  <span id="EOD-span" className="small-text remove" >EOD is:  sometime UTC</span> 
 			  <ul>
 			  	{ this.props.tasks.map ((task) => {
@@ -113,6 +113,7 @@ class TaskBlock extends React.Component {
 			)
 	}
 }
+
 class QuickAdd extends React.Component {
 	render () {
 		return (
@@ -142,7 +143,8 @@ class CompleteTaskBtn extends React.Component {
 
 	completeTask() {
 		// put the thing that makes it not do the thing
-		event.preventDefault()
+		console.log("attempting to complete task")
+		fetch()
 };
 
 
@@ -158,23 +160,22 @@ class CompleteTaskBtn extends React.Component {
 }
 
 
-class OldFetchTasksButton extends React.Component {
-  getWeather = () => {
-    fetch('/get-tasks.json')
-      .then(response => response.json())
-      .then(data => console.log(`The first task is:  ${data.tasks[0].msg}`));
-  }
-
-  render() {
-    return (
-      <button onClick={this.getWeather}>
-        print tasks to console
-      </button>
-    );
-  }
-}
-
 class Task extends React.Component {
+	constructor () {
+		super ();
+		this.state = {
+			deleteIconVisibility: ""
+		};
+	}
+
+	showDeleteIcon() {
+		this.setState( {deleteIconVisibility: none})
+
+	}
+	hideDeleteIcon() {
+		this.setState( {deleteIconVisibility: hidden})
+
+	}
 	
 
 	render() {
@@ -187,8 +188,10 @@ class Task extends React.Component {
 			<div>
 				<CompleteTaskBtn task_id={this.props.task.task_id} /> <a className="task-msg in-line" href={edit_task_route}>  {this.props.task.msg} </a>
 
-				<a href={delete_task_route}>
-					<i className="fa fa-times-circle-o ex-cirle" aria-hidden="true" alttext="delete task"></i>
+				<a href={delete_task_route} >
+					<i className="fa fa-times-circle-o ex-cirle" 
+					aria-hidden="true" 
+					alttext="delete task"></i>
 				</a>
 			</div>
 
@@ -198,16 +201,6 @@ class Task extends React.Component {
 
 	};
 }
-
-// ReactDOM.render(
-//   (
-//   		<div>
-// 	  		<Task msg=" Make a react component" task_id={40}/>
-// 	  		<Task msg=" Make another one!" task_id={41}/>
-//   		</div>
-//   ),
-//   document.getElementById('task'),
-// );
 
 
 ReactDOM.render (

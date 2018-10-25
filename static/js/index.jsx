@@ -73,18 +73,7 @@ ReactDOM.render(
   document.getElementById('slogan'),
 );
 
-ReactDOM.render(
-  (
-  		<div>
-	  		<Task task_msg=" Make a react component" task_id={40}/>
-	  		<Task task_msg=" Make another one!" task_id={41}/>
-  		</div>
-  ),
-  document.getElementById('task'),
-);
 
-// <JQueryWeatherAlert />
-      // <WeatherAlert />
 
 
  

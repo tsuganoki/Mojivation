@@ -98,7 +98,12 @@ def index():
         }
     slogan = random.choice(list(kao_dict.values() ) ) 
     # print(slogan)
+    flash("index flashed message")
+    flash("another flashed message")
     return render_template("index.html",slogan=slogan)  
+
+
+
 @app.route('/r')
 @app.route('/indexr')
 def indexr():
