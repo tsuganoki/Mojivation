@@ -1,9 +1,9 @@
 <html>
 <head>
   <title>{% block title %}template title {% endblock %}</title>
-
+<!-- 
   <script src="/static/js/jquery-3.3.1.min.js"> </script>
-  <script src="https://use.fontawesome.com/609238688a.js"></script>
+  <script src="https://use.fontawesome.com/609238688a.js"></script> -->
 
 <!-- these 3 scripts are for REACT -->
   <script crossorigin src="https://unpkg.com/react@16/umd/react.development.js"></script>
@@ -15,16 +15,17 @@
 
 
 
-<script >const flashedMessages=[]
+<script >const flashedMessages = []
             {% with messages = get_flashed_messages() %}
               {% for message in messages %}
                 flashedMessages.push(`{{message}}`)
               {% endfor %}
             {% endwith %}
 
-        const session={current_username:'{{ session.get("current_username") }}',
-        current_user_id:'{{ session.get("current_user_id") }}'
-      }
+        const session = {
+          current_username:'{{ session.get("current_username") }}',
+          current_user_id:'{{ session.get("current_user_id") }}'
+        }
           console.log(session)
 
 </script>
