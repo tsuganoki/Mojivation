@@ -22,9 +22,10 @@
               {% endfor %}
             {% endwith %}
 
-        const session=[]
-            session.push({current_username:`{{ session.get("current_username") }}`})
-            session.push({current_user_id:`{{ session.get("current_user_id") }}`})
+        const session={current_username:'{{ session.get("current_username") }}',
+        current_user_id:'{{ session.get("current_user_id") }}'
+      }
+          console.log(session)
 
 </script>
 
@@ -43,12 +44,12 @@
 
 <body>
 
+
+<div id="base">
+</div>
+
 <h1>{% block h1_heading %} heading {% endblock %}</h1>
 
-<div id="root">
-
-
-</div>
 
 {% block content %} base content {% endblock %} 
 	

@@ -1,20 +1,16 @@
-<html>
-<head>
-  <title>{% block title %}template title {% endblock %}</title>
+{% extends 'base.html' %}
 
-  <script src="/static/js/jquery-3.3.1.min.js"> </script>
-  <script src="https://use.fontawesome.com/609238688a.js"></script>
+{% block title %} Mojivation {% endblock %}
 
-<!-- these 3 scripts are for REACT -->
-  <script crossorigin src="https://unpkg.com/react@16/umd/react.development.js"></script>
-  <script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+{% block h1_heading %}
+{% endblock %}
+{% block reactjsx %}   <script src="static/js/index.jsx" type="text/jsx"></script>
+{% endblock %}
 
-  <script src="http://unpkg.com/babel-standalone"></script>
 
-  <!-- <script src="static/js/react.jsx" type="text/jsx"></script> -->
-  <script src="static/js/index.jsx" type="text/jsx"></script>
 
-  
+{% block content %} 
+
 
 <!-- my own CSS -->
 
@@ -47,36 +43,6 @@
 
    {% endif %}
 </div> -->
-
-
-<!-- NAVBAR START-->
-
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-  <a class="navbar-brand" href="#">Mojivation</a>
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor03" aria-controls="navbarColor03" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
-
-  <div class="collapse navbar-collapse" id="navbarColor03">
-    <ul class="navbar-nav ml-auto">
-      <li class="nav-item active">
-        <a class="nav-link" href="/tasks">Tasks <span class="sr-only">(current)</span></a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="#">User</a>
-      </li>
-
-      <li class="nav-item">
-        <a class="nav-link" href="#">oAuth with Google Calendar</a>
-      </li>
-    </ul>
-    <form class="form-inline my-2 my-lg-0">
-      
-      <button class="btn btn-secondary my-2 my-sm-0 login-btn" type="submit">Login</button>
-    </form>
-  </div>
-</nav>
-
 
 
 
@@ -139,5 +105,5 @@
 	
 	<!-- React goes here -->
 </div>
-</body>
-</html>
+
+{% endblock %}
