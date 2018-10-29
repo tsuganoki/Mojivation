@@ -4,9 +4,43 @@
   <head>
     <meta charset="utf-8">
     <!-- Latest compiled and minified bootstrap CSS -->
-    <link rel="stylesheet" href="/static/css/bootstrap.css">
+    <!-- <link rel="stylesheet" href="/static/css/bootstrap.css"> -->
 
     <title>Creating a Full-Stack Python Application with NPM, React.js and Webpack</title>
+
+    <!-- my own CSS -->
+
+      <link rel="stylesheet" href="http://localhost:8000/static/css/bootstrap.css">
+      <link rel="stylesheet" href="http://localhost:8000/static/css/site.css">
+
+      <!-- 
+      whenever I want to run css they have to be pointing to an alternative port
+      and that port has to be running with command: 
+
+      python -m SimpleHTTPServer
+
+      ouside of vagrant 
+      -->
+
+  <script >const flashedMessages = []
+            {% with messages = get_flashed_messages() %}
+              {% for message in messages %}
+                flashedMessages.push(`{{message}}`)
+              {% endfor %}
+            {% endwith %}
+
+        const session = {
+          current_username:'{{ session.get("current_username") }}',
+          current_user_id:'{{ session.get("current_user_id") }}'
+        }
+          console.log(session)
+
+</script>
+ <link rel="stylesheet" href="/static/css/bootstrap.css">
+
+<!-- my own CSS -->
+  <link rel="stylesheet" href="/static/css/site.css">
+
   </head>
   <body>
     <div id="content" />
