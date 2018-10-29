@@ -7,7 +7,7 @@ class NavBar extends React.Component {
 
 		let formatUserLink = () => {
 			// 			  	{ this.props.tasks.map ((task) => {
-			if (session.current_username) {
+			if (session.current_username !== 'None') {
 				return  <a className="nav-link" href="/user-info"> {session.current_username}</a>
 
 			} else {

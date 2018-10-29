@@ -4,6 +4,7 @@ from jinja2 import StrictUndefined
 from flask import (Flask, render_template, redirect, request, flash,
                    session, jsonify, g, url_for)
 
+
 import os
 import requests
 
@@ -38,7 +39,8 @@ import sys
 import os.path
 
 
-app = Flask(__name__)
+# app = Flask(__name__)
+app = Flask(__name__, static_folder="dist")
 
 
 def install_secret_key(app, filename='secretkey'):
@@ -103,6 +105,9 @@ def index():
     return render_template("index.html",slogan=slogan)  
 
 
+@app.route('/iwp')
+def index_wp():
+    return render_template('index-wp.html')
 
 @app.route('/r')
 @app.route('/indexr')

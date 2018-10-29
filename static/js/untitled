@@ -1,0 +1,10 @@
+
+takes in a list of lists where each list is a name and a number writen as a string
+
+returns a list of list where the inner lists are sorted first by name, and second by the numerical value associated with the name. 
+
+zero - one hundred million
+
+['one']
+
+

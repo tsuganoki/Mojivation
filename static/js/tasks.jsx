@@ -85,7 +85,10 @@ class TasksPage extends React.Component {
 		)
 	}
 }
-
+// // thing
+// <div class="add-a-task">
+//   <a href="/new_task"><button id="add-a-task-btn">Add a Task</button></a>
+// </div>
 
 
 class TaskBlock extends React.Component {
