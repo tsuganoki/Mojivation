@@ -1,5 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router, Link, Route } from 'react-router-dom'
+// import { QuickAdd } from './tasks.jsx';
 
 
 export default class App extends React.Component {
@@ -10,6 +11,7 @@ export default class App extends React.Component {
         <Base />
         <p> Hello React!</p>
         </Router>
+        <TasksPage />
       </div>
       );
   }
@@ -169,12 +171,25 @@ const Test = ({ match }) => (
       </div>
 )
 
+
+
+
+class TestTwo extends React.Component {
+  render () {
+    return <p> Test 2 has rendered </p>
+  }
+}
+
+
+
 class Content extends React.Component {
   render () {
+    console.log(TasksPage)
     return (
       <div>
         <h1> Welcome</h1>
-        <Route path='/test' component={Test} />
+        <Route path='/test' component={TestTwo} />
+        <Route path='/tasks' component={QuickAdd} />
       </div>
       )
 

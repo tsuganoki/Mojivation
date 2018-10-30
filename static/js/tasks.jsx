@@ -3,7 +3,7 @@
 
 
 
-class TasksPage extends React.Component {
+export class TasksPage extends React.Component {
 	constructor () {
 		super ();
 		this.state = {
@@ -117,7 +117,7 @@ class TaskBlock extends React.Component {
 	}
 }
 
-class QuickAdd extends React.Component {
+export class QuickAdd extends React.Component {
 	render () {
 		return (
 			<div className="quick-add">
