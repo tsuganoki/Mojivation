@@ -26,3 +26,13 @@ def convert_tasklist_to_dict(tasklist):
 
 	return task_dict
 
+def convert_user_to_dict(user):
+
+	user_dict = {
+		"user_id":user.user_id,
+		"username":user.username,
+		"email": user.email,
+		"timezone": user.timezone
+		}
+
+	return user_dict

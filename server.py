@@ -26,7 +26,7 @@ import random
 
 # Tilia's modules
 import timehelpers
-import task_logic
+import site_logic
 import cal
 import oAuth_flow
 import hashes
@@ -257,13 +257,24 @@ def get_tasks_js():
 
 
 
+@app.route("/get-user-info.json", methods=['GET'])
+@login_required
+def get_user_info():
+    user = User.query.get(session["current_user_id"])
+    user_dict = site_logic.convert_user_to_dict(user)
+
+    return jsonify(user_dict)   
+
+
+
+
 @app.route("/get-tasks.json", methods=['GET'])
 @login_required
 def get_tasks():
     user = User.query.get(session["current_user_id"])
     print("call made to /get-tasks.json")
     # user = User.query.get(21)
-    task_dict = task_logic.convert_tasklist_to_dict(user.tasks)
+    task_dict = site_logic.convert_tasklist_to_dict(user.tasks)
 
     return jsonify(task_dict)   
 
@@ -273,11 +284,11 @@ def get_eod():
     user = User.query.get(session["current_user_id"])
     print("call made to /get-eod.json")
     # user = User.query.get(21)
-    task_dict = task_logic.convert_tasklist_to_dict(user.tasks)
+    task_dict = site_logic.convert_tasklist_to_dict(user.tasks)
     EOD = timehelpers.get_user_EOD(user.timezone)
     print(EOD)
 
-    EOD_dict = task_logic.convert_datetime_to_dict(EOD)
+    EOD_dict = site_logic.convert_datetime_to_dict(EOD)
     return jsonify(EOD_dict)  
 
 

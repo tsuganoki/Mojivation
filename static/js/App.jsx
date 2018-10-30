@@ -291,9 +291,20 @@ class Task extends React.Component {
 }
 
 class UserPage extends React.Component {
+  constructor () {
+    super ();
+    this.state = {
+        user: {},
+        kaos: []
+    };
+  }
+
   render () {
+    console.log(session)
+
     return (
-      <div> User </div>
+      <div> User: { session.current_username }
+     </div>
       )
   }
 }
