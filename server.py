@@ -737,6 +737,10 @@ def create_cal_event():
 def react_demo():
     return render_template("demo.html")
 
+    
+@app.errorhandler(404)
+def not_found(error):
+    return render_template('index-wp.html')
 
 if __name__ == "__main__":
     # We have to set debug=True here, since it has to be True at the
