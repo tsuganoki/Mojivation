@@ -138,7 +138,7 @@ class FlashedMessages extends React.Component {
     }
 
     return (
-      <div className="alert alert-dismissible alert-secondary bg-light remove">
+      <div className="alert alert-dismissible alert-secondary bg-light">
         <button type="button" className="close" data-dismiss="alert">&times;</button>
 
         {formatFlashedMessages()}   
@@ -149,11 +149,18 @@ class FlashedMessages extends React.Component {
 }
 
 class Base extends React.Component {
+  renderFlashedMessages() {
+    if (flashedMessages[0]) {
+      console.log("flashedMessages are: ",flashedMessages)
+      return <FlashedMessages />
+    }
+  }
+
   render () {
     return (
       <div>
         <NavBar />
-        <FlashedMessages />
+        {this.renderFlashedMessages()}
         <Content />
       </div>
     )
@@ -298,6 +305,10 @@ class UserPage extends React.Component {
         kaos: []
     };
   }
+  updateUserData (argument) {
+      this.setState( {user: argument} );
+  }
+  
 
   render () {
     console.log(session)
@@ -308,6 +319,12 @@ class UserPage extends React.Component {
       )
   }
 }
+
+
+
+
+
+
 class Slogan extends React.Component {
   randomProp (obj) {
    var keys = Object.keys(obj)

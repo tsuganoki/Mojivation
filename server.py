@@ -107,7 +107,7 @@ def index():
 
 @app.route('/iwp')
 def index_wp():
-    flash("iwp flashed message")
+    # flash("iwp flashed message")
 
     return render_template('index-wp.html')
 
