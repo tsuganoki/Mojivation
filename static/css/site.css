@@ -17,13 +17,14 @@ a.task-msg {
 a:hover {
 	background-color:lightgrey;
 }
-/*.navbar{
+.navbar{
 	margin-top:10px;
+	padding-bottom: 10px;
 }
-.navbar-light {
+/*.navbar-light {
 	background-color: #f9f9f9 !important;
-}*/
-
+}
+*/
 .home-page-mantra{
 	font-size: 1.5em;
 	margin: 60px 60px;

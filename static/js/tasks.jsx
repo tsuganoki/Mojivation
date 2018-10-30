@@ -117,7 +117,7 @@ class TaskBlock extends React.Component {
 	}
 }
 
-export class QuickAdd extends React.Component {
+class QuickAdd extends React.Component {
 	render () {
 		return (
 			<div className="quick-add">

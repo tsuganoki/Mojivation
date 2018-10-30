@@ -107,6 +107,8 @@ def index():
 
 @app.route('/iwp')
 def index_wp():
+    flash("iwp flashed message")
+
     return render_template('index-wp.html')
 
 @app.route('/r')
@@ -241,7 +243,7 @@ def view_tasks():
     EOD = timehelpers.get_user_EOD(user.timezone)
     
 
-    return render_template("tasks.html", tasks=tasks,EOD=EOD)
+    return render_template("tasks2.html", tasks=tasks,EOD=EOD)
 
         
     # current_user = User.query.filter_by(username=username_input).first()
