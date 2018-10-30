@@ -1,6 +1,6 @@
 "use strict";
-
-
+import React from 'react';
+import ReactDOM from 'react-dom';
 
 
 export class TasksPage extends React.Component {
@@ -206,12 +206,7 @@ class Task extends React.Component {
 }
 
 
-ReactDOM.render (
-	(
-		<TasksPage />
-		),
-	document.getElementById('root'),
-	);
+
 
 // <JQueryWeatherAlert />
       // <WeatherAlert />

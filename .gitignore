@@ -12,3 +12,4 @@ client_secrets.jsonstatic/css/.DS_Store
 static/css/.DS_Store
 static/.DS_Store
 client_secrets.json
+node_modules/

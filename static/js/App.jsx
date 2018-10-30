@@ -1,6 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router, Link, Route } from 'react-router-dom'
-// import { QuickAdd } from './tasks.jsx';
+import { TasksPage } from './tasks.jsx';
 
 
 export default class App extends React.Component {
@@ -308,6 +308,9 @@ class UserPage extends React.Component {
   updateUserData (argument) {
       this.setState( {user: argument} );
   }
+  fetchUserData = () => {
+    console.log("arrow function")
+  }
   
 
   render () {
@@ -357,7 +360,7 @@ class Content extends React.Component {
     return (
       <div>
         <Route path='/test' component={TestTwo} />
-        <Route path='/tasks' component={QuickAdd} />
+        <Route path='/tasks' component={TasksPage} />
         <Route path='/iwp' component={Slogan} />
         <Route path='/user' component={UserPage} />
       </div>
