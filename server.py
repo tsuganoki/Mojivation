@@ -233,17 +233,17 @@ def logout():
 
 
 
-@app.route('/tasks')
-@login_required
-def view_tasks():
-    """Homepage."""
-    user = User.query.get(session["current_user_id"])
-    tasks = user.tasks
+# @app.route('/tasks')
+# @login_required
+# def view_tasks():
+#     """Homepage."""
+#     user = User.query.get(session["current_user_id"])
+#     tasks = user.tasks
 
-    EOD = timehelpers.get_user_EOD(user.timezone)
+#     EOD = timehelpers.get_user_EOD(user.timezone)
     
 
-    return render_template("tasks2.html", tasks=tasks,EOD=EOD)
+#     return render_template("tasks2.html", tasks=tasks,EOD=EOD)
 
         
     # current_user = User.query.filter_by(username=username_input).first()
@@ -265,6 +265,15 @@ def get_user_info():
 
     return jsonify(user_dict)   
 
+@app.route("/get-kaos.json", methods=['GET'])
+@login_required
+def get_kaos():
+    user = User.query.get(session["current_user_id"])
+    collects = Collect.query.filter_by(user_id=user.user_id).all()
+
+    collect_dict = site_logic.convert_collects_to_dict(collects)
+    print(collect_dict)
+    return jsonify(collect_dict) 
 
 
 
@@ -502,6 +511,7 @@ def user_info():
     """lets a user change their info"""
     user = User.query.get(session["current_user_id"])
     collects = Collect.query.filter_by(user_id=user.user_id)
+
     # for collect in collects:
     #     print (collect.kaos.kao)
     return render_template("user-info.html",user=user, collects=collects)
@@ -737,7 +747,7 @@ def create_cal_event():
 def react_demo():
     return render_template("demo.html")
 
-    
+
 @app.errorhandler(404)
 def not_found(error):
     return render_template('index-wp.html')

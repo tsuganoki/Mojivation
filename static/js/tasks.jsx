@@ -44,7 +44,7 @@ export class TasksPage extends React.Component {
 		.then(response => response.json())
 
 		.then(data => this.setState( {EOD:this.assemble_date(data)} ) )
-		console.log
+		console.log('EOD is: ',this.state.EOD)
 
 
 	}

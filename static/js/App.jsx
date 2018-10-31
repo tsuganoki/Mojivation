@@ -1,6 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Link, Route } from 'react-router-dom'
 import { TasksPage } from './tasks.jsx';
+import { UserPage } from './user.jsx';
 
 
 export default class App extends React.Component {
@@ -297,34 +298,17 @@ class Task extends React.Component {
   };
 }
 
-class UserPage extends React.Component {
-  constructor () {
-    super ();
-    this.state = {
-        user: {},
-        kaos: []
-    };
+
+
+function assemble_date(dt_dict) {
+  // const d = new Date(dt_dict."year", dt_dict."month",
+  //  dt_dict."day", dt_dict."hours", dt_dict."minutes",
+  //   dt_dict."seconds", dt_dict."milliseconds");
+
+  var d = new Date(dt_dict.year, dt_dict.month, dt_dict.day, dt_dict.hours, dt_dict.minutes, dt_dict.seconds, dt_dict.milliseconds);
+
+  return d
   }
-  updateUserData (argument) {
-      this.setState( {user: argument} );
-  }
-  fetchUserData = () => {
-    console.log("arrow function")
-  }
-  
-
-  render () {
-    console.log(session)
-
-    return (
-      <div> User: { session.current_username }
-     </div>
-      )
-  }
-}
-
-
-
 
 
 
@@ -354,6 +338,7 @@ class Slogan extends React.Component {
     
   }
 }
+
 
 class Content extends React.Component {
   render () {

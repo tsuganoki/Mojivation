@@ -1,5 +1,6 @@
 import datetime
 from rfc3339 import rfc3339 as rfc
+from model import User, Task, Collect, Kao
 
 def convert_datetime_to_dict(dt):
 	dt_dict = {
@@ -36,3 +37,15 @@ def convert_user_to_dict(user):
 		}
 
 	return user_dict
+
+def convert_collects_to_dict(collects):
+
+	collect_dict_list = [
+		{"kao_id":collect.kao_id,
+		'kao_str': Kao.query.get(collect.kao_id).kao,
+		 'date':convert_datetime_to_dict(collect.collect_date)} for collect in collects]
+
+	return collect_dict_list
+
+
+
