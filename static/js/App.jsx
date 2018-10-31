@@ -55,7 +55,7 @@ class NavBar extends React.Component {
     return (
       
         <nav className="navbar navbar-expand-lg navbar-light bg-light">
-          <Link to={"/iwp"}>
+          <Link to={"/"}>
             <span className="navbar-brand">Mojivation</span>
           </Link>
           <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor03" aria-controls="navbarColor03" aria-expanded="false" aria-label="Toggle navigation">
@@ -72,16 +72,11 @@ class NavBar extends React.Component {
               <li className="nav-item">
                 {formatUserLink()}
               </li>
-              <li>
-                <Link to={"/test"}>
-                  <span className="nav-link" >test</span>
-                </Link>              
-              </li>
 
               <li className="nav-item">
-                <Link to={"/oAuth-authorize"}>
+                <a href="/oAuth-authorize">
                   <span className="nav-link" >oAuth with Google Calendar</span>
-                </Link>
+                </a>
               </li>
             </ul>
             {formatLoginLink()}
@@ -300,15 +295,7 @@ class Task extends React.Component {
 
 
 
-function assemble_date(dt_dict) {
-  // const d = new Date(dt_dict."year", dt_dict."month",
-  //  dt_dict."day", dt_dict."hours", dt_dict."minutes",
-  //   dt_dict."seconds", dt_dict."milliseconds");
 
-  var d = new Date(dt_dict.year, dt_dict.month, dt_dict.day, dt_dict.hours, dt_dict.minutes, dt_dict.seconds, dt_dict.milliseconds);
-
-  return d
-  }
 
 
 
@@ -346,7 +333,7 @@ class Content extends React.Component {
       <div>
         <Route path='/test' component={TestTwo} />
         <Route path='/tasks' component={TasksPage} />
-        <Route path='/iwp' component={Slogan} />
+        <Route path='/' exact component={Slogan} />
         <Route path='/user' component={UserPage} />
       </div>
       )

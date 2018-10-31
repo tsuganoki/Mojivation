@@ -85,27 +85,28 @@ def login_required(f):
         return f(*args, **kwargs)
     return decorated_function
 
+# @app.route('/')
+# @app.route('/index')
+# def index():
+#     """Homepage."""
+#     kao_dict = {
+#         "shrug": u"¯\_(ツ)_/¯ Guess we can be productive today",
+#         "supportive": u"~(˘▽˘~) I know you can do it!",
+#         "dog": u" ∪･ω･∪ Today's Oppawtunities are full of pet-tential",
+#         "boxer": u"(งಠ_ಠ)ง It's the eye of the tiger, it's the thrill of the fight...",
+#         "mage": u"(ﾉ>ω<)ﾉ :｡･:*:･ﾟ’★,｡･:*:･ﾟ’☆ Abracadabra! Lets be productive!",
+#         "bear": u"ʕ •̀ ω •́ ʔ Keep going! You can bear it!",
+#         "allieB": u"╰(°ロ°)╯ Do all the things!"
+#         }
+#     slogan = random.choice(list(kao_dict.values() ) ) 
+#     # print(slogan)
+#     flash("index flashed message")
+#     flash("another flashed message")
+#     return render_template("index.html",slogan=slogan)  
+
+
 @app.route('/')
 @app.route('/index')
-def index():
-    """Homepage."""
-    kao_dict = {
-        "shrug": u"¯\_(ツ)_/¯ Guess we can be productive today",
-        "supportive": u"~(˘▽˘~) I know you can do it!",
-        "dog": u" ∪･ω･∪ Today's Oppawtunities are full of pet-tential",
-        "boxer": u"(งಠ_ಠ)ง It's the eye of the tiger, it's the thrill of the fight...",
-        "mage": u"(ﾉ>ω<)ﾉ :｡･:*:･ﾟ’★,｡･:*:･ﾟ’☆ Abracadabra! Lets be productive!",
-        "bear": u"ʕ •̀ ω •́ ʔ Keep going! You can bear it!",
-        "allieB": u"╰(°ロ°)╯ Do all the things!"
-        }
-    slogan = random.choice(list(kao_dict.values() ) ) 
-    # print(slogan)
-    flash("index flashed message")
-    flash("another flashed message")
-    return render_template("index.html",slogan=slogan)  
-
-
-@app.route('/iwp')
 def index_wp():
     # flash("iwp flashed message")
 
@@ -538,7 +539,7 @@ def collect_kao():
     print(todays_kao.kao_id, todays_kao.date)
     if Collect.query.filter_by(kao_id=todays_kao.kao_id, user_id=user.user_id).first():
 
-        flash("You have already collected today's Moji, but good job anyways!")
+        flash("You have already a Moji for the day, but good job anyways!")
         return redirect("/tasks")
 
     collect = Collect(user_id=user.user_id,
@@ -694,7 +695,7 @@ def oAuth_callback():
 
 
     if session['credentials']:
-        flash("Connected to google") 
+        flash("Connected to Google") 
     return redirect("/tasks")
 
 
@@ -743,9 +744,6 @@ def create_cal_event():
     flash("Your task was added to your calendar")
     return redirect('/tasks')
 
-@app.route("/demo")
-def react_demo():
-    return render_template("demo.html")
 
 
 @app.errorhandler(404)

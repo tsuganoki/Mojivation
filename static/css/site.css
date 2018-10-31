@@ -95,7 +95,7 @@ a:hover {
 	display: inline-block;
 	margin: 5px;
 
-	width:340px;
+	width:400px;
 	background-color: #ffffff;
 	padding: 15px;
 	vertical-align:top;
@@ -125,8 +125,15 @@ a:hover {
 .half-transparent{
 	opacity:0.5;
 }
+.ex-cirle {
+	color:#444444;
+	text-decoration: none !important;
+	margin: 0 2px;
+}
 a.ex-cirle.hover{
 	color:#444444;
+	text-decoration: none !important;
+	margin: 0 2px;
 
 }
 .fa-times-circle-o{
@@ -153,6 +160,9 @@ a.ex-cirle.hover{
 	font-size:1.5em;
 	/*padding-bottom: 15px;*/
 
+}
+.taskbtn {
+	margin: 0 5px;
 }
 .cal-btn {
 	background-color: #4286f4; /* Green */
