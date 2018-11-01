@@ -2,6 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router, Link, Route } from 'react-router-dom'
 import { TasksPage } from './tasks.jsx';
 import { UserPage } from './user.jsx';
+import { RegisterPage } from './register.jsx';
 
 
 export default class App extends React.Component {
@@ -36,7 +37,7 @@ class NavBar extends React.Component {
       } else {
         return  (
           <Link to={"/register"}>
-          <span className="nav-link">Register</span>)
+          <span className="nav-link">Register</span>
           </Link>
           )
       } 
@@ -55,7 +56,7 @@ class NavBar extends React.Component {
     return (
       
         <nav className="navbar navbar-expand-lg navbar-light bg-light">
-          <Link to={"/"}>
+          <Link to={"/iwp"}>
             <span className="navbar-brand">Mojivation</span>
           </Link>
           <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor03" aria-controls="navbarColor03" aria-expanded="false" aria-label="Toggle navigation">
@@ -331,10 +332,11 @@ class Content extends React.Component {
   render () {
     return (
       <div>
-        <Route path='/test' component={TestTwo} />
+      
         <Route path='/tasks' component={TasksPage} />
-        <Route path='/' exact component={Slogan} />
+        <Route exact path='/' component={Slogan} />
         <Route path='/user' component={UserPage} />
+        <Route path='/register' component={RegisterPage} />
       </div>
       )
 

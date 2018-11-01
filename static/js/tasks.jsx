@@ -1,6 +1,7 @@
 "use strict";
 import React from 'react';
 import ReactDOM from 'react-dom';
+import {withRouter} from 'react-router-dom';
 
 
 export class TasksPage extends React.Component {
@@ -45,9 +46,8 @@ export class TasksPage extends React.Component {
 
     .then(data => this.setState( {EOD:this.assemble_date(data)} ) )
     console.log('EOD is: ',this.state.EOD)
-
-
   }
+
   getTodayTasks = (tasksData) => {
     let todayTasks = []
     todayTasks = tasksData.filter ( task => this.assemble_date(task.due_date) < this.state.EOD 

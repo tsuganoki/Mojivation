@@ -85,28 +85,27 @@ def login_required(f):
         return f(*args, **kwargs)
     return decorated_function
 
-# @app.route('/')
-# @app.route('/index')
-# def index():
-#     """Homepage."""
-#     kao_dict = {
-#         "shrug": u"¯\_(ツ)_/¯ Guess we can be productive today",
-#         "supportive": u"~(˘▽˘~) I know you can do it!",
-#         "dog": u" ∪･ω･∪ Today's Oppawtunities are full of pet-tential",
-#         "boxer": u"(งಠ_ಠ)ง It's the eye of the tiger, it's the thrill of the fight...",
-#         "mage": u"(ﾉ>ω<)ﾉ :｡･:*:･ﾟ’★,｡･:*:･ﾟ’☆ Abracadabra! Lets be productive!",
-#         "bear": u"ʕ •̀ ω •́ ʔ Keep going! You can bear it!",
-#         "allieB": u"╰(°ロ°)╯ Do all the things!"
-#         }
-#     slogan = random.choice(list(kao_dict.values() ) ) 
-#     # print(slogan)
-#     flash("index flashed message")
-#     flash("another flashed message")
-#     return render_template("index.html",slogan=slogan)  
-
-
 @app.route('/')
 @app.route('/index')
+def index():
+    """Homepage."""
+    kao_dict = {
+        "shrug": u"¯\_(ツ)_/¯ Guess we can be productive today",
+        "supportive": u"~(˘▽˘~) I know you can do it!",
+        "dog": u" ∪･ω･∪ Today's Oppawtunities are full of pet-tential",
+        "boxer": u"(งಠ_ಠ)ง It's the eye of the tiger, it's the thrill of the fight...",
+        "mage": u"(ﾉ>ω<)ﾉ :｡･:*:･ﾟ’★,｡･:*:･ﾟ’☆ Abracadabra! Lets be productive!",
+        "bear": u"ʕ •̀ ω •́ ʔ Keep going! You can bear it!",
+        "allieB": u"╰(°ロ°)╯ Do all the things!"
+        }
+    slogan = random.choice(list(kao_dict.values() ) ) 
+    # print(slogan)
+    flash("index flashed message")
+    flash("another flashed message")
+    return render_template("index.html",slogan=slogan)  
+
+
+@app.route('/iwp')
 def index_wp():
     # flash("iwp flashed message")
 
@@ -133,14 +132,21 @@ def slogan():
 
     return jsonify(kao_dict.get(random_slogan))
 
-@app.route("/register")
-def register():
-    """displays page to register a new account"""
-    if session.get("current_user_id"):
-        return redirect("/tasks")
+# @app.route("/register")
+# def register():
+#     """displays page to register a new account"""
+#     if session.get("current_user_id"):
+#         return redirect("/tasks")
 
+#     timezones = timehelpers.TIMEZONES
+#     return render_template("register.html", timezones=timezones)
+
+@app.route("/get-timezones.json")
+def get_timezones():
     timezones = timehelpers.TIMEZONES
-    return render_template("register.html", timezones=timezones)
+    print(timezones)
+
+    return jsonify(timezones)
 
 
 @app.route("/register_confirm", methods=["POST"])

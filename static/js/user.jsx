@@ -3,8 +3,8 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 
 
-
 export class UserPage extends React.Component {
+  
   constructor () {
     super ();
     this.state = {
