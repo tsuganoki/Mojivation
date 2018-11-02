@@ -4,7 +4,7 @@ import ReactDOM from 'react-dom';
 import {withRouter} from 'react-router-dom';
 
 
-export class TasksPage extends React.Component {
+class TasksPage extends React.Component {
   constructor () {
     super ();
     this.state = {
@@ -16,16 +16,24 @@ export class TasksPage extends React.Component {
   updateTaskData (argument) {
       this.setState( {taskData: argument} );
   }
+  componentWillMount() {
+    if (session.current_username === 'None' ) {
+      this.props.history.push('/')
+    }
+  }
   componentDidMount () {
-    this.fetchTaskData()
-    this.fetchEOD()
+    if (session.current_username !== 'None'){
+        this.fetchTaskData()
+        this.fetchEOD()
+      }
+      // console.log("EOD from within the didMount: ",this.state.EOD)
   }
   assemble_date(dt_dict) {
   // const d = new Date(dt_dict."year", dt_dict."month",
   //  dt_dict."day", dt_dict."hours", dt_dict."minutes",
   //   dt_dict."seconds", dt_dict."milliseconds");
 
-  var d = new Date(dt_dict.year, dt_dict.month, dt_dict.day, dt_dict.hours, dt_dict.minutes, dt_dict.seconds, dt_dict.milliseconds);
+  const d = new Date(dt_dict.year, dt_dict.month, dt_dict.day, dt_dict.hours, dt_dict.minutes, dt_dict.seconds, dt_dict.milliseconds);
 
   return d
   }
@@ -35,17 +43,15 @@ export class TasksPage extends React.Component {
     console.log("TasksPage.this: ",this)
     fetch('/get-tasks.json')
     .then(response => response.json())
-
     .then(data => this.setState( {taskData:data} ) )
 
   }
 
-  fetchEOD () {
+  fetchEOD = () => {
     fetch('/get-eod.json')
     .then(response => response.json())
-
     .then(data => this.setState( {EOD:this.assemble_date(data)} ) )
-    console.log('EOD is: ',this.state.EOD)
+    // console.log('EOD is: ',this.state.EOD)
   }
 
   getTodayTasks = (tasksData) => {
@@ -76,6 +82,7 @@ export class TasksPage extends React.Component {
 
   }
   render () {
+
     return (
       <div>
         <AddTask />
@@ -263,6 +270,10 @@ class Task extends React.Component {
 
   };
 }
+
+
+export default withRouter(TasksPage)
+
 
 
 

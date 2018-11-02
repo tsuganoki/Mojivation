@@ -1,6 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router, Link, Route } from 'react-router-dom'
-import { TasksPage } from './tasks.jsx';
+import TasksPage  from './tasks.jsx';
 import { UserPage } from './user.jsx';
 import { RegisterPage } from './register.jsx';
 
@@ -65,20 +65,24 @@ class NavBar extends React.Component {
 
           <div className="collapse navbar-collapse" id="navbarColor03">
             <ul className="navbar-nav ml-auto">
+              {session.current_username !=="None" &&
               <li className="nav-item active">
                 <Link to={"/tasks"}>
                   <span className="nav-link" >Tasks <span className="sr-only">(current)</span></span>
                 </Link>
               </li>
+              }
+            
               <li className="nav-item">
                 {formatUserLink()}
               </li>
-
+            {session.current_username !=="None" &&
               <li className="nav-item">
+
                 <a href="/oAuth-authorize">
                   <span className="nav-link" >oAuth with Google Calendar</span>
                 </a>
-              </li>
+              </li>}
             </ul>
             {formatLoginLink()}
           </div>
@@ -332,7 +336,7 @@ class Content extends React.Component {
   render () {
     return (
       <div>
-      
+
         <Route path='/tasks' component={TasksPage} />
         <Route exact path='/' component={Slogan} />
         <Route path='/user' component={UserPage} />

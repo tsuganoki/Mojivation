@@ -162,11 +162,11 @@ def get_user_midnight(tz_string):
     user_today = now.astimezone(user_zone)
     user_midnight = datetime(user_today.year,user_today.month,user_today.day)
     UTC.localize(user_midnight)
-
     return user_midnight
 
 def get_user_midnight_utc(dt,tz_string):
     """returns a UTC time corresponding to a midnight in user's current timezone"""
+    print("get user Midnight")
 
     user_zone = pytz.timezone(tz_string)
     user_today = dt.astimezone(user_zone)

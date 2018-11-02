@@ -29,6 +29,7 @@
   },
   "dependencies": {
     "@babel/plugin-proposal-class-properties": "^7.1.0",
+    "@babel/plugin-proposal-export-default-from": "^7.0.0",
     "@babel/preset-react": "^7.0.0",
     "babel": "^6.23.0",
     "babel-core": "^6.26.3",
@@ -46,7 +47,8 @@
     ],
     "plugins": [
       "@babel/plugin-proposal-class-properties",
-      "transform-class-properties"
+      "transform-class-properties",
+      "@babel/plugin-proposal-export-default-from"
     ]
   }
 }
