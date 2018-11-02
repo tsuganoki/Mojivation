@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Link, Route } from 'react-router-dom'
 import TasksPage  from './tasks.jsx';
 import { UserPage } from './user.jsx';
 import { RegisterPage } from './register.jsx';
+import AddTaskPage from './addtask.jsx';
 
 
 export default class App extends React.Component {
@@ -341,6 +342,7 @@ class Content extends React.Component {
         <Route exact path='/' component={Slogan} />
         <Route path='/user' component={UserPage} />
         <Route path='/register' component={RegisterPage} />
+        <Route path='/new-task' component={AddTaskPage} />
       </div>
       )
 

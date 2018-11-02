@@ -2,6 +2,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import {withRouter} from 'react-router-dom';
+import { BrowserRouter as Router, Link, Route } from 'react-router-dom'
+
 
 
 class TasksPage extends React.Component {
@@ -110,7 +112,9 @@ class AddTask extends React.Component {
   render() {
     return (
       <div>
+        <Link to="/new-task">
         <button id="add-a-task-btn"> Add a Task</button>
+        </Link>
       </div>
       )
   }
@@ -255,7 +259,7 @@ class Task extends React.Component {
       <div>
         {!this.props.done && <CompleteTaskBtn task_id={this.props.task.task_id} /> }
         {this.props.done && <UndoCompleteTaskBtn task_id={this.props.task.task_id} /> }
-        <a className="task-msg in-line" href={edit_task_route}>  {this.props.task.msg} </a>
+        <Link className="task-msg in-line" to={edit_task_route}>  {this.props.task.msg} </Link>
 
         <a href={delete_task_route} >
           <i className="fa fa-times-circle-o ex-cirle" 

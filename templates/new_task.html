@@ -13,21 +13,22 @@
 
 <form method="POST" action="/add_new_task">
   <table>
+    <tbody>
     <tr>
       <td>Task</td>
       <td><input type="text_box" 
              name="msg"
              size="37" 
-             required>
+             required />
  
       </td>
     </tr>
     <tr>
       <td>Due date</td>
       <td><input type="date" 
-             name="duedate"> 
+             name="duedate" /> 
           <input type="time" 
-             name="due_time">
+             name="due_time" />
           
       </td>
     </tr>
@@ -41,7 +42,7 @@
       <td></td><td> 
         <input type="checkbox" 
              value="today"
-             name="today"> (Due today)
+             name="today" /> (Due today)
       </td>
     </tr>
     <tr>
@@ -49,12 +50,13 @@
        </td>
        <td> <input type="checkbox" 
                 value="True"
-                 name="repeating"> (Repeat daily)
+                 name="repeating" /> (Repeat daily)
        </td>
     </tr>
     <tr><td> 
-      <input type="submit" value="Add"> 
+      <input type="submit" value="Add" /> 
     </td><td><a href="/tasks"> Cancel</a></td></tr>
+  </tbody>
   </table>
 </form>
 

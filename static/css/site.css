@@ -84,7 +84,7 @@ a:hover {
   white-space: nowrap;
 
 }
-.quick-add{
+.quick-add {
 	padding:10px;
 	padding-left: 40px;	
 	background-color: #ffffff;
@@ -113,7 +113,7 @@ a:hover {
 	color:grey;
 	font-size:0.8em;
 }
-.registrationPage{
+.registrationPage, #new-task-block{
 	margin: 15px;
 
 }
