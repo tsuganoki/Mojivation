@@ -76,11 +76,15 @@ class EditTaskForm extends React.Component {
 
 		if (day < 10) {
 			day = "0" + day.toString()
-
+			console.log("day is: ", day )
 		}
 		let defaultDate = this.props.task.due_date.getFullYear()+ "-" + this.props.task.due_date.getMonth() + '-' + day
+		console.log("within the function, the defaultDate is: ",defaultDate)
+
 
 		return defaultDate
+
+
 	}
 
 	formatDefaultTime () {
@@ -93,7 +97,7 @@ class EditTaskForm extends React.Component {
 
 		let defaultTime = hours.toString() + ":" + mins.toString()
 		console.log("default time is: ", defaultTime)
-		return defaultDate
+		return defaultTime
 	}
 
 
@@ -101,7 +105,7 @@ class EditTaskForm extends React.Component {
 	render() {
 		// {this.props.taskData.is_repeating && "checked"} 
 		// {...this.props.task.is_repeating && "checked"}
-		console.log(this.props.task)
+		// console.log(this.props.task)
 
 
 		
@@ -123,7 +127,7 @@ class EditTaskForm extends React.Component {
 			      <td>Due date</td>
 			      <td>
 			        <input type="date" name="duedate" defaultValue={defaultDate} />
-			        <input type="time" name="duetime"  defaultValue={defaultTime} />
+			        <input type="time" name="duetime" />
 			      </td>
 			    </tr>
 			    <tr>
