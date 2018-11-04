@@ -129,10 +129,10 @@ a:hover {
 .half-transparent{
 	opacity:0.5;
 }
-.ex-cirle {
-	color:#444444;
+.ex-cirle,.fa-times-circle {
+	color:rgba(190,190,190,50);
 	text-decoration: none !important;
-	margin: 0 2px;
+	margin: 0 5px;
 }
 a.ex-cirle.hover{
 	color:#444444;

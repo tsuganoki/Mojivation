@@ -17,9 +17,12 @@ class TasksPage extends React.Component {
     };
   }
 
-  updateTaskData (argument) {
-      this.setState( {taskData: argument} );
+  updateTaskData (arg) {
+      console.log(arg)
+
+      this.setState( {taskData: arg} );
   }
+
   componentWillMount() {
     if (session.current_username === 'None' ) {
       this.props.history.push('/')
@@ -40,7 +43,9 @@ class TasksPage extends React.Component {
   const d = new Date(dt_dict.year, dt_dict.month, dt_dict.day, dt_dict.hours, dt_dict.minutes, dt_dict.seconds, dt_dict.milliseconds);
 
   return d
-  }
+  }; 
+
+
 
   fetchTaskData  = () => {
     let that = this
@@ -90,9 +95,9 @@ class TasksPage extends React.Component {
     return (
       <div>
         <AddTask />
-        <TaskBlock tasks={this.getTodayTasks(this.state.taskData)} blockName='Due Today' showQuickAdd='True' done={false}/>
-        <TaskBlock tasks={this.getLaterTasks(this.state.taskData)} blockName='Due Later'  done={false}/>
-        <TaskBlock tasks={this.getCompletedTasks(this.state.taskData)} 
+        <TaskBlock updateTaskData={this.updateTaskData} tasks={this.getTodayTasks(this.state.taskData)} blockName='Due Today' showQuickAdd='True' done={false}/>
+        <TaskBlock updateTaskData={this.updateTaskData} tasks={this.getLaterTasks(this.state.taskData)} blockName='Due Later'  done={false}/>
+        <TaskBlock updateTaskData={this.updateTaskData} tasks={this.getCompletedTasks(this.state.taskData)} 
           blockName="Completed" 
           showClearCompleted="True"
           done={true}
@@ -136,9 +141,8 @@ class TaskBlock extends React.Component {
           { this.props.tasks.map ((task) => {
                      return (
                         <li key={task.task_id}>
-                          <Task task={task} done={this.props.done}>
-                                    <Route path='/edit_task' render={props => <EditTaskPage {...props} task={this.props.task} />}  />
-                          </Task>
+                          <Task updateTaskData={this.updateTaskData} 
+                                task={task} done={this.props.done} />
                         </li>
                       )
                     }   
@@ -184,6 +188,7 @@ class CompleteTaskBtn extends React.Component {
   completeTask() {
     // put the thing that makes it not do the thing
     console.log("attempting to complete task")
+    console.log(updateTaskData)
     fetch()
 };
 
@@ -262,16 +267,14 @@ class Task extends React.Component {
 
     return (
       <div>
-        {!this.props.done && <CompleteTaskBtn task_id={this.props.task.task_id} /> }
-        {this.props.done && <UndoCompleteTaskBtn task_id={this.props.task.task_id} /> }
+        {!this.props.done && <CompleteTaskBtn updateTaskData={this.updateTaskData} task_id={this.props.task.task_id} /> }
+        {this.props.done && <UndoCompleteTaskBtn updateTaskData={this.updateTaskData} task_id={this.props.task.task_id} /> }
 
 
         <Link className="task-msg in-line" to={editTaskRoute}>  {this.props.task.msg} </Link>
 
-        <a href={delete_task_route} >
-          <i className="fa fa-times-circle-o ex-cirle" 
-          aria-hidden="true" 
-          alttext="delete task"> </i> x
+        <a href={delete_task_route}> 
+          <i className="far fa-times-circle "></i> 
         </a>
       </div>
 
@@ -281,7 +284,28 @@ class Task extends React.Component {
 
   };
 }
+class DeleteTask extends React.Component {
+  constructor () {
+    super ();
+    this.state = {
+      taskID: null
+    };
+  }
+    DeleteTask  = () => {
+    const delRoute = 'delete-task-' + this.props.task_id
+    fetch(delRoute)
+    .then(response => response.json())
 
+  }
+
+  render () {
+
+    return (
+      <p> hello</p>
+
+      )
+  }
+}
 
 export default withRouter(TasksPage)
 

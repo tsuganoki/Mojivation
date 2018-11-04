@@ -7,6 +7,7 @@ import { BrowserRouter as Router, Link, Route } from 'react-router-dom'
 class EditTaskPage extends React.Component {
 	render () {
 		console.log("task is:",this.props.task)
+		console.log(this.props)
 		return (
 			<div className="edit-task-page">
 				<GoogleCalEventBtn />
@@ -15,6 +16,8 @@ class EditTaskPage extends React.Component {
 	}
 }
 class EditTaskForm extends React.Component {
+
+
 
 	checked = () => {
 		// {this.props.task.is_repeating && checked()} 

@@ -321,7 +321,7 @@ class Content extends React.Component {
         <Route path='/register' component={RegisterPage} />
         <Route path='/new-task' component={AddTaskPage} />
         <Route path='/test' render={props => <Test {...props} test="a string" />} />
-        <Route path='/edit-task' render={props => <EditTaskPage {...props} test="a string" />} />
+        <Route path='/edit-task/:id' component={EditTaskPage} />
 
       </div>
       )
