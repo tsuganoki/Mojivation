@@ -120,7 +120,7 @@ class EditTaskForm extends React.Component {
 			      <td>Task</td>
 			      <td>
 				      <input type="text_box" name="msg" size="37" defaultValue={this.props.task.msg} />
-							<input value={this.props.task.task_id} name="task_id" hidden /> 
+							<input value={this.props.task.task_id} name="task_id" hidden readOnly /> 
 			      </td>
 			    </tr>
 			    <tr>
@@ -134,20 +134,20 @@ class EditTaskForm extends React.Component {
 			      <td></td><td> 
 			        <input type="checkbox" 
 			             value="today"
-			             name="today" checked={this.props.task.due_date < this.props.EOD}/> (Due today)
+			             name="today" defaultChecked={this.props.task.due_date < this.props.EOD}/> (Due today)
 			      </td>
 			    </tr>
 			    <tr>
 			       <td>
 			       </td>
 			       <td> 
-				       <input type="checkbox" value="True" name="repeating" checked={this.props.task.is_repeating} />
+				       <input type="checkbox" defaultValue="True" name="repeating" defaultChecked={this.props.task.is_repeating} />
 				       (Repeat daily)
 			       </td>
 			    </tr>
 			    <tr><td> 
-			      <input type="submit" value="Update" /> 
-			    </td><td><a href="/tasks"> Cancel</a></td></tr>
+			      <input type="submit" defaultValue="Update" readOnly /> 
+			    </td><td><Link to="/tasks"> Cancel</Link></td></tr>
 			  </tbody>
 			  </table>
 			</form>
@@ -162,7 +162,7 @@ class GoogleCalEventBtn extends React.Component {
 
 			<form method="POST" action="/create-cal-event">
 			  <input value="40" readOnly name="task_id" hidden /> 
-			  <input type='submit' value="Create Google Calendar Event" className="cal-btn" />
+			  <input type='submit' readOnly value="Create Google Calendar Event" className="cal-btn" />
 			</form>
 			)
 	}

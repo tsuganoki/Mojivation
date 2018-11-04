@@ -394,6 +394,7 @@ def add_new_task():
 @app.route("/confirm-edit", methods=["POST"])
 @login_required
 def confirm_edit():
+    print("call make to /confirm-edit route")
     user = User.query.get(session["current_user_id"])
     task = Task.query.get(int(request.form.get("task_id")))
 
@@ -418,7 +419,7 @@ def confirm_edit():
 
     # print(task.msg)
     task.due_date = due_date
-    # print(task.due_date)
+    print("before commit, task duedate is: ", task.due_date)
 
     db.session.commit()
     # print(Task.query.all())
