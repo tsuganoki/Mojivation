@@ -17,12 +17,13 @@ class TasksPage extends React.Component {
     };
   }
 
-  updateTaskData (arg) {
-      console.log("the argument is: ", arg)
-      console.log("updateTaskData CALLED")
+  // updateTaskData (arg) {
+  //     console.log("the argument is: ", arg)
+  //     console.log("updateTaskData CALLED")
 
-      // this.fetchTaskData();
-  }
+
+  //     // this.fetchTaskData();
+  // }
   
 
   componentWillMount() {
@@ -49,8 +50,9 @@ class TasksPage extends React.Component {
 
 
   fetchTaskData  = () => {
-    let that = this
-    console.log("TasksPage.this: ",this)
+    // let that = this
+    // console.log("TasksPage.this: ",this)
+    console.log("calling fetchTaskData function")
     fetch('/get-tasks.json')
     .then(response => response.json())
     .then(data => this.setState( {taskData:data} ) )
@@ -96,9 +98,9 @@ class TasksPage extends React.Component {
     return (
       <div>
         <AddTask />
-        <TaskBlock updateTaskData={this.updateTaskData} tasks={this.getTodayTasks(this.state.taskData)} blockName='Due Today' showQuickAdd='True' done={false}/>
-        <TaskBlock updateTaskData={this.updateTaskData} tasks={this.getLaterTasks(this.state.taskData)} blockName='Due Later'  done={false}/>
-        <TaskBlock updateTaskData={this.updateTaskData} tasks={this.getCompletedTasks(this.state.taskData)} 
+        <TaskBlock fetchTaskData={this.fetchTaskData} tasks={this.getTodayTasks(this.state.taskData)} blockName='Due Today' showQuickAdd='True' done={false}/>
+        <TaskBlock fetchTaskData={this.fetchTaskData} tasks={this.getLaterTasks(this.state.taskData)} blockName='Due Later'  done={false}/>
+        <TaskBlock fetchTaskData={this.fetchTaskData} tasks={this.getCompletedTasks(this.state.taskData)} 
           blockName="Completed" 
           showClearCompleted="True"
           done={true}
@@ -142,7 +144,7 @@ class TaskBlock extends React.Component {
           { this.props.tasks.map ((task) => {
                      return (
                         <li key={task.task_id}>
-                          <Task updateTaskData={this.props.updateTaskData} task={task} done={this.props.done} />
+                          <Task fetchTaskData={this.props.fetchTaskData} task={task} done={this.props.done} />
                         </li>
                       )
                     }   
@@ -185,21 +187,31 @@ class ClearCompleted extends React.Component {
 
 class CompleteTaskBtn extends React.Component {
 
-  completeTask() {
-    // put the thing that makes it not do the thing
-    console.log("attempting to complete task")
-    console.log(updateTaskData)
-    fetch()
-};
+  completeSpecificTask(task_id) {
+    console.log("running completeSpecificTask function")
+
+    fetch('/complete-task', {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify( {task_id: task_id} )
+    });
+    this.props.fetchTaskData()
+     
+  }
 
 
   render () {
     let completeTaskRoute = this.props.task_id.toString()
+      // <form className="in-line" action="/complete-task" method="POST">
+        // <input hidden name="task_id" defaultValue={completeTaskRoute} />
+        // <input className='taskbtn' type="submit" name="complete" value="Done" onClick={this.completeTask}/>
+      // </form>
     return (
-      <form className="in-line" action="/complete-task" method="POST">
-        <input hidden name="task_id" defaultValue={completeTaskRoute} />
-        <input className='taskbtn' type="submit" name="complete" value="Done" onClick={this.completeTask}/>
-      </form>
+            <button className="in-line taskbtn" onClick={ () => {console.log(this.props.task_id);this.completeSpecificTask(this.props.task_id) } }> Done </button>
+
     )
   }
 }
@@ -208,11 +220,7 @@ class CompleteTaskBtn extends React.Component {
 
 class UndoCompleteTaskBtn extends React.Component {
 
-  undoComplete() {
-    // put the thing that makes it not do the thing
-    console.log("attempting to undo-complete task")
-    fetch()
-  };
+  
   undoSpecificTask(task_id) {
     console.log("running undoSpecificTask function")
     // console.log(JSON.stringify( {task_id: task_id} ) )
@@ -225,7 +233,7 @@ class UndoCompleteTaskBtn extends React.Component {
       },
       body: JSON.stringify( {task_id: task_id} )
     });
-    this.props.updateTaskData()
+    this.props.fetchTaskData()
      
   }
 
@@ -242,7 +250,7 @@ class UndoCompleteTaskBtn extends React.Component {
         // <input className='taskbtn' type="submit" name="complete" value="Undo" onClick={this.undoComplete}/>
        //</form>
     return (
-      <button onClick={ () => {console.log(this.props.task_id);this.undoSpecificTask(this.props.task_id) } }> UNDO </button>
+      <button className="in-line taskbtn" onClick={ () => {console.log(this.props.task_id);this.undoSpecificTask(this.props.task_id) } }> Undo </button>
     )
   }
 }
@@ -288,8 +296,8 @@ class Task extends React.Component {
 
     return (
       <div>
-        {!this.props.done && <CompleteTaskBtn updateTaskData={this.props.updateTaskData} task_id={this.props.task.task_id} /> }
-        {this.props.done && <UndoCompleteTaskBtn updateTaskData={this.props.updateTaskData} task_id={this.props.task.task_id} /> }
+        {!this.props.done && <CompleteTaskBtn fetchTaskData={this.props.fetchTaskData} task_id={this.props.task.task_id} /> }
+        {this.props.done && <UndoCompleteTaskBtn fetchTaskData={this.props.fetchTaskData} task_id={this.props.task.task_id} /> }
 
 
         <Link className="task-msg in-line" to={editTaskRoute}>  {this.props.task.msg} </Link>

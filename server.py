@@ -458,28 +458,28 @@ def confirm_edit():
 #         return redirect("/")
 
 
-@app.route("/complete-task", methods=["POST"])
-@login_required
-def complete_task():
-    """Adds a new task to a user's task list"""
+# @app.route("/complete-task", methods=["POST"])
+# @login_required
+# def complete_task():
+#     """Adds a new task to a user's task list"""
 
-    task_id = int(request.form.get("task_id"))
-    user = User.query.get(session.get("current_user_id"))
+#     task_id = int(request.form.get("task_id"))
+#     user = User.query.get(session.get("current_user_id"))
 
-    task = Task.query.get(task_id)
-    # A line of code the changes the task to is_complete = False
-    # user.no_of_logins += 1
+#     task = Task.query.get(task_id)
+#     # A line of code the changes the task to is_complete = False
+#     # user.no_of_logins += 1
                 
-    if task.is_repeating == True:
-        task.due_date = timehelpers.get_user_tomorrow_EOD(user.timezone)
-        db.session.commit()
-    else:
-        task.is_complete = True
-        task.completion_date = timehelpers.get_now_UTC()
-        db.session.commit()
-    if timehelpers.check_remaining_tasks(user.tasks,user.timezone):
-        return redirect("/collect-kao")
-    return redirect("/tasks")
+#     if task.is_repeating == True:
+#         task.due_date = timehelpers.get_user_tomorrow_EOD(user.timezone)
+#         db.session.commit()
+#     else:
+#         task.is_complete = True
+#         task.completion_date = timehelpers.get_now_UTC()
+#         db.session.commit()
+#     if timehelpers.check_remaining_tasks(user.tasks,user.timezone):
+#         return redirect("/collect-kao")
+#     return redirect("/tasks")
 
 # @app.route("/undo_complete", methods=["POST"])
 # @login_required
@@ -512,28 +512,28 @@ def undo_complete():
 
     return "task un-done"
       
-# @app.route("/complete-task", methods=["POST"])
-# @login_required
-# def complete_task():
-#     task_id = int(request.json.get("task_id"))
-#     user = User.query.get(session.get("current_user_id"))
+@app.route("/complete-task", methods=["POST"])
+@login_required
+def complete_task():
+    task_id = int(request.json.get("task_id"))
+    user = User.query.get(session.get("current_user_id"))
 
-#     task = Task.query.get(task_id)
-# #     # A line of code the changes the task to is_complete = False
-# #     # user.no_of_logins += 1
+    task = Task.query.get(task_id)
+#     # A line of code the changes the task to is_complete = False
+#     # user.no_of_logins += 1
                 
-#     if task.is_repeating == True:
-#         task.due_date = timehelpers.get_user_tomorrow_EOD(user.timezone)
-#         db.session.commit()
-#     else:
-#         task.is_complete = True
-#         task.completion_date = timehelpers.get_now_UTC()
-#         db.session.commit()
-#     if timehelpers.check_remaining_tasks(user.tasks,user.timezone):
-#         return redirect("/collect-kao")
+    if task.is_repeating == True:
+        task.due_date = timehelpers.get_user_tomorrow_EOD(user.timezone)
+        db.session.commit()
+    else:
+        task.is_complete = True
+        task.completion_date = timehelpers.get_now_UTC()
+        db.session.commit()
+    if timehelpers.check_remaining_tasks(user.tasks,user.timezone):
+        return redirect("/collect-kao")
     
 
-#     return "Task Completed"
+    return "Task Completed"
 
 
 @app.route("/clear-all-completed")
