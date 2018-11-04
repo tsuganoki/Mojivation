@@ -19,13 +19,11 @@ class TasksPage extends React.Component {
 
   updateTaskData (arg) {
       console.log("the argument is: ", arg)
-      console.log("updateTaskDAta CALLED")
+      console.log("updateTaskData CALLED")
 
-      this.fetchTaskData();
+      // this.fetchTaskData();
   }
-  updateSpecificTask(taskID) {
-    console.log("this maybe can set the state of a specific task?")
-  }
+  
 
   componentWillMount() {
     if (session.current_username === 'None' ) {
@@ -215,19 +213,35 @@ class UndoCompleteTaskBtn extends React.Component {
     console.log("attempting to undo-complete task")
     fetch()
   };
+  undoSpecificTask(task_id) {
+    console.log("running undoSpecificTask function")
+    // console.log(JSON.stringify( {task_id: task_id} ) )
+
+    fetch('/undo-complete-task', {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify( {task_id: task_id} )
+    });
+     
+  }
+
 
 
   render () {
-    console.log("props for undoCompleteTaskBtn: ",this.props)
-    let undoCompleteRoute = this.props.task_id.toString()
+    // console.log("props for undoCompleteTaskBtn: ",this.props)
+    // let undoCompleteRoute = this.props.task_id.toString()
   
-      // <button onClick={ () => {this.props.updateTaskData("someArg") } }> UNDO </button>
+      // 
     
+    //    <form className="in-line" action="/undo_complete" method="POST">
+      //   <input hidden name="task_id" defaultValue={undoCompleteRoute} />
+        // <input className='taskbtn' type="submit" name="complete" value="Undo" onClick={this.undoComplete}/>
+       //</form>
     return (
-        <form className="in-line" action="/undo_complete" method="POST">
-         <input hidden name="task_id" defaultValue={undoCompleteRoute} />
-         <input className='taskbtn' type="submit" name="complete" value="Undo" onClick={this.undoComplete}/>
-       </form>
+      <button onClick={ () => {console.log(this.props.task_id);this.undoSpecificTask(this.props.task_id) } }> UNDO </button>
     )
   }
 }

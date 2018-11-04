@@ -480,20 +480,36 @@ def complete_task():
         return redirect("/collect-kao")
     return redirect("/tasks")
 
-@app.route("/undo_complete", methods=["POST"])
+# @app.route("/undo_complete", methods=["POST"])
+# @login_required
+# def undo_complete():
+#     """Adds a new task to a user's task list"""
+
+#     task_id = int(request.form.get("task_id"))
+
+#     task = Task.query.get(task_id)
+#     task.is_complete = False
+#     db.session.commit()
+
+#     # print("taskid: ",task_id," - Task: ", task, "is_complete: ",task.is_complete)
+#     return redirect("/tasks")
+
+
+@app.route("/undo-complete-task", methods=["POST"])
 @login_required
 def undo_complete():
-    """Adds a new task to a user's task list"""
+    # print([ (key,value) for key, value in request.form.items()])
+    print(request.form.get("task_id"))
+    print(request.form.get("body"))
+    # print(request.form.get(task_id))
+    # task_id = int(request.form.get("task_id"))
 
-    task_id = int(request.form.get("task_id"))
+    # task = Task.query.get(task_id)
+    # task.is_complete = False
+    # print(task,task.is_complete,"\nnot yet committed")
+    return "True"
+      
 
-    task = Task.query.get(task_id)
-    task.is_complete = False
-    db.session.commit()
-
-    # print("taskid: ",task_id," - Task: ", task, "is_complete: ",task.is_complete)
-    return redirect("/tasks")
-        
 
 
 @app.route("/clear-all-completed")

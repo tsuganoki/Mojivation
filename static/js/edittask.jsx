@@ -10,7 +10,7 @@ class EditTaskPage extends React.Component {
 	constructor () {
     super ();
     this.state = {
-        taskData: {},
+        taskData: null,
         EOD: {}
 	    };
 	  }
@@ -60,7 +60,7 @@ class EditTaskPage extends React.Component {
 		
 		return (
 			<div className="edit-task-page">
-				<EditTaskForm task={this.state.taskData} EOD={this.state.EOD} assemble_date={this.assemble_date}/>
+				{this.state.taskData && <EditTaskForm task={this.state.taskData} EOD={this.state.EOD} assemble_date={this.assemble_date}/>}
 				<GoogleCalEventBtn />
 
 
@@ -69,8 +69,32 @@ class EditTaskPage extends React.Component {
 	}
 }
 class EditTaskForm extends React.Component {
-	checked = () => {return 'checked'}
 
+
+	formatDefaultDate () {
+		let day = this.props.task.due_date.getDate()
+
+		if (day < 10) {
+			day = "0" + day.toString()
+
+		}
+		let defaultDate = this.props.task.due_date.getFullYear()+ "-" + this.props.task.due_date.getMonth() + '-' + day
+
+		return defaultDate
+	}
+
+	formatDefaultTime () {
+		let dt = this.props.task.due_date
+		let hours = dt.getHours()
+		let mins = dt.	getMinutes()
+		if (mins < 10) {
+			mins = "0" + mins.toString()
+		}
+
+		let defaultTime = hours.toString() + ":" + mins.toString()
+		console.log("default time is: ", defaultTime)
+		return defaultDate
+	}
 
 
 
@@ -78,8 +102,12 @@ class EditTaskForm extends React.Component {
 		// {this.props.taskData.is_repeating && "checked"} 
 		// {...this.props.task.is_repeating && "checked"}
 		console.log(this.props.task)
-		console.log(this.props.task.is_repeating)
-		console.log("boolian is:",this.props.task.due_date < this.props.EOD)
+
+
+		
+		let defaultDate = this.formatDefaultDate()
+		let defaultTime = this.formatDefaultTime()
+
 		return (
 			<form method="POST" action="/confirm-edit">
 			  <table>
@@ -87,29 +115,29 @@ class EditTaskForm extends React.Component {
 			    <tr>
 			      <td>Task</td>
 			      <td>
-				      <input type="text_box" name="msg" size="37" value={this.props.task.msg} />
+				      <input type="text_box" name="msg" size="37" defaultValue={this.props.task.msg} />
 							<input value={this.props.task.task_id} name="task_id" hidden /> 
 			      </td>
 			    </tr>
 			    <tr>
 			      <td>Due date</td>
 			      <td>
-			        <input type="date" name="duedate" />
-			        <input type="time" name="duetime" value={this.props.task.due_date} />
+			        <input type="date" name="duedate" defaultValue={defaultDate} />
+			        <input type="time" name="duetime"  defaultValue={defaultTime} />
 			      </td>
 			    </tr>
 			    <tr>
 			      <td></td><td> 
 			        <input type="checkbox" 
 			             value="today"
-			             name="today" {...this.props.task.due_date < this.props.EOD && checked()}/> (Due today)
+			             name="today" checked={this.props.task.due_date < this.props.EOD}/> (Due today)
 			      </td>
 			    </tr>
 			    <tr>
 			       <td>
 			       </td>
 			       <td> 
-				       <input type="checkbox" value="True" name="repeating" {...this.props.task.is_repeating && checked()} />
+				       <input type="checkbox" value="True" name="repeating" checked={this.props.task.is_repeating} />
 				       (Repeat daily)
 			       </td>
 			    </tr>
