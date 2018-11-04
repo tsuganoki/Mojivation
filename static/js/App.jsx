@@ -4,6 +4,9 @@ import TasksPage  from './tasks.jsx';
 import { UserPage } from './user.jsx';
 import { RegisterPage } from './register.jsx';
 import AddTaskPage from './addtask.jsx';
+import LoginPage from './login.jsx';
+import EditTaskPage from './edittask.jsx';
+
 
 
 export default class App extends React.Component {
@@ -57,7 +60,7 @@ class NavBar extends React.Component {
     return (
       
         <nav className="navbar navbar-expand-lg navbar-light bg-light">
-          <Link to={"/iwp"}>
+          <Link to={"/"}>
             <span className="navbar-brand">Mojivation</span>
           </Link>
           <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor03" aria-controls="navbarColor03" aria-expanded="false" aria-label="Toggle navigation">
@@ -77,6 +80,7 @@ class NavBar extends React.Component {
               <li className="nav-item">
                 {formatUserLink()}
               </li>
+
             {session.current_username !=="None" &&
               <li className="nav-item">
 
@@ -84,6 +88,12 @@ class NavBar extends React.Component {
                   <span className="nav-link" >oAuth with Google Calendar</span>
                 </a>
               </li>}
+              <li className="nav-item">
+
+                <Link to='/test'>
+                  <span className="nav-link" > test </span>
+                </Link>
+              </li>
             </ul>
             {formatLoginLink()}
           </div>
@@ -94,23 +104,13 @@ class NavBar extends React.Component {
 
 }
 
-class Heading extends React.Component {
-  render () {
-    return (
-      <p>
-      heading
-      </p>
-      // <h1>{% block h1_heading %}HEADING {% endblock %}</h1>
-    )
-  }
-
-}
 class LoginBtn extends React.Component {
   render () {
     return (
-      <form className="form-inline my-2 my-lg-0" action='/login'>
-        <button className="btn btn-secondary my-2 my-sm-0 login-btn" type="submit">Login</button>
-        </form>
+      <Link to='/login'>
+      
+        <button className="btn btn-secondary my-2 my-sm-0 login-btn">Login</button>
+        </Link>
       )
   }
 
@@ -128,7 +128,7 @@ class LogoutBtn extends React.Component {
 }
 class FlashedMessages extends React.Component {
   render () {
-    console.log(flashedMessages)
+    console.log("flashed messages: ",flashedMessages)
     let formatFlashedMessages = () => {
       //          { this.props.tasks.map ((task) => {
 
@@ -170,20 +170,6 @@ class Base extends React.Component {
 
 }
 
-const Test = ({ match }) => (
-      <div> 
-        test has rendered
-      </div>
-)
-
-
-
-
-class TestTwo extends React.Component {
-  render () {
-    return <p> Test 2 has rendered </p>
-  }
-}
 
 class TaskBlock extends React.Component {
 
@@ -211,25 +197,6 @@ class TaskBlock extends React.Component {
   }
 }
 
-class QuickAdd extends React.Component {
-  render () {
-    return (
-      <div className="quick-add">
-    <form method="POST" action="/add_new_task">
-      <input type="text_box" 
-           required 
-           name="msg" />
-
-      <input hidden name="duedate" defaultValue="" />
-      <input type="submit" defaultValue="Quick Add" />
-      <p id="quick-add-info">
-        * Quick add due date auto completes to today
-      </p>
-    </form>
-  </div>)
-  }
-
-}
 class ClearCompleted extends React.Component {
   render () {
     return <a href="/clear-all-completed">Clear Completed</a>
@@ -332,6 +299,15 @@ class Slogan extends React.Component {
   }
 }
 
+class Test extends React.Component {
+  render () {
+    return (
+      <p> prop here: {this.props.test}</p>
+      )
+  }
+
+}
+
 
 class Content extends React.Component {
   render () {
@@ -340,9 +316,13 @@ class Content extends React.Component {
 
         <Route path='/tasks' component={TasksPage} />
         <Route exact path='/' component={Slogan} />
+        <Route path='/login' component={LoginPage} />
         <Route path='/user' component={UserPage} />
         <Route path='/register' component={RegisterPage} />
         <Route path='/new-task' component={AddTaskPage} />
+        <Route path='/test' render={props => <Test {...props} test="a string" />} />
+        <Route path='/edit-task' render={props => <EditTaskPage {...props} test="a string" />} />
+
       </div>
       )
 

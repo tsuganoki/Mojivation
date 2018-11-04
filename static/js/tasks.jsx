@@ -3,6 +3,8 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import {withRouter} from 'react-router-dom';
 import { BrowserRouter as Router, Link, Route } from 'react-router-dom'
+import EditTaskPage from './edittask.jsx';
+
 
 
 
@@ -134,7 +136,9 @@ class TaskBlock extends React.Component {
           { this.props.tasks.map ((task) => {
                      return (
                         <li key={task.task_id}>
-                          <Task task={task} done={this.props.done} />
+                          <Task task={task} done={this.props.done}>
+                                    <Route path='/edit_task' render={props => <EditTaskPage {...props} task={this.props.task} />}  />
+                          </Task>
                         </li>
                       )
                     }   
@@ -254,17 +258,20 @@ class Task extends React.Component {
     let delete_task_route = 'delete-task-' + this.props.task.task_id.toString()
     // let _getTasks = this.getTasks
 // {this.props.done && <CompleteTaskBtn task_id={this.props.task.task_id} /> }
+    const editTaskRoute = '/edit-task/' + this.props.task.task_id
 
     return (
       <div>
         {!this.props.done && <CompleteTaskBtn task_id={this.props.task.task_id} /> }
         {this.props.done && <UndoCompleteTaskBtn task_id={this.props.task.task_id} /> }
-        <Link className="task-msg in-line" to={edit_task_route}>  {this.props.task.msg} </Link>
+
+
+        <Link className="task-msg in-line" to={editTaskRoute}>  {this.props.task.msg} </Link>
 
         <a href={delete_task_route} >
           <i className="fa fa-times-circle-o ex-cirle" 
           aria-hidden="true" 
-          alttext="delete task"> </i>
+          alttext="delete task"> </i> x
         </a>
       </div>
 

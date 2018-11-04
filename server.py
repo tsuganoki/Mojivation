@@ -191,13 +191,13 @@ def register_confirm():
 
 
 
-@app.route('/login')
-def login():
-    """Homepage."""
-    if session.get("current_user_id"):
-        return redirect("/tasks")
+# @app.route('/login')
+# def login():
+#     """Homepage."""
+#     if session.get("current_user_id"):
+#         return redirect("/tasks")
 
-    return render_template("login.html")
+#     return render_template("login.html")
 
 @app.route('/login_confirm', methods = ['POST'])
 def login_confirm():
@@ -367,19 +367,19 @@ def add_new_task():
     return redirect("/tasks")
 
 
-@app.route("/edit_task/<task_id>")
-@login_required
-def edit_task(task_id):
-    """lets a user edit a task"""
+# @app.route("/edit_task/<task_id>")
+# @login_required
+# def edit_task(task_id):
+#     """lets a user edit a task"""
 
-    user = User.query.get(session["current_user_id"])
-    task = Task.query.get(task_id)
-    if task.user_id != user.user_id:
-        flash("Invalid task id")
-        return redirect('/tasks')
+#     user = User.query.get(session["current_user_id"])
+#     task = Task.query.get(task_id)
+#     if task.user_id != user.user_id:
+#         flash("Invalid task id")
+#         return redirect('/tasks')
 
-    return render_template("edittask.html", 
-                            task=task)
+#     return render_template("edittask.html", 
+#                             task=task)
 
 @app.route("/confirm-edit", methods=["POST"])
 @login_required

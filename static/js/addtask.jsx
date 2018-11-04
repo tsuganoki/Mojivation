@@ -60,14 +60,5 @@ class AddTaskPage extends React.Component {
 
 
 
-class EditTaskPage extends React.Component {
-	render() {
-		return (
-
-
-			)
-
-	}
-}
 
 export default withRouter(AddTaskPage)

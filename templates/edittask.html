@@ -9,26 +9,24 @@
 
 <form method="POST" action="/confirm-edit">
   <table>
+    <tbody>
     <tr>
       <td>Task</td>
       <td><input type="text_box" 
              name="msg"
              size="37"
-             value="{{task.msg}}"
-             >
+             value="{{task.msg}}" />
              <input 
              value={{task.task_id}}
-             name="task_id" hidden> 
+             name="task_id" hidden /> 
  
       </td>
     </tr>
     <tr>
       <td>Due date</td>
-      <td><input type="date" 
-             name="duedate"> <input type="time" 
-             name="duetime"
-             value="{{task.due_date}}">
-          
+      <td>
+        <input type="date" name="duedate" />
+        <input type="time" name="duetime"value="{{this.props.task.due_date}}" />
       </td>
     </tr>
 <!--     <tr>
@@ -41,7 +39,7 @@
       <td></td><td> 
         <input type="checkbox" 
              value="today"
-             name="today"> (Due today)
+             name="today" /> (Due today)
       </td>
     </tr>
     <tr>
@@ -49,27 +47,23 @@
        </td>
        <td> <input type="checkbox" 
                 value="True"
-
                  name="repeating"
                  {% if task.is_repeating %}
                  checked
-                 {% endif %}
-                 > (Repeat daily)
+                 {% endif %} /> (Repeat daily)
        </td>
     </tr>
     <tr><td> 
-      <input type="submit" value="Update"> 
+      <input type="submit" value="Update" /> 
     </td><td><a href="/tasks"> Cancel</a></td></tr>
+  </tbody>
   </table>
 </form>
 
 
 <form method="POST" action="/create-cal-event">
-  <input 
-  value={{task.task_id}}
-  name="task_id" hidden> 
-  <input type='submit' value="Create Google Calendar Event" class="cal-btn">
-
+  <input value={{task.task_id}} name="task_id" hidden /> 
+  <input type='submit' value="Create Google Calendar Event" class="cal-btn" />
 </form>
 
  {% endblock %}

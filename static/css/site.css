@@ -113,8 +113,9 @@ a:hover {
 	color:grey;
 	font-size:0.8em;
 }
-.registrationPage, #new-task-block{
+.registrationPage, #new-task-block, .edit-task-page, .login-page{
 	margin: 15px;
+
 
 }
 .blue-bg{
