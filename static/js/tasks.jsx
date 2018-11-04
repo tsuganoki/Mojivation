@@ -225,6 +225,7 @@ class UndoCompleteTaskBtn extends React.Component {
       },
       body: JSON.stringify( {task_id: task_id} )
     });
+    this.props.updateTaskData()
      
   }
 

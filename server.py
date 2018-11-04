@@ -500,17 +500,40 @@ def complete_task():
 @login_required
 def undo_complete():
     # print([ (key,value) for key, value in request.form.items()])
-    print(request.form.get("task_id"))
-    print(request.form.get("body"))
+    task_id = int(request.json.get("task_id"))
     # print(request.form.get(task_id))
-    # task_id = int(request.form.get("task_id"))
 
-    # task = Task.query.get(task_id)
-    # task.is_complete = False
-    # print(task,task.is_complete,"\nnot yet committed")
-    return "True"
+    task = Task.query.get(task_id)
+    task.is_complete = False
+    print(task,task.is_complete,"\nnot yet committed")
+    db.session.commit()
+    print(task,task.is_complete,"\nnot yet committed")
+
+
+    return "task un-done"
       
+# @app.route("/complete-task", methods=["POST"])
+# @login_required
+# def complete_task():
+#     task_id = int(request.json.get("task_id"))
+#     user = User.query.get(session.get("current_user_id"))
 
+#     task = Task.query.get(task_id)
+# #     # A line of code the changes the task to is_complete = False
+# #     # user.no_of_logins += 1
+                
+#     if task.is_repeating == True:
+#         task.due_date = timehelpers.get_user_tomorrow_EOD(user.timezone)
+#         db.session.commit()
+#     else:
+#         task.is_complete = True
+#         task.completion_date = timehelpers.get_now_UTC()
+#         db.session.commit()
+#     if timehelpers.check_remaining_tasks(user.tasks,user.timezone):
+#         return redirect("/collect-kao")
+    
+
+#     return "Task Completed"
 
 
 @app.route("/clear-all-completed")
