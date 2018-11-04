@@ -18,9 +18,13 @@ class TasksPage extends React.Component {
   }
 
   updateTaskData (arg) {
-      console.log(arg)
+      console.log("the argument is: ", arg)
+      console.log("updateTaskDAta CALLED")
 
-      this.setState( {taskData: arg} );
+      this.fetchTaskData();
+  }
+  updateSpecificTask(taskID) {
+    console.log("this maybe can set the state of a specific task?")
   }
 
   componentWillMount() {
@@ -28,6 +32,7 @@ class TasksPage extends React.Component {
       this.props.history.push('/')
     }
   }
+
   componentDidMount () {
     if (session.current_username !== 'None'){
         this.fetchTaskData()
@@ -35,15 +40,13 @@ class TasksPage extends React.Component {
       }
       // console.log("EOD from within the didMount: ",this.state.EOD)
   }
+
   assemble_date(dt_dict) {
-  // const d = new Date(dt_dict."year", dt_dict."month",
-  //  dt_dict."day", dt_dict."hours", dt_dict."minutes",
-  //   dt_dict."seconds", dt_dict."milliseconds");
+  
+    const d = new Date(dt_dict.year, dt_dict.month, dt_dict.day, dt_dict.hours, dt_dict.minutes, dt_dict.seconds, dt_dict.milliseconds);
 
-  const d = new Date(dt_dict.year, dt_dict.month, dt_dict.day, dt_dict.hours, dt_dict.minutes, dt_dict.seconds, dt_dict.milliseconds);
-
-  return d
-  }; 
+    return d
+  } 
 
 
 
@@ -141,8 +144,7 @@ class TaskBlock extends React.Component {
           { this.props.tasks.map ((task) => {
                      return (
                         <li key={task.task_id}>
-                          <Task updateTaskData={this.updateTaskData} 
-                                task={task} done={this.props.done} />
+                          <Task updateTaskData={this.props.updateTaskData} task={task} done={this.props.done} />
                         </li>
                       )
                     }   
@@ -210,18 +212,22 @@ class UndoCompleteTaskBtn extends React.Component {
 
   undoComplete() {
     // put the thing that makes it not do the thing
-    console.log("attempting to complete task")
+    console.log("attempting to undo-complete task")
     fetch()
   };
 
 
   render () {
+    console.log("props for undoCompleteTaskBtn: ",this.props)
     let undoCompleteRoute = this.props.task_id.toString()
+  
+      // <button onClick={ () => {this.props.updateTaskData("someArg") } }> UNDO </button>
+    
     return (
-      <form className="in-line" action="/undo_complete" method="POST">
-        <input hidden name="task_id" defaultValue={undoCompleteRoute} />
-        <input className='taskbtn' type="submit" name="complete" value="Undo" onClick={this.undoComplete}/>
-      </form>
+        <form className="in-line" action="/undo_complete" method="POST">
+         <input hidden name="task_id" defaultValue={undoCompleteRoute} />
+         <input className='taskbtn' type="submit" name="complete" value="Undo" onClick={this.undoComplete}/>
+       </form>
     )
   }
 }
@@ -267,8 +273,8 @@ class Task extends React.Component {
 
     return (
       <div>
-        {!this.props.done && <CompleteTaskBtn updateTaskData={this.updateTaskData} task_id={this.props.task.task_id} /> }
-        {this.props.done && <UndoCompleteTaskBtn updateTaskData={this.updateTaskData} task_id={this.props.task.task_id} /> }
+        {!this.props.done && <CompleteTaskBtn updateTaskData={this.props.updateTaskData} task_id={this.props.task.task_id} /> }
+        {this.props.done && <UndoCompleteTaskBtn updateTaskData={this.props.updateTaskData} task_id={this.props.task.task_id} /> }
 
 
         <Link className="task-msg in-line" to={editTaskRoute}>  {this.props.task.msg} </Link>

@@ -15,15 +15,29 @@ def convert_datetime_to_dict(dt):
 	return dt_dict
 
 
-def convert_tasklist_to_dict(tasklist):
+def convert_tasklist_to_list(tasklist):
 
-	task_dict = [
+	task_list = [
 		{"task_id":task.task_id,
 		"msg":task.msg, 
 		"is_complete":task.is_complete,
 		"due_date":convert_datetime_to_dict(task.due_date),
 		"is_repeating":task.is_repeating,
 		"user_id":task.user_id} for task in tasklist]
+
+	return task_list
+def convert_tasklist_to_dict(tasklist):
+
+	task_list = [
+		{"task_id":task.task_id,
+		"msg":task.msg, 
+		"is_complete":task.is_complete,
+		"due_date":convert_datetime_to_dict(task.due_date),
+		"is_repeating":task.is_repeating,
+		"user_id":task.user_id} for task in tasklist]
+	task_dict = {}
+	for task in task_list:
+		task_dict[task['task_id']] = task
 
 	return task_dict
 

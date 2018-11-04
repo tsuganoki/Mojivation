@@ -286,9 +286,19 @@ def get_kaos():
 
 @app.route("/get-tasks.json", methods=['GET'])
 @login_required
-def get_tasks():
+def get_tasks_list():
     user = User.query.get(session["current_user_id"])
     print("call made to /get-tasks.json")
+    # user = User.query.get(21)
+    task_list = site_logic.convert_tasklist_to_list(user.tasks)
+
+    return jsonify(task_list)   
+
+@app.route("/get-task-dict.json", methods=['GET'])
+@login_required
+def get_tasks_dict():
+    user = User.query.get(session["current_user_id"])
+    print("call made to /get-task-dict.json")
     # user = User.query.get(21)
     task_dict = site_logic.convert_tasklist_to_dict(user.tasks)
 
