@@ -277,14 +277,14 @@ class Task extends React.Component {
  
 
   showDeleteIcon = () => {
-    console.log("mouseover")
+    // console.log("mouseover")
     // console.log(this.state)
     // console.log(this.state.deleteIconVisibility)
     this.setState( {deleteIconVisibility: true})
 
   }
   hideDeleteIcon= () => {
-    console.log("mouseOut")
+    // console.log("mouseOut")
     this.setState( {deleteIconVisibility: false})
 
   }
@@ -299,7 +299,7 @@ class Task extends React.Component {
     const editTaskRoute = '/edit-task/' + this.props.task.task_id
 
     return (
-      <div className="task-div" onMouseOver={this.showDeleteIcon} onMouseOut={this.hideDeleteIcon}>
+      <div className="task-div" onMouseOver={this.showDeleteIcon} onMouseLeave={this.hideDeleteIcon}>
         {!this.props.done && <CompleteTaskBtn fetchTaskData={this.props.fetchTaskData} task_id={this.props.task.task_id} /> }
         {this.props.done && <UndoCompleteTaskBtn fetchTaskData={this.props.fetchTaskData} task_id={this.props.task.task_id} /> }
 
@@ -307,7 +307,12 @@ class Task extends React.Component {
         <Link className="task-msg in-line" to={editTaskRoute}>  {this.props.task.msg} </Link>
 
         {this.state.deleteIconVisibility && 
-          <DeleteTask route={delete_task_route}/>
+
+          <div className='in-line' onMouseOver={() => {console.log('hello')}}>
+              <a href={delete_task_route} > 
+                <i  onMouseOver={this.showDeleteIcon} className="far fa-times-circle "></i> 
+              </a>
+          </div>
         }
       </div>
 
@@ -318,6 +323,7 @@ class Task extends React.Component {
   };
 }
 class DeleteTask extends React.Component {
+
   constructor () {
     super ();
     this.state = {

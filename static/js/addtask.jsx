@@ -6,6 +6,11 @@ import {withRouter} from 'react-router-dom';
 
 
 class AddTaskPage extends React.Component {
+  componentWillMount() {
+    if (session.current_username === 'None' ) {
+      this.props.history.push('/')
+    }
+  }
 	render () {
 		return (
 				<div id="new-task-block">

@@ -1,9 +1,10 @@
 "use strict";
 import React from 'react';
 import ReactDOM from 'react-dom';
+import {withRouter} from 'react-router-dom';
 
 
-export class UserPage extends React.Component {
+class UserPage extends React.Component {
   
   constructor () {
     super ();
@@ -17,6 +18,11 @@ export class UserPage extends React.Component {
   }
   updateKaosState (argument) {
       this.setState( {kaos: argument} );
+  }
+  componentWillMount() {
+    if (session.current_username === 'None' ) {
+      this.props.history.push('/')
+    }
   }
   componentDidMount () {
     this.fetchUserData()
@@ -102,3 +108,7 @@ export class UserPage extends React.Component {
       )
   }
 }
+
+
+export default withRouter(UserPage)
+

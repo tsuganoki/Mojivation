@@ -1,7 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Link, Route } from 'react-router-dom'
 import TasksPage  from './tasks.jsx';
-import { UserPage } from './user.jsx';
+import UserPage from './user.jsx';
 import { RegisterPage } from './register.jsx';
 import AddTaskPage from './addtask.jsx';
 import LoginPage from './login.jsx';
@@ -88,12 +88,7 @@ class NavBar extends React.Component {
                   <span className="nav-link" >oAuth with Google Calendar</span>
                 </a>
               </li>}
-              <li className="nav-item">
-
-                <Link to='/test'>
-                  <span className="nav-link" > test </span>
-                </Link>
-              </li>
+              
             </ul>
             {formatLoginLink()}
           </div>
@@ -171,100 +166,100 @@ class Base extends React.Component {
 }
 
 
-class TaskBlock extends React.Component {
+// class TaskBlock extends React.Component {
 
-  render () {
+//   render () {
 
 
-    return (
+//     return (
 
-      <div className="today-tasks">
-        <h3>{this.props.blockName}</h3>
-        <span id="EOD-span" className="small-text remove" >EOD is:  sometime UTC</span> 
-        <ul>
-          { this.props.tasks.map ((task) => {
-                 return <li key={task.task_id}><Task task={task}/></li>
-                      }   
-                )
-        }
-        </ul>
-        {this.props.showQuickAdd && <QuickAdd /> }
-        {this.props.showClearCompleted && <ClearCompleted /> }
+//       <div className="today-tasks">
+//         <h3>{this.props.blockName}</h3>
+//         <span id="EOD-span" className="small-text remove" >EOD is:  sometime UTC</span> 
+//         <ul>
+//           { this.props.tasks.map ((task) => {
+//                  return <li key={task.task_id}><Task task={task}/></li>
+//                       }   
+//                 )
+//         }
+//         </ul>
+//         {this.props.showQuickAdd && <QuickAdd /> }
+//         {this.props.showClearCompleted && <ClearCompleted /> }
 
   
-      </div>
-      )
-  }
-}
+//       </div>
+//       )
+//   }
+// }
 
-class ClearCompleted extends React.Component {
-  render () {
-    return <a href="/clear-all-completed">Clear Completed</a>
-  }
-}
+// class ClearCompleted extends React.Component {
+//   render () {
+//     return <a href="/clear-all-completed">Clear Completed</a>
+//   }
+// }
 
-class CompleteTaskBtn extends React.Component {
+// class CompleteTaskBtn extends React.Component {
 
-  completeTask() {
-    // put the thing that makes it not do the thing
-    console.log("attempting to complete task")
-    fetch()
-};
-
-
-  render () {
-    let completeTaskRoute = this.props.task_id.toString()
-    return (
-      <form className="in-line" action="/complete-task" method="POST">
-        <input hidden name="task_id" defaultValue={completeTaskRoute} />
-        <input type="submit" name="complete" value="Done" onClick={this.completeTask}/>
-      </form>
-    )
-  }
-}
+//   completeTask() {
+//     // put the thing that makes it not do the thing
+//     console.log("attempting to complete task")
+//     fetch()
+// };
 
 
-class Task extends React.Component {
-  constructor () {
-    super ();
-    this.state = {
-      deleteIconVisibility: ""
-    };
-  }
+//   render () {
+//     let completeTaskRoute = this.props.task_id.toString()
+//     return (
+//       <form className="in-line" action="/complete-task" method="POST">
+//         <input hidden name="task_id" defaultValue={completeTaskRoute} />
+//         <input type="submit" name="complete" value="Done" onClick={this.completeTask}/>
+//       </form>
+//     )
+//   }
+// }
 
-  showDeleteIcon() {
-    this.setState( {deleteIconVisibility: none})
 
-  }
-  hideDeleteIcon() {
-    this.setState( {deleteIconVisibility: hidden})
+// class Task extends React.Component {
+//   constructor () {
+//     super ();
+//     this.state = {
+//       deleteIconVisibility: ""
+//     };
+//   }
 
-  }
+//   showDeleteIcon() {
+//     this.setState( {deleteIconVisibility: none})
+
+//   }
+//   hideDeleteIcon() {
+//     this.setState( {deleteIconVisibility: hidden})
+
+//   }
   
 
-  render() {
-    let completeTaskRoute = this.props.task.task_id.toString()
-    let edit_task_route = 'edit_task/' + this.props.task.task_id.toString()
-    let delete_task_route = 'delete-task-' + this.props.task.task_id.toString()
-    // let _getTasks = this.getTasks
+//   render() {
+//     let completeTaskRoute = this.props.task.task_id.toString()
+//     let edit_task_route = 'edit_task/' + this.props.task.task_id.toString()
+//     let delete_task_route = 'delete-task-' + this.props.task.task_id.toString()
+//     // let _getTasks = this.getTasks
 
-    return (
-      <div>
-        <CompleteTaskBtn task_id={this.props.task.task_id} /> <a className="task-msg in-line" href={edit_task_route}>  {this.props.task.msg} </a>
+//     return (
+//       <div>
+//         <CompleteTaskBtn task_id={this.props.task.task_id} /> <a className="task-msg in-line" href={edit_task_route}>  {this.props.task.msg} </a>
 
-        <a href={delete_task_route} >
-          <i className="fa fa-times-circle-o ex-cirle" 
-          aria-hidden="true" 
-          alttext="delete task"></i>
-        </a>
-      </div>
+//         <a href={delete_task_route} >
+//           <i className="fa fa-times-circle-o ex-cirle" 
+//           aria-hidden="true" 
+//           alttext="delete task"></i>
+//         </a>
+//       </div>
 
 
       
-    );
+//     );
 
-  };
-}
+//   };
+// }
 
 
 

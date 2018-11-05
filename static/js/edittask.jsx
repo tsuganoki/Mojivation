@@ -41,7 +41,11 @@ class EditTaskPage extends React.Component {
     .then(data => this.setState( {EOD:this.assemble_date(data)} ) )
     // console.log('EOD is: ',this.state.EOD)
   }
-
+  componentWillMount() {
+    if (session.current_username === 'None' ) {
+      this.props.history.push('/')
+    }
+  }
   componentDidMount () {
     if (session.current_username !== 'None'){
         this.fetchTaskDict()
