@@ -90,7 +90,7 @@ a:hover {
 	background-color: #ffffff;
 
 }
-.today-tasks, .later-tasks{
+.today-tasks, .later-tasks, .collects,  .user-info-settings{
 
 	display: inline-block;
 	margin: 5px;
@@ -117,6 +117,10 @@ a:hover {
 	margin: 15px;
 
 
+}
+
+.task-div {
+	width: 100%;
 }
 .blue-bg{
 	background-color: blue;
@@ -147,14 +151,14 @@ a.ex-cirle.hover{
 .collect{
 	margin: 5px 0;
 }
-.collects,  .user-info-settings {
+/*.collects,  .user-info-settings {
 	display:inline-block;
 	margin:20px;
 	padding:20px;
 	background-color: #ffffff;
 	vertical-align:top;
 
-}
+}*/
 .collects{
 	width:7	0%;
 }

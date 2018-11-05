@@ -11,10 +11,14 @@ import EditTaskPage from './edittask.jsx';
 class TasksPage extends React.Component {
   constructor () {
     super ();
+
+    this.fetchTaskData = this.fetchTaskData.bind(this);
+    
     this.state = {
         taskData: [],
         EOD: {}
     };
+
   }
 
   // updateTaskData (arg) {
@@ -51,7 +55,7 @@ class TasksPage extends React.Component {
 
   fetchTaskData  = () => {
     // let that = this
-    // console.log("TasksPage.this: ",this)
+    console.log("TasksPage.this: ",this)
     console.log("calling fetchTaskData function")
     fetch('/get-tasks.json')
     .then(response => response.json())
@@ -266,22 +270,22 @@ class Task extends React.Component {
   constructor () {
     super ();
     this.state = {
-      deleteIconVisibility: ""
+      hover: null,
+      deleteIconVisibility: false
     };
   }
-  undoBtn = () => {
+ 
+
+  showDeleteIcon = () => {
+    console.log("mouseover")
+    // console.log(this.state)
+    // console.log(this.state.deleteIconVisibility)
+    this.setState( {deleteIconVisibility: true})
 
   }
-  doneBtn = () => {
-
-  }
-
-  showDeleteIcon() {
-    this.setState( {deleteIconVisibility: none})
-
-  }
-  hideDeleteIcon() {
-    this.setState( {deleteIconVisibility: hidden})
+  hideDeleteIcon= () => {
+    console.log("mouseOut")
+    this.setState( {deleteIconVisibility: false})
 
   }
   
@@ -295,16 +299,16 @@ class Task extends React.Component {
     const editTaskRoute = '/edit-task/' + this.props.task.task_id
 
     return (
-      <div>
+      <div className="task-div" onMouseOver={this.showDeleteIcon} onMouseOut={this.hideDeleteIcon}>
         {!this.props.done && <CompleteTaskBtn fetchTaskData={this.props.fetchTaskData} task_id={this.props.task.task_id} /> }
         {this.props.done && <UndoCompleteTaskBtn fetchTaskData={this.props.fetchTaskData} task_id={this.props.task.task_id} /> }
 
 
         <Link className="task-msg in-line" to={editTaskRoute}>  {this.props.task.msg} </Link>
 
-        <a href={delete_task_route}> 
-          <i className="far fa-times-circle "></i> 
-        </a>
+        {this.state.deleteIconVisibility && 
+          <DeleteTask route={delete_task_route}/>
+        }
       </div>
 
 
@@ -330,7 +334,9 @@ class DeleteTask extends React.Component {
   render () {
 
     return (
-      <p> hello</p>
+      <a href={this.props.delete_task_route}> 
+        <i className="far fa-times-circle "></i> 
+      </a>
 
       )
   }
