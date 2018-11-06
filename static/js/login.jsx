@@ -10,11 +10,11 @@ class LoginPage extends React.Component {
 			<div className="login-page">
 				<form action='/login_confirm' method="POST" name='login'>
 					
-					<div className="form-group col-3">
+					<div className="form-group col-4">
 					  <label className="col-form-label">Username</label>
 					  <input required type="text" size="37" className="form-control col-xs-4" id="username" name="username" />
 					</div>
-					<div className="form-group col-3">
+					<div className="form-group col-4">
 
 						<label className="col-form-label col-xs-4">Password </label>
 						<input className="form-control col-xs-4"  size="37" id="password" type="password" name="password" />

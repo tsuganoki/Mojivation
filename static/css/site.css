@@ -1,6 +1,5 @@
 body {
   font-family: sans-serif;
-  margin-left: 15px;
   font-size:0.8em;
   background-color: #e0e0e0;
 }
@@ -39,7 +38,7 @@ a.task-msg:hover {
 	font-size: .7em;
 }
 .login-btn {
-	margin-left: 10px important;
+	margin-left: 10px !important;
 }
 .register-btn-span{
 	margin-left: 35px;
@@ -102,9 +101,10 @@ a.task-msg:hover {
 .today-tasks, .later-tasks, .collects,  .user-info-settings{
 
 	display: inline-block;
-	margin: 5px;
+	margin-right: 10px;
+	margin-bottom: 10px;
 
-	width:400px;
+	width:380px;
 	background-color: #ffffff;
 	padding: 15px;
 	vertical-align:top;

@@ -212,20 +212,22 @@ def login_confirm():
         user_id = str(user.user_id)
         user_pwd_hash = user.password
 
+        # if hashes.val_salted_hash(pwd_input,,user.user_id, app.config['SECRET_KEY'], user_pwd_hash):
         if hashes.val_hash(pwd_input,user_pwd_hash):
+
             session["current_user_id"] = user_id
             session["current_username"] = user.username
-            # redirect_route = 'user/' + user_id
+
             flash("You are now logged in")
             return redirect("/tasks")
         else:
             flash("Login failed - invalid Username or Password")
             # render_template doesn't play nice with React
-            return render_template('login.html')
+            return redirect('/login')
 
     else:
         flash("Login failed - invalid Username or Password")
-        return render_template('login.html')
+        return redirect('/login')
 
 
 @app.route("/logout")

@@ -18,15 +18,17 @@ def val_hash(pw,hash_str):
 		return False
 
 
-def get_salt():
-	NUM = 512
-	return urandom(NUM)
+# def get_salt():
+# 	NUM = 512
+# 	return urandom(NUM)
 
+def val_salted_hash(pw,user_id,secret_key,hash_str):
+	return get_salted_hash(pw,user_id,secret_key) == hash_str
 
 
 # app.config['SECRET_KEY']
 def get_salted_hash(pw, user_id, secret_key):
-	
+
 	return get_hash(pw + user_id + secret_key)
 
 
