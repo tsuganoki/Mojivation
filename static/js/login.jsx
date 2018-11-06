@@ -9,30 +9,29 @@ class LoginPage extends React.Component {
 		return (
 			<div className="login-page">
 				<form action='/login_confirm' method="POST" name='login'>
-					<table>
-						<tbody>
-						<tr>
-							<td>Username</td>
-							<td> <input type="textbox" name="username" /></td></tr>
-						<tr>
-							<td>Password</td>
-							<td><input type="password" name="password" /></td>
-						</tr>
-						<tr><td> 
-							<input type="submit" value="login" />
-						</td><td></td></tr>
-						</tbody>
-				</table>
+					
+					<div className="form-group col-3">
+					  <label className="col-form-label">Username</label>
+					  <input required type="text" size="37" className="form-control col-xs-4" id="username" name="username" />
+					</div>
+					<div className="form-group col-3">
+
+						<label className="col-form-label col-xs-4">Password </label>
+						<input className="form-control col-xs-4"  size="37" id="password" type="password" name="password" />
+					              
+
+					</div>
+					<div className="in-line register-div  my-1 my-sm-0 form-group col-3">
+						<input className="btn btn-secondary in-line" type="submit" value="Login" />
+					
+					</div>
+
 			</form>
 
 			
 
 
-			<div className="register-div">
-				<a href="/register">
-					Register
-				</a>
-			</div>
+				
 			</div>
 			)
 	}

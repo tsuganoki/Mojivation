@@ -9,6 +9,9 @@ ul {
 	list-style-type: none
 
 }
+a{
+	color:#000;
+}
 
 a.task-msg {
 	text-decoration: none !important;
@@ -37,6 +40,12 @@ a.task-msg:hover {
 }
 .login-btn {
 	margin-left: 10px important;
+}
+.register-btn-span{
+	margin-left: 35px;
+}
+.btn, .btn-secondary, .my-2, .my-sm-0 {
+	color: #000;
 }
 
 #add-a-task-btn {
@@ -171,6 +180,9 @@ a.ex-cirle.hover{
 }
 .taskbtn {
 	margin: 3px 5px;
+}
+.btn .btn-primary {
+
 }
 .cal-btn {
 	background-color: #4286f4; /* Green */

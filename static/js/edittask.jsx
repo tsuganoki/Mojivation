@@ -17,6 +17,7 @@ class EditTaskPage extends React.Component {
 
 	// get-task-dict.json
 	fetchTaskDict = () => {
+	// Consider POSTing the ID to get only the task you need
     fetch('/get-task-dict.json')
     .then(response => response.json())
     .then( data => {console.log("data is: ",data);
@@ -35,7 +36,7 @@ class EditTaskPage extends React.Component {
     	}
  	)
 	}
-	fetchEOD = () => {
+  fetchEOD = () => {
     fetch('/get-eod.json')
     .then(response => response.json())
     .then(data => this.setState( {EOD:this.assemble_date(data)} ) )
@@ -53,7 +54,7 @@ class EditTaskPage extends React.Component {
         this.fetchEOD()
 	  }
 	}
-	assemble_date(dt_dict) {
+  assemble_date(dt_dict) {
   
     const d = new Date(dt_dict.year, dt_dict.month, dt_dict.day, 
     									 dt_dict.hours, dt_dict.minutes, dt_dict.seconds, dt_dict.milliseconds);
@@ -65,7 +66,7 @@ class EditTaskPage extends React.Component {
 		return (
 			<div className="edit-task-page">
 				{this.state.taskData && <EditTaskForm task={this.state.taskData} EOD={this.state.EOD} assemble_date={this.assemble_date}/>}
-				<GoogleCalEventBtn />
+				{this.state.taskData && <GoogleCalEventBtn task_id={this.state.taskData.task_id} /> }
 
 
 			</div>
@@ -93,6 +94,7 @@ class EditTaskForm extends React.Component {
 
 	formatDefaultTime () {
 		let dt = this.props.task.due_date
+		// Need the same hours < 10 check here?
 		let hours = dt.getHours()
 		let mins = dt.	getMinutes()
 		if (mins < 10) {
@@ -116,6 +118,8 @@ class EditTaskForm extends React.Component {
 		let defaultDate = this.formatDefaultDate()
 		let defaultTime = this.formatDefaultTime()
 
+		// Consider sharing code between this form and addtask.jsx
+
 		return (
 			<form method="POST" action="/confirm-edit">
 			  <table>
@@ -124,7 +128,9 @@ class EditTaskForm extends React.Component {
 			      <td>Task</td>
 			      <td>
 				      <input type="text_box" name="msg" size="37" defaultValue={this.props.task.msg} />
+				  {/* This is awesome! But you want to change it...*/}
 							<input value={this.props.task.task_id} name="task_id" hidden readOnly /> 
+				      }
 			      </td>
 			    </tr>
 			    <tr>
@@ -136,10 +142,12 @@ class EditTaskForm extends React.Component {
 			    </tr>
 			    <tr>
 			      <td></td><td> 
+			      	{/* defaultChecked didn't work :( */)}
 			        <input type="checkbox" 
 			             value="today"
 			             name="today" defaultChecked={this.props.task.due_date < this.props.EOD}/> (Due today)
 			      </td>
+				  {/*Consider making clicking here change the value in the date input*/}
 			    </tr>
 			    <tr>
 			       <td>
@@ -165,7 +173,7 @@ class GoogleCalEventBtn extends React.Component {
 		return(
 
 			<form method="POST" action="/create-cal-event">
-			  <input value="40" readOnly name="task_id" hidden /> 
+			  <input value={this.props.task_id} readOnly name="task_id" hidden /> 
 			  <input type='submit' readOnly value="Create Google Calendar Event" className="cal-btn" />
 			</form>
 			)

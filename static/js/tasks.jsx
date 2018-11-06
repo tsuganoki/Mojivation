@@ -59,7 +59,12 @@ class TasksPage extends React.Component {
     console.log("calling fetchTaskData function")
     fetch('/get-tasks.json')
     .then(response => response.json())
-    .then(data => this.setState( {taskData:data} ) )
+    .then(data => {
+      this.setState( {taskData:data} );
+      console.log("new data after set state is: ", data)
+
+    } )
+
 
   }
 
@@ -140,19 +145,19 @@ class TaskBlock extends React.Component {
 
   render () {
     return (
-
       <div className="today-tasks">
+  {/* make className configurable because they're not all today's tasks*/}
         <h3>{this.props.blockName}</h3>
         <span id="EOD-span" className="small-text remove">EOD is:  sometime UTC</span> 
         <ul>
-          { this.props.tasks.map ((task) => {
-                     return (
-                        <li key={task.task_id}>
-                          <Task fetchTaskData={this.props.fetchTaskData} task={task} done={this.props.done} />
-                        </li>
-                      )
-                    }   
-                )
+          { 
+            this.props.tasks.map ((task) => {
+              return (
+                <li key={task.task_id}>
+                  <Task fetchTaskData={this.props.fetchTaskData} task={task} done={this.props.done} />
+                </li>
+              )
+            })
           }
         </ul>
         {this.props.showQuickAdd && <QuickAdd /> }
@@ -189,8 +194,11 @@ class ClearCompleted extends React.Component {
   }
 }
 
+
+// Consider combining with UndoCompleteTaskBtn and passing a prop specifying what URL to hit and text to render and maybe className
 class CompleteTaskBtn extends React.Component {
 
+  // Consider making an arrow function and then you don't need to bind in TasksPage
   completeSpecificTask(task_id) {
     console.log("running completeSpecificTask function")
 
@@ -201,8 +209,8 @@ class CompleteTaskBtn extends React.Component {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify( {task_id: task_id} )
-    });
-    this.props.fetchTaskData()
+    }).then( data => this.props.fetchTaskData() );
+
      
   }
 
@@ -214,7 +222,9 @@ class CompleteTaskBtn extends React.Component {
         // <input className='taskbtn' type="submit" name="complete" value="Done" onClick={this.completeTask}/>
       // </form>
     return (
-            <button className="in-line taskbtn" onClick={ () => {console.log(this.props.task_id);this.completeSpecificTask(this.props.task_id) } }> Done </button>
+            <button className="in-line taskbtn" onClick={ () => {
+              console.log(this.props.task_id);
+              this.completeSpecificTask(this.props.task_id) } }> Done </button>
 
     )
   }
@@ -236,8 +246,8 @@ class UndoCompleteTaskBtn extends React.Component {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify( {task_id: task_id} )
-    });
-    this.props.fetchTaskData()
+    }).then( data => this.props.fetchTaskData() ); //This solves the "data race problem"!
+    
      
   }
 
@@ -292,11 +302,9 @@ class Task extends React.Component {
 
   render() {
     let completeTaskRoute = this.props.task.task_id.toString()
-    let edit_task_route = 'edit_task/' + this.props.task.task_id.toString()
     let delete_task_route = 'delete-task-' + this.props.task.task_id.toString()
     // let _getTasks = this.getTasks
 // {this.props.done && <CompleteTaskBtn task_id={this.props.task.task_id} /> }
-    const editTaskRoute = '/edit-task/' + this.props.task.task_id
 
     return (
       <div className="task-div" onMouseOver={this.showDeleteIcon} onMouseLeave={this.hideDeleteIcon}>
@@ -304,7 +312,7 @@ class Task extends React.Component {
         {this.props.done && <UndoCompleteTaskBtn fetchTaskData={this.props.fetchTaskData} task_id={this.props.task.task_id} /> }
 
 
-        <Link className="task-msg in-line" to={editTaskRoute}>  {this.props.task.msg} </Link>
+        <Link className="task-msg in-line" to={`/edit-task/${this.props.task.task_id}`}>  {this.props.task.msg} </Link>
 
         {this.state.deleteIconVisibility && 
 

@@ -164,11 +164,11 @@ def register_confirm():
     if password_input1 != password_input2:
         flash("Sorry, your passwords must match")
         return redirect("/register")
-
+    # This compares a string to a User model object so we really just want to check if User.query.filter_by(email=email_input).first() exists at all
     elif email_input == User.query.filter_by(email=email_input).first():
         flash("Sorry, your email is already in use")
         return redirect("/register")
-        
+    #ditto
     elif username_input == User.query.filter_by(username=username_input).first():
         flash("Sorry, your username has been taken")
         return redirect("/register")
@@ -176,6 +176,7 @@ def register_confirm():
         user = User(username=username_input,
                     email=email_input,
                     password=hashes.get_hash(password_input1),
+                    # password=hashes.get_salted_hash(password_input1,user.user_id,app.config['SECRET_KEY']),
                     timezone=timezone_input)
 
         db.session.add(user)
@@ -205,6 +206,7 @@ def login_confirm():
     username_input = request.form.get('username')
     pwd_input = request.form.get('password')
 
+    # save the user up here and check if user instead of making 2 queries
     if User.query.filter_by(username=username_input).first():
         user = User.query.filter_by(username=username_input).first()
         user_id = str(user.user_id)
@@ -218,6 +220,7 @@ def login_confirm():
             return redirect("/tasks")
         else:
             flash("Login failed - invalid Username or Password")
+            # render_template doesn't play nice with React
             return render_template('login.html')
 
     else:
@@ -310,7 +313,6 @@ def get_eod():
     user = User.query.get(session["current_user_id"])
     print("call made to /get-eod.json")
     # user = User.query.get(21)
-    task_dict = site_logic.convert_tasklist_to_dict(user.tasks)
     EOD = timehelpers.get_user_EOD(user.timezone)
     print(EOD)
 
@@ -329,6 +331,7 @@ def new_task():
     return render_template("new_task.html", eod=EOD)
 
 
+# Consider sharing code with confirm_edit
 
 @app.route("/add_new_task", methods=["POST"])
 @login_required
@@ -340,6 +343,7 @@ def add_new_task():
     task_msg_input = request.form.get("msg")
     # print("msg received is: ", task_msg_input)
     is_repeating_input = request.form.get("repeating")
+    # Reinvent the super slick syntax
     is_repeating = True if is_repeating_input == "True" else False
 
     # usr_time=13:44 
@@ -391,6 +395,7 @@ def add_new_task():
 #     return render_template("edittask.html", 
 #                             task=task)
 
+# Consider sharing code with add_new_task
 @app.route("/confirm-edit", methods=["POST"])
 @login_required
 def confirm_edit():
@@ -403,6 +408,7 @@ def confirm_edit():
 
     is_repeating_input = request.form.get("repeating")
     print("isrepeating_input: ", is_repeating_input)
+    # Re-invent the succinctness
     task.is_repeating = True if is_repeating_input == "True" else False
 
 
@@ -690,7 +696,7 @@ def google_oAuth_authorization():
     access_type='offline',
     # Enable incremental authorization. Recommended as a best practice.
     include_granted_scopes='true')
-
+    # Consider a name like oAuthState so that other state-related stuff doesn't get mixed up
     session['state'] = state
 
 
@@ -751,8 +757,7 @@ def oAuth_callback():
     db.session.commit()
 
 
-    if session['credentials']:
-        flash("Connected to Google") 
+    flash("Connected to Google") 
     return redirect("/tasks")
 
 
@@ -761,8 +766,9 @@ def oAuth_callback():
 def create_cal_event():
     user = User.query.get(session["current_user_id"])
     task_id = int(request.form.get("task_id"))
+    print("task id is: ",task_id)
     task = Task.query.get(task_id)
-
+    print("task to be eventified:",task)
     if 'credentials' not in session:
         return redirect('/oAuth-authorize')
 

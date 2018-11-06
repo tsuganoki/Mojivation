@@ -25,6 +25,9 @@ PST = pytz.timezone("US/Pacific")
 # the date. 
 
 
+#Consider adding unit tests for this file. And docstrings!!!!!!!!!!!!!!
+
+
 def check_remaining_tasks(tasks,tz_string):
     
     # print("EOD is: ",EOD.ctime())

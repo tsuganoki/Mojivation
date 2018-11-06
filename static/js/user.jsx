@@ -13,12 +13,6 @@ class UserPage extends React.Component {
         kaos: []
     };
   }
-  updateUserState (argument) {
-      this.setState( {user: argument} );
-  }
-  updateKaosState (argument) {
-      this.setState( {kaos: argument} );
-  }
   componentWillMount() {
     if (session.current_username === 'None' ) {
       this.props.history.push('/')
@@ -29,6 +23,7 @@ class UserPage extends React.Component {
     this.fetchKaosData()
   }
   fetchUserData = () => {
+    // Consider making a library with a function fetchJSON that does the .then(response => response.json()) part
     fetch('/get-user-info.json')
     .then(response => response.json())
 
@@ -79,8 +74,9 @@ class UserPage extends React.Component {
           { this.props.collects.map ((collect) => {
              return (
               <div key={collect.kao_id} className="collect">
-                <span className="kao"> { collect.kao_str } {console.log(collect.kao_str)}</span>
+                <span className="kao"> { collect.kao_str }</span>
                 <br />
+              {/* Consider how to make this pretty or shredding it*/}
                 <span className="collect-date small-text">
                   { console.log(this.assemble_date(collect.date)) }
 

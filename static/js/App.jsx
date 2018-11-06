@@ -63,6 +63,7 @@ class NavBar extends React.Component {
           <Link to={"/"}>
             <span className="navbar-brand">Mojivation</span>
           </Link>
+          {/*Delete this?*/}
           <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor03" aria-controls="navbarColor03" aria-expanded="false" aria-label="Toggle navigation">
             <span className="navbar-toggler-icon"></span>
           </button>
@@ -90,6 +91,7 @@ class NavBar extends React.Component {
               </li>}
               
             </ul>
+          {/*Consider moving this inside ul?*/}
             {formatLoginLink()}
           </div>
         </nav>
@@ -122,8 +124,16 @@ class LogoutBtn extends React.Component {
 
 }
 class FlashedMessages extends React.Component {
+  ClearMessages = () => {
+    console.log("attempting to clear flashedMessages")
+    flashedMessages.pop()
+    this.forceUpdate()
+  }
   render () {
     console.log("flashed messages: ",flashedMessages)
+    if (flashedMessages.length === 0) {
+      return null
+    }
     let formatFlashedMessages = () => {
       //          { this.props.tasks.map ((task) => {
 
@@ -136,7 +146,7 @@ class FlashedMessages extends React.Component {
 
     return (
       <div className="alert alert-dismissible alert-secondary bg-light">
-        <button type="button" className="close" data-dismiss="alert">&times;</button>
+        <button onClick={this.ClearMessages} type="button" className="close" data-dismiss="alert">&times;</button>
 
         {formatFlashedMessages()}   
       </div>
@@ -146,18 +156,14 @@ class FlashedMessages extends React.Component {
 }
 
 class Base extends React.Component {
-  renderFlashedMessages() {
-    if (flashedMessages[0]) {
-      console.log("flashedMessages are: ",flashedMessages)
-      return <FlashedMessages />
-    }
-  }
+
+  
 
   render () {
     return (
       <div>
         <NavBar />
-        {this.renderFlashedMessages()}
+        {flashedMessages[0] && <FlashedMessages />}
         <Content />
       </div>
     )

@@ -13,9 +13,9 @@ export class RegisterPage extends React.Component {
   }
   componentDidMount () {
     this.fetchTimezones()
-	}
+  }
 
-	fetchTimezones = () => {
+  fetchTimezones = () => {
     fetch('/get-timezones.json')
     .then(response => response.json())
     .then(data => this.setState( {timezones:data } ) )

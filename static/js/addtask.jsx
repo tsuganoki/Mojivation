@@ -12,6 +12,8 @@ class AddTaskPage extends React.Component {
     }
   }
 	render () {
+				// Consider sharing code between this form and edittask.jsx
+
 		return (
 				<div id="new-task-block">
 				<form method="POST" action="/add_new_task">
