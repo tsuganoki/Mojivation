@@ -161,16 +161,14 @@ def register_confirm():
     password_input2 = request.form.get("password2")
     timezone_input = request.form.get("timezone")
 
-
     if password_input1 != password_input2:
         flash("Sorry, your passwords must match")
         return redirect("/register")
-    # This compares a string to a User model object so we really just want to check if User.query.filter_by(email=email_input).first() exists at all
-    elif email_input == User.query.filter_by(email=email_input).first():
+    elif User.query.filter_by(email=email_input).first():
         flash("Sorry, your email is already in use")
         return redirect("/register")
-    #ditto
-    elif username_input == User.query.filter_by(username=username_input).first():
+
+    elif User.query.filter_by(username=username_input).first():
         flash("Sorry, your username has been taken")
         return redirect("/register")
     else:
@@ -206,26 +204,22 @@ def login_confirm():
     print("processes the login get request")
     username_input = request.form.get('username')
     pwd_input = request.form.get('password')
-
+    user = User.query.filter_by(username=username_input).first()
     # save the user up here and check if user instead of making 2 queries
-    if User.query.filter_by(username=username_input).first():
-        user = User.query.filter_by(username=username_input).first()
+    if user:
         user_id = str(user.user_id)
         user_pwd_hash = user.password
 
         # if hashes.val_salted_hash(pwd_input,,user.user_id, app.config['SECRET_KEY'], user_pwd_hash):
         if hashes.val_hash(pwd_input,user_pwd_hash):
-
             session["current_user_id"] = user_id
             session["current_username"] = user.username
-
             flash("You are now logged in")
             return redirect("/tasks")
         else:
             flash("Login failed - invalid Username or Password")
             # render_template doesn't play nice with React
             return redirect('/login')
-
     else:
         flash("Login failed - invalid Username or Password")
         return redirect('/login')
