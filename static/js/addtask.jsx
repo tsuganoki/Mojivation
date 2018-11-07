@@ -15,48 +15,61 @@ class AddTaskPage extends React.Component {
 				// Consider sharing code between this form and edittask.jsx
 
 		return (
-				<div id="new-task-block">
+				<div className="card col-5" id="new-task-block">
 				<form method="POST" action="/add_new_task">
-					  <table>
-					    <tbody>
-					    <tr>
-					      <td>Task</td>
-					      <td><input type="text_box" 
-					             name="msg"
-					             size="37" 
-					             required />
+					    
+					<div className="form-group">
+			      <label className="col-form-label">Task</label>
+			      <input className="form-control col-xs-4" id="task" type="text_box" 
+			             name="msg"
+			             required />
+	        </div>
 					 
-					      </td>
-					    </tr>
-					    <tr>
-					      <td>Due date</td>
-					      <td><input type="date" 
+					      
+					    
+					    
+					<div className="form-group ">
+				      
+				      <table><tbody><tr><td>
+					      <label className="col-form-label" htmlFor="due_date">Due date</label>
+					      <input className="form-control col-xs-4" id="due_date" type="date" 
 					             name="duedate" /> 
-					          <input type="time" 
-					             name="due_time" />
-					          
-					      </td>
-					    </tr>
-					    <tr>
-					      <td></td><td> 
-					        <input type="checkbox" 
-					             value="today"
-					             name="today" /> (Due today)
-					      </td>
-					    </tr>
-					    <tr>
-					       <td>
-					       </td>
-					       <td> <input type="checkbox" 
-					                value="True"
-					                 name="repeating" /> (Repeat daily)
-					       </td>
-					    </tr>
-					    <tr><td> 
-					      <input type="submit" value="Add" /> 
-					    </td><td><Link to="/tasks"> Cancel</Link></td></tr>
-					  </tbody>
-					  </table>
+					             </td><td>
+					      <label className="col-form-label" htmlFor="due_time">Due Time</label>
+			          <input className="form-control col-xs-4 in-line" id="due_date" type="time" 
+				               name="due_time" />
+			       </td></tr></tbody></table>        
+           </div>
+					     
+					      
+					    
+	  				<div className="form-group">
+		  				<div className="custom-control custom-checkbox"> 
+								<input className="custom-control-input" 
+									 id="due_today" type="checkbox" 
+			             value="today"
+			             name="today" /> 
+		             <label className="custom-control-label" htmlFor="due_today"> (Due today)  </label>
+						   </div>
+					   </div>
+
+
+	  				 <div className="form-group">
+				  				<div className="custom-control custom-checkbox"> 
+						        <input className="custom-control-input" 
+						              id="is_repeating" type="checkbox" 
+					                value="True"  name="repeating" /> 
+		                 <label className="custom-control-label" htmlFor="repeating"> (Repeat daily)</label>
+	                 </div>
+					       </div>
+
+					    
+					     
+									<div className="form-group">
+					      <input className="btn btn-secondary in-line" id="submit" type="submit" value="Add" /> 
+					    <Link to="/tasks"> Cancel</Link>
+					    </div>
+
 					</form>
 				</div>
 

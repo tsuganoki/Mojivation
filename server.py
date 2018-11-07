@@ -106,6 +106,7 @@ def login_required(f):
 
 
 @app.route('/')
+@app.route('/index')
 def index_wp():
     # flash("iwp flashed message")
 
@@ -614,7 +615,7 @@ def collect_kao():
 
     db.session.add(collect)
     # print(collect)
-    db.session.commit()
+    # db.session.commit()
     flash(f"You have collected a Moji: {Kao.query.get(todays_kao.kao_id).kao}")
     return redirect("/tasks")
 

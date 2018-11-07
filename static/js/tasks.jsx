@@ -107,6 +107,7 @@ class TasksPage extends React.Component {
     return (
       <div>
         <AddTask />
+
         <TaskBlock fetchTaskData={this.fetchTaskData} tasks={this.getTodayTasks(this.state.taskData)} blockName='Due Today' showQuickAdd='True' done={false}/>
         <TaskBlock fetchTaskData={this.fetchTaskData} tasks={this.getLaterTasks(this.state.taskData)} blockName='Due Later'  done={false}/>
         <TaskBlock fetchTaskData={this.fetchTaskData} tasks={this.getCompletedTasks(this.state.taskData)} 
@@ -130,30 +131,30 @@ class TasksPage extends React.Component {
 class AddTask extends React.Component {
   render() {
     return (
-      <div>
+      <div id="add-a-task">
         <Link to="/new-task">
-        <button id="add-a-task-btn"> Add a Task</button>
+        <button className="add-a-task-btn btn btn-secondary btn-dark"> Add a Task</button>
         </Link>
       </div>
       )
   }
-
-
 }
+
+
 class TaskBlock extends React.Component {
 
 
   render () {
     return (
-      <div className="today-tasks">
+      <div className="card col-5">
   {/* make className configurable because they're not all today's tasks*/}
         <h3>{this.props.blockName}</h3>
         <span id="EOD-span" className="small-text remove">EOD is:  sometime UTC</span> 
-        <ul>
+        <ul className="list-group">
           { 
             this.props.tasks.map ((task) => {
               return (
-                <li key={task.task_id}>
+                <li className="" key={task.task_id}>
                   <Task fetchTaskData={this.props.fetchTaskData} task={task} done={this.props.done} />
                 </li>
               )
@@ -173,16 +174,25 @@ class QuickAdd extends React.Component {
   render () {
     return (
       <div className="quick-add">
-    <form method="POST" action="/add_new_task">
-      <input type="text_box" 
-           required 
-           name="msg" />
 
-      <input hidden name="duedate" defaultValue="" />
-      <input type="submit" defaultValue="Quick Add" />
-      <p id="quick-add-info">
-        * Quick add due date auto completes to today
-      </p>
+    <form method="POST" action="/add_new_task">
+    <table><tbody><tr><td className="td-wide">
+
+      <div className="form-group">
+        <input className="form-control" type="text_box" 
+             required 
+             placeholder="Quick Add"
+             name="msg" />
+       </div>
+
+      <input className="remove" name="duedate" defaultValue="" />
+      </td><td >
+      <div className="form-group">            
+        <input className="btn btn-secondary" type="submit" defaultValue="Quick Add" />
+        <p id="quick-add-info">
+        </p>
+      </div>
+        </td></tr></tbody></table>  
     </form>
   </div>)
   }
@@ -190,7 +200,11 @@ class QuickAdd extends React.Component {
 }
 class ClearCompleted extends React.Component {
   render () {
-    return <a href="/clear-all-completed">Clear Completed</a>
+    return (
+      <button className="btn btn-secondary btn-sm">
+        <a href="/clear-all-completed">Clear Completed</a>
+      </button>
+      )
   }
 }
 
@@ -222,7 +236,7 @@ class CompleteTaskBtn extends React.Component {
         // <input className='taskbtn' type="submit" name="complete" value="Done" onClick={this.completeTask}/>
       // </form>
     return (
-            <button className="in-line taskbtn" onClick={ () => {
+            <button className="in-line taskbtn btn btn-secondary" onClick={ () => {
               console.log(this.props.task_id);
               this.completeSpecificTask(this.props.task_id) } }> Done </button>
 
@@ -264,7 +278,7 @@ class UndoCompleteTaskBtn extends React.Component {
         // <input className='taskbtn' type="submit" name="complete" value="Undo" onClick={this.undoComplete}/>
        //</form>
     return (
-      <button className="in-line taskbtn" onClick={ () => {console.log(this.props.task_id);this.undoSpecificTask(this.props.task_id) } }> Undo </button>
+      <button className="in-line taskbtn btn btn-secondary" onClick={ () => {console.log(this.props.task_id);this.undoSpecificTask(this.props.task_id) } }> Undo </button>
     )
   }
 }
@@ -280,7 +294,7 @@ class Task extends React.Component {
   constructor () {
     super ();
     this.state = {
-      hover: null,
+
       deleteIconVisibility: false
     };
   }
@@ -293,9 +307,17 @@ class Task extends React.Component {
     this.setState( {deleteIconVisibility: true})
 
   }
-  hideDeleteIcon= () => {
+  hideDeleteIcon = () => {
     // console.log("mouseOut")
     this.setState( {deleteIconVisibility: false})
+
+  }
+  formatTaskMsg = () => {
+    if (this.props.task.msg.length > 33) {
+      return this.props.task.msg.slice(0, 33) + '...'
+    } else {
+      return this.props.task.msg
+    }
 
   }
   
@@ -312,11 +334,11 @@ class Task extends React.Component {
         {this.props.done && <UndoCompleteTaskBtn fetchTaskData={this.props.fetchTaskData} task_id={this.props.task.task_id} /> }
 
 
-        <Link className="task-msg in-line" to={`/edit-task/${this.props.task.task_id}`}>  {this.props.task.msg} </Link>
+        <Link className="task-msg in-line" to={`/edit-task/${this.props.task.task_id}`}>  {this.formatTaskMsg()} </Link>
 
         {this.state.deleteIconVisibility && 
 
-          <div className='in-line' onMouseOver={() => {console.log('hello')}}>
+          <div className='in-line' >
               <a href={delete_task_route} > 
                 <i  onMouseOver={this.showDeleteIcon} className="far fa-times-circle "></i> 
               </a>

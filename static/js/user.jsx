@@ -56,50 +56,87 @@ class UserPage extends React.Component {
 
 
   assemble_date(dt_dict) {
-  // const d = new Date(dt_dict."year", dt_dict."month",
-  //  dt_dict."day", dt_dict."hours", dt_dict."minutes",
-  //   dt_dict."seconds", dt_dict."milliseconds");
+    return new Date(dt_dict.year, dt_dict.month, dt_dict.day, dt_dict.hours, dt_dict.minutes, dt_dict.seconds, dt_dict.milliseconds);
+  }
+  getRows = () => {
+    let len = (this.props.collects.length)
+    console.log("length: ", len)
+    let rows = (len - (len % 3)) / 3
+    if (len % 3 != 0 ) {
+      rows += 1
+  }
+    console.log("number of rows: ", rows )
+    return rows
+  }
 
-  var d = new Date(dt_dict.year, dt_dict.month, dt_dict.day, dt_dict.hours, dt_dict.minutes, dt_dict.seconds, dt_dict.milliseconds);
-
-  return d
-}
+  // makeTable = () => {
+  //   let col = 1
+  //   return (
+  //     <table><tbody>
+  //       {if (col === 1) {() => {return <tr><td>}}
+  //        else { () => {return <td>} } }
+  //     { this.props.collects.map ( 
+  //       (collect) => {
+  //               <div key={collect.kao_id} className="collect text-justify in-line">
+  //                 <span className="kao"> { collect.kao_str }</span>
+  //               </div>
+  //               { if (col === 3) { () => {return </td></tr>}}
+  //                 else { () => {return </td> }} }
+                
+  //             })
+  //     }
+  //   )
+  // }
+  rowOpen = (i) => {
+    if (i % 2 === 0) {
+      return `<tr><td>`
+    }else { return `<td>`}
+  }
+  rowClose = (i) => {
+    if (i % 2 === 0) {
+      return `</td>`
+    }else { return `</tr></td>`} 
+  }
 
 
   render () {
+    console.log("collects are: ",this.props.collects)
     return (
 
-      <div className="collects">
+      <div className="collects card col-7 text-justify">
         <h3> Your collected Kao-moji  </h3>
-          { this.props.collects.map ((collect) => {
-             return (
-              <div key={collect.kao_id} className="collect">
-                <span className="kao"> { collect.kao_str }</span>
-                <br />
-              {/* Consider how to make this pretty or shredding it*/}
-                <span className="collect-date small-text">
-                  { console.log(this.assemble_date(collect.date)) }
 
-                </span>
+          { this.props.collects.map ((collect,i) => {
+             return (
+              /*{ this.rowOpen(i) }*/
+              <div key={collect.kao_id}  className="collect text-justify in-line">
+                <span className="kao" id={i}> { collect.kao_str }</span>
+                
               </div>
+              /*{ this.rowClose(i)}*/
               )
                   }   
             )
           }
+
       </div>
       )}
   }
  class UserInfo extends React.Component {
   render () {
     return (
-      <div className="user-info-settings">
+      <div className="user-info-settings card col-4 list-group">
         <h3> User Settings </h3>
         <p>username: {this.props.user.username}</p>
         <p>email: {this.props.user.email}</p> 
 
-        <p>Change email</p>
-        <p>change password</p>
-        <p>change timezone</p>
+        <p>Change email <span className="text-muted"> (coming soon!)</span></p>
+        <p>change password
+          <span className="text-muted"> (coming soon!)</span>
+          </p>
+        <p>change timezone
+          <span className="text-muted"> (coming soon!)</span>
+        </p>
       </div>
       )
   }

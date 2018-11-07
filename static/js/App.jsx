@@ -293,7 +293,7 @@ class Slogan extends React.Component {
         }
     let slogan = this.randomProp(slogans);
     // console.log(slogan);
-    return <p className='home-page-mantra'> { slogan }</p>;
+    return <h3 className='home-page-mantra'> { slogan }</h3>;
 
       
     

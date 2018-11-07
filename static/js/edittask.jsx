@@ -64,7 +64,6 @@ class EditTaskPage extends React.Component {
 		return (
 			<div className="edit-task-page">
 				{this.state.taskData && <EditTaskForm task={this.state.taskData} EOD={this.state.EOD} assemble_date={this.assemble_date}/>}
-				{this.state.taskData && <GoogleCalEventBtn task_id={this.state.taskData.task_id} /> }
 
 
 			</div>
@@ -92,9 +91,12 @@ class EditTaskForm extends React.Component {
 
 	formatDefaultTime () {
 		let dt = this.props.task.due_date
-		// Need the same hours < 10 check here?
+
 		let hours = dt.getHours()
-		let mins = dt.	getMinutes()
+		if (hours < 10) {
+			hours = "0" + hours.toString()
+		}
+		let mins = dt.getMinutes()
 		if (mins < 10) {
 			mins = "0" + mins.toString()
 		}
@@ -109,59 +111,94 @@ class EditTaskForm extends React.Component {
 	render() {
 		// {this.props.taskData.is_repeating && "checked"} 
 		// {...this.props.task.is_repeating && "checked"}
-		// console.log(this.props.task)
+		console.log(this.props.task)
 
 
 		
 		let defaultDate = this.formatDefaultDate()
+		console.log(defaultDate)
 		let defaultTime = this.formatDefaultTime()
+		console.log(defaultTime)
 
 		// Consider sharing code between this form and addtask.jsx
 		// console.log(this.props.task.msg, "has a due date of", this.props.task.due_date, "and eod is:", this.props.EOD)
 		// console.log("the comparison is: ", this.props.task.due_date < this.props.EOD) 
 		return (
+		<div className="card col-5" id="new-task-block">
+
 			<form method="POST" action="/confirm-edit">
-			  <table>
-			    <tbody>
-			    <tr>
-			      <td>Task</td>
-			      <td>
-				      <input type="text_box" name="msg" size="37" defaultValue={this.props.task.msg} />
-
-							<input className="remove" value={this.props.task.task_id} name="task_id"  readOnly /> 
+			<input className="form-control remove" id="task_id" 
+						 value={this.props.task.task_id}
+			       name="task_id" readOnly/>
+					    
+					<div className="form-group">
+			      <label className="col-form-label">Task</label>
+			      <input className="form-control col-xs-4" id="task" type="text_box" 
+							     defaultValue={this.props.task.msg}
+			             name="msg" required />
+	        </div>
+					 
+					      
+					    
+					    
+					<div className="form-group ">
 				      
-			      </td>
-			    </tr>
-			    <tr>
-			      <td>Due date</td>
-			      <td>
-			        <input type="date" name="duedate" defaultValue={defaultDate} />
-			        <input type="time" name="duetime" />
-			      </td>
-			    </tr>
-			    <tr>
-			      <td></td><td> 
+				      <table><tbody><tr><td>
+					      <label className="col-form-label" htmlFor="due_date">Due date</label>
+					      <input className="form-control col-xs-4" id="due_date" type="date" name="duedate"
+					             defaultValue={defaultDate}  /> 
+	              </td><td>
+					      <label className="col-form-label" htmlFor="due_time">Due Time</label>
+			          <input className="form-control col-xs-4 in-line"  
+			          			 id="due_date" type="time" name="due_time" 
+				               defaultValue={defaultTime} />
+			       </td></tr></tbody></table>        
+           </div>
+					     
+					      
+					    
+	  				<div className="form-group">
+		  				<div className="custom-control custom-checkbox"> 
+								<input className="custom-control-input" 
+											 id="due_today" type="checkbox" 
+					             value="today"
+					             name="today" 
+					             defaultChecked={this.props.task.due_date < this.props.EOD } /> 
+		            <label className="custom-control-label" 
+											  
+					              htmlFor="due_today"> (Due today)  </label>
+						   </div>
+					   </div>
 
-			        <input type="checkbox" 
-			             value="today"
-			             name="today" 
-			             defaultChecked={this.props.task.due_date < this.props.EOD} /> (Due today)
-			      </td>
-				  {/*Consider making clicking here change the value in the date input*/}
-			    </tr>
-			    <tr>
-			       <td>
-			       </td>
-			       <td> 
-				       <input type="checkbox" defaultValue="True" name="repeating" defaultChecked={this.props.task.is_repeating} /> (Repeat daily)
-			       </td>
-			    </tr>
-			    <tr><td> 
-			      <input type="submit" defaultValue="Update" readOnly /> 
-			    </td><td><Link to="/tasks"> Cancel</Link></td></tr>
-			  </tbody>
-			  </table>
-			</form>
+	  				 <div className="form-group">
+				  				<div className="custom-control custom-checkbox"> 
+
+
+						        <input className="custom-control-input" 
+									         defaultChecked={this.props.task.is_repeating }
+							             id="is_repeating" type="checkbox" 
+						               value="True"  name="repeating" /> 
+		                <label className="custom-control-label" htmlFor="repeating"> (Repeat daily)</label>
+	                 </div>
+					       </div>
+
+					    
+					     
+									<div className="form-group">
+					      <input className="btn btn-secondary btn-dark" 
+					      			 id="submit" type="submit" 
+					      			 value="Update" readOnly /> 
+
+
+					    <Link to="/tasks"> Cancel</Link>
+					    </div>
+
+					</form>
+
+
+					{this.props.task && <GoogleCalEventBtn task_id={this.props.task.task_id} /> }
+
+				</div>
 			)
 
 	}
