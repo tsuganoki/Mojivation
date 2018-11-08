@@ -508,9 +508,7 @@ def undo_complete():
 
     task = Task.query.get(task_id)
     task.is_complete = False
-    print(task,task.is_complete,"\nnot yet committed")
     db.session.commit()
-    print(task,task.is_complete,"\nnot yet committed")
 
 
     return "task un-done"
@@ -532,10 +530,10 @@ def complete_task():
         task.is_complete = True
         task.completion_date = timehelpers.get_now_UTC()
         db.session.commit()
-    if timehelpers.check_remaining_tasks(user.tasks,user.timezone):
-        return redirect("/collect-kao")
+    # if timehelpers.check_remaining_tasks(user.tasks,user.timezone):
+    #     return redirect("/collect-kao")
     
-
+    print("task completed")
     return "Task Completed"
 
 
@@ -581,6 +579,7 @@ def user_info():
 @login_required
 def collect_kao():
     user = User.query.get(session.get("current_user_id"))
+    print("call made to /collect-kao route")
     if timehelpers.check_remaining_tasks(user.tasks,user.timezone) == False:
         flash("nope")
         return redirect('/tasks')
@@ -599,7 +598,7 @@ def collect_kao():
     print(todays_kao.kao_id, todays_kao.date)
     if Collect.query.filter_by(kao_id=todays_kao.kao_id, user_id=user.user_id).first():
 
-        flash("You have already a Moji for the day, but good job anyways!")
+        flash("You have already collected a Moji for the day, but good job anyways!")
         return redirect("/tasks")
 
     collect = Collect(user_id=user.user_id,
@@ -609,7 +608,7 @@ def collect_kao():
 
     db.session.add(collect)
     # print(collect)
-    # db.session.commit()
+    db.session.commit()
     flash(f"You have collected a Moji: {Kao.query.get(todays_kao.kao_id).kao}")
     return redirect("/tasks")
 

@@ -21,6 +21,16 @@ class TasksPage extends React.Component {
 
   }
 
+  redirectToCollectKao = () => {
+      console.log("from redirect function, today tasks are: ",this.getTodayTasks(this.state.taskData) )
+    if (this.getTodayTasks(this.state.taskData).length === 0) {
+      console.log("if stattement entered, trying to redirect ")
+
+      document.location.href = '/collect-kao'
+    }
+
+  }
+
   // updateTaskData (arg) {
   //     console.log("the argument is: ", arg)
   //     console.log("updateTaskData CALLED")
@@ -57,7 +67,7 @@ class TasksPage extends React.Component {
     // let that = this
     console.log("TasksPage.this: ",this)
     console.log("calling fetchTaskData function")
-    fetch('/get-tasks.json')
+    return fetch('/get-tasks.json')
     .then(response => response.json())
     .then(data => {
       this.setState( {taskData:data} );
@@ -79,6 +89,7 @@ class TasksPage extends React.Component {
     let todayTasks = []
     todayTasks = tasksData.filter ( task => this.assemble_date(task.due_date) < this.state.EOD 
                       && task.is_complete === false)
+    console.log("printing today tasks:", todayTasks)
     return todayTasks
 
 
@@ -108,8 +119,8 @@ class TasksPage extends React.Component {
       <div>
         <AddTask />
 
-        <TaskBlock fetchTaskData={this.fetchTaskData} tasks={this.getTodayTasks(this.state.taskData)} blockName='Due Today' showQuickAdd='True' done={false}/>
-        <TaskBlock fetchTaskData={this.fetchTaskData} tasks={this.getLaterTasks(this.state.taskData)} blockName='Due Later'  done={false}/>
+        <TaskBlock fetchTaskData={this.fetchTaskData} onUpdate={this.redirectToCollectKao} tasks={this.getTodayTasks(this.state.taskData)} blockName='Due Today' showQuickAdd='True' done={false}/>
+        <TaskBlock fetchTaskData={this.fetchTaskData} onUpdate={this.redirectToCollectKao} tasks={this.getLaterTasks(this.state.taskData)} blockName='Due Later'  done={false}/>
         <TaskBlock fetchTaskData={this.fetchTaskData} tasks={this.getCompletedTasks(this.state.taskData)} 
           blockName="Completed" 
           showClearCompleted="True"
@@ -155,7 +166,7 @@ class TaskBlock extends React.Component {
             this.props.tasks.map ((task) => {
               return (
                 <li className="" key={task.task_id}>
-                  <Task fetchTaskData={this.props.fetchTaskData} task={task} done={this.props.done} />
+                  <Task fetchTaskData={this.props.fetchTaskData} onUpdate={this.props.onUpdate} task={task} done={this.props.done} />
                 </li>
               )
             })
@@ -214,7 +225,6 @@ class CompleteTaskBtn extends React.Component {
 
   // Consider making an arrow function and then you don't need to bind in TasksPage
   completeSpecificTask(task_id) {
-    console.log("running completeSpecificTask function")
 
     fetch('/complete-task', {
       method: 'POST',
@@ -223,8 +233,8 @@ class CompleteTaskBtn extends React.Component {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify( {task_id: task_id} )
-    }).then( data => this.props.fetchTaskData() );
-
+    }).then( data => this.props.fetchTaskData() )
+    .then( () => this.props.onUpdate());
      
   }
 
@@ -330,7 +340,7 @@ class Task extends React.Component {
 
     return (
       <div className="task-div" onMouseOver={this.showDeleteIcon} onMouseLeave={this.hideDeleteIcon}>
-        {!this.props.done && <CompleteTaskBtn fetchTaskData={this.props.fetchTaskData} task_id={this.props.task.task_id} /> }
+        {!this.props.done && <CompleteTaskBtn fetchTaskData={this.props.fetchTaskData} onUpdate={this.props.onUpdate} task_id={this.props.task.task_id} /> }
         {this.props.done && <UndoCompleteTaskBtn fetchTaskData={this.props.fetchTaskData} task_id={this.props.task.task_id} /> }
 
 
