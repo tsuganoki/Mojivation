@@ -175,10 +175,11 @@ def register_confirm():
         user = User(username=username_input,
                     email=email_input,
                     # password=hashes.get_hash(password_input1),
-                    password=hashes.get_salted_hash(password_input1,user.user_id,app.config['SECRET_KEY']),
+                    password = "placeholder",
                     timezone=timezone_input)
 
         db.session.add(user)
+        user.password=hashes.get_salted_hash(password_input1,user.user_id,app.config['SECRET_KEY']),
         db.session.commit()
 
         # adding user to session
