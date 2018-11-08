@@ -174,8 +174,8 @@ def register_confirm():
     else:
         user = User(username=username_input,
                     email=email_input,
-                    password=hashes.get_hash(password_input1),
-                    # password=hashes.get_salted_hash(password_input1,user.user_id,app.config['SECRET_KEY']),
+                    # password=hashes.get_hash(password_input1),
+                    password=hashes.get_salted_hash(password_input1,user.user_id,app.config['SECRET_KEY']),
                     timezone=timezone_input)
 
         db.session.add(user)
@@ -210,8 +210,8 @@ def login_confirm():
         user_id = str(user.user_id)
         user_pwd_hash = user.password
 
-        # if hashes.val_salted_hash(pwd_input,,user.user_id, app.config['SECRET_KEY'], user_pwd_hash):
-        if hashes.val_hash(pwd_input,user_pwd_hash):
+        if hashes.val_salted_hash(pwd_input,user.user_id, app.config['SECRET_KEY'], user_pwd_hash):
+        # if hashes.val_hash(pwd_input,user_pwd_hash):
             session["current_user_id"] = user_id
             session["current_username"] = user.username
             flash("You are now logged in")

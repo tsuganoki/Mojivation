@@ -28,9 +28,4 @@ def val_salted_hash(pw,user_id,secret_key,hash_str):
 
 # app.config['SECRET_KEY']
 def get_salted_hash(pw, user_id, secret_key):
-
-	return get_hash(pw + user_id + secret_key)
-
-
-
-	hashes.get_salted_hash()
+	return get_hash(pw + str(user_id) + str(secret_key))

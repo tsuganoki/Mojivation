@@ -34,11 +34,12 @@ def load_users():
     for row in open("seed_data/u.user"):
         row = row.rstrip()
         user_id, username, email, password,timezone = row.split("|")
+        secretkey = open('instance/secretkey', 'rb').read()
 
         user = User(user_id=int(user_id),
         			username=username,
                     email=email,
-                    password=hashes.get_hash(password),
+                    password=hashes.get_salted_hash(password,int(user_id),secretkey),
                     timezone=timezone)
 
         # We need to add to the session or it won't ever be stored
