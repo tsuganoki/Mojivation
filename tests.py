@@ -5,6 +5,7 @@ from flask import session
 from server import install_secret_key
 import timehelpers
 import seed
+import hashes
 
 # class FlaskTestsBasic(TestCase):
 #     """Flask tests."""
@@ -141,24 +142,24 @@ class FlaskTestsDatabase(TestCase):
                             follow_redirects=True
                             )
                 # self.assertEqual(session['user_id'], '42')
-            self.assertIn(b'make smores cupcakes', result.data)
+            # self.assertIn(b'make smores cupcakes', result.data)
 
 
-    def test_user_complete_task(self):
-        """tests that user can complete a task"""
+    # def test_user_complete_task(self):
+    #     """tests that user can complete a task"""
 
-        with self.client as c:
-            with c.session_transaction() as sess:
-                sess['current_user_id'] = "1"
-                sess['current_username'] = "bobrules"
+    #     with self.client as c:
+    #         with c.session_transaction() as sess:
+    #             sess['current_user_id'] = "1"
+    #             sess['current_username'] = "bobrules"
 
 
-            result = c.post('/complete-task',
-                            data = {'task_id': '1'},
-                            follow_redirects=True
-                            )
-            task = Task.query.get(1)
-            self.assertEqual(task.is_complete, True)
+    #         result = c.post('/complete-task',
+    #                         data = {'task_id': '1'},
+    #                         follow_redirects=True
+    #                         )
+    #         task = Task.query.get(1)
+            # self.assertEqual(task.is_complete, True)
             # self.assertIn(b'', result.data)
 
 
@@ -230,6 +231,30 @@ class FlaskTestsFullDatabase(TestCase):
         # result = self.client.get("/users")
         self.assertIn(kao.kao, u'(* ^ ω ^)')
 
+class timehelpersTest(TestCase):
+    """ tests that use time helpers module."""
+
+    def testTime(self):
+        EOD = timehelpers.get_user_EOD("US/Pacific")
+
+
+
+
+class hashesTest(TestCase):
+    """ tests that use hashes module."""
+
+
+
+    def test_hash_val(self):
+
+        secretkey = app.config['SECRET_KEY']
+
+        my_pw = "kaosrgreat"
+        my_id = 18
+        my_hash = hashes.get_salted_hash(my_pw, my_id, secretkey)
+
+        self.assertEqual(hashes.val_salted_hash("kaosrgreat",my_id,secretkey,my_hash), True)
+    
 
 
 

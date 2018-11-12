@@ -23,8 +23,8 @@ def val_hash(pw,hash_str):
 # 	return urandom(NUM)
 
 def val_salted_hash(pw,user_id,secret_key,hash_str):
-	return get_salted_hash(pw,user_id,secret_key) == hash_str
-
+	pw_str = pw + str(user_id) + str(secret_key)
+	return scrypt.verify( pw_str, hash_str)
 
 # app.config['SECRET_KEY']
 def get_salted_hash(pw, user_id, secret_key):
