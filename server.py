@@ -815,7 +815,6 @@ if __name__ == "__main__":
     # point that we invoke the DebugToolbarExtension
     # app.debug = True
     app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
-    track_modifications = app.config['SQLALCHEMY_TRACK_MODIFICATIONS']
     # make sure templates, etc. are not cached in debug mode
     app.jinja_env.auto_reload = app.debug
     os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = '1'
