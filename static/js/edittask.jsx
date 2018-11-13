@@ -164,30 +164,26 @@ class EditTaskForm extends React.Component {
 					             value="today"
 					             name="today" 
 					             defaultChecked={this.props.task.due_date < this.props.EOD } /> 
-		            <label className="custom-control-label" 
-											  
-					              htmlFor="due_today"> (Due today)  </label>
+		            <label className="custom-control-label" htmlFor="due_today"> (Due today)  </label>
 						   </div>
 					   </div>
 
 	  				 <div className="form-group">
 				  				<div className="custom-control custom-checkbox"> 
-
-
-						        <input className="custom-control-input" 
+							        <input className="custom-control-input" 
 									         defaultChecked={this.props.task.is_repeating }
 							             id="is_repeating" type="checkbox" 
 						               value="True"  name="repeating" /> 
-		                <label className="custom-control-label" htmlFor="repeating"> (Repeat daily)</label>
+		                <label className="custom-control-label" htmlFor="is_repeating"> (Repeat daily)</label>
 	                 </div>
 					       </div>
 
 					    
 					     
 									<div className="form-group">
-					      <input className="btn btn-secondary btn-dark" 
-					      			 id="submit" type="submit" 
-					      			 value="Update" readOnly /> 
+					      		<input className="btn btn-secondary btn-dark" 
+					      					 id="submit" type="submit" 
+					      				 	 value="Update" readOnly /> 
 
 
 					    <Link to="/tasks"> Cancel</Link>

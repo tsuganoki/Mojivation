@@ -815,6 +815,7 @@ if __name__ == "__main__":
     # point that we invoke the DebugToolbarExtension
     # app.debug = True
     app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
+
     # make sure templates, etc. are not cached in debug mode
     app.jinja_env.auto_reload = app.debug
     os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = '1'
@@ -825,3 +826,7 @@ if __name__ == "__main__":
     # DebugToolbarExtension(app)
 
     app.run(port=5000,debug=False, host='0.0.0.0')
+
+
+
+    

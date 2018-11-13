@@ -59,7 +59,7 @@ class AddTaskPage extends React.Component {
 						        <input className="custom-control-input" 
 						              id="is_repeating" type="checkbox" 
 					                value="True"  name="repeating" /> 
-		                 <label className="custom-control-label" htmlFor="repeating"> (Repeat daily)</label>
+		                 <label className="custom-control-label" htmlFor="is_repeating"> (Repeat daily)</label>
 	                 </div>
 					       </div>
 
