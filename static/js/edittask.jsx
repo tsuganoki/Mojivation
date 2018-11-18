@@ -93,6 +93,7 @@ class EditTaskForm extends React.Component {
 		let dt = this.props.task.due_date
 
 		let hours = dt.getHours()
+		hours = hours - 8;
 		if (hours < 10) {
 			hours = "0" + hours.toString()
 		}
