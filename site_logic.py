@@ -1,6 +1,7 @@
 import datetime
 from rfc3339 import rfc3339 as rfc
 from model import User, Task, Collect, Kao
+import timehelpers
 
 def convert_datetime_to_dict(dt):
 	dt_dict = {
@@ -12,6 +13,7 @@ def convert_datetime_to_dict(dt):
 		"seconds" : dt.second,
 		"milliseconds" : 0
 	}
+	print("hour:",dt.hour)
 	return dt_dict
 
 
@@ -26,13 +28,15 @@ def convert_tasklist_to_list(tasklist):
 		"user_id":task.user_id} for task in tasklist]
 
 	return task_list
-def convert_tasklist_to_dict(tasklist):
+def convert_tasklist_to_dict(tasklist,tz_string):
 
 	task_list = [
 		{"task_id":task.task_id,
 		"msg":task.msg, 
 		"is_complete":task.is_complete,
-		"due_date":convert_datetime_to_dict(task.due_date),
+
+		"due_date":convert_datetime_to_dict(timehelpers.convert_UTC_to_user_tz(task.due_date,tz_string)),
+		
 		"is_repeating":task.is_repeating,
 		"user_id":task.user_id} for task in tasklist]
 	task_dict = {}

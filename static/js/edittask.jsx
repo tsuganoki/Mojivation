@@ -25,7 +25,10 @@ class EditTaskPage extends React.Component {
     	// console.log("task id is: ",taskid); 
     	let task = data[taskid]
     	// console.log("task is: ",task)
+    	console.log("before assemble_date",task.due_date)
     	task.due_date=this.assemble_date(task.due_date)
+    	console.log("after assemble_date",task.due_date)
+
     	return task
     })
     .then(data => { 
@@ -54,7 +57,7 @@ class EditTaskPage extends React.Component {
         this.fetchEOD()
 	  }
 	}
-  assemble_date(dt_dict) {
+  assemble_date = (dt_dict) => {
     return new Date(dt_dict.year, dt_dict.month, dt_dict.day, 
     							  dt_dict.hours, dt_dict.minutes, dt_dict.seconds, dt_dict.milliseconds);
 	}
@@ -74,13 +77,21 @@ class EditTaskForm extends React.Component {
 
 
 	formatDefaultDate () {
+		// console.log("task due:",this.props.task.due_date)
 		let day = this.props.task.due_date.getDate()
 
 		if (day < 10) {
 			day = "0" + day.toString()
 			// console.log("day is: ", day )
 		}
-		let defaultDate = this.props.task.due_date.getFullYear()+ "-" + this.props.task.due_date.getMonth() + '-' + day
+		let month = this.props.task.due_date.getMonth() 
+
+		if (month < 10) {
+			month = "0" + month.toString()
+			// console.log("day is: ", day )
+		}
+		let defaultDate = this.props.task.due_date.getFullYear()+ "-" + month + '-' + day
+			// console.log("month is: ", this.props.task.due_date.getMonth()  )
 		// console.log("within the function, the defaultDate is: ",defaultDate)
 
 
@@ -93,7 +104,7 @@ class EditTaskForm extends React.Component {
 		let dt = this.props.task.due_date
 
 		let hours = dt.getHours()
-		hours = hours - 8;
+		// hours = hours + ;
 		if (hours < 10) {
 			hours = "0" + hours.toString()
 		}
@@ -112,7 +123,7 @@ class EditTaskForm extends React.Component {
 	render() {
 		// {this.props.taskData.is_repeating && "checked"} 
 		// {...this.props.task.is_repeating && "checked"}
-		console.log(this.props.task)
+		console.log("current duedate in props:",this.props.assemble_date(this.props.task.due_date) )
 
 
 		

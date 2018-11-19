@@ -301,7 +301,8 @@ def get_tasks_dict():
     user = User.query.get(session["current_user_id"])
     print("call made to /get-task-dict.json")
     # user = User.query.get(21)
-    task_dict = site_logic.convert_tasklist_to_dict(user.tasks)
+    print(user.tasks)
+    task_dict = site_logic.convert_tasklist_to_dict(user.tasks,user.timezone)
 
     return jsonify(task_dict)   
 
@@ -829,4 +830,3 @@ if __name__ == "__main__":
 
 
 
-    

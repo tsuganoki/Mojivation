@@ -203,3 +203,11 @@ def get_user_tomorrow_EOD(tz_string):
     EOD = add_24_hrs(get_user_midnight_utc(now,tz_string))
     tomorrow_EOD = add_24_hrs(EOD)
     return tomorrow_EOD
+
+
+def convert_UTC_to_user_tz(dt,tz_string):
+    user_zone = pytz.timezone(tz_string)
+    user_dt = dt.astimezone(user_zone)
+    return user_dt
+
+
