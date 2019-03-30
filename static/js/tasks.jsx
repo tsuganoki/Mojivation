@@ -323,8 +323,8 @@ class Task extends React.Component {
 
   }
   formatTaskMsg = () => {
-    if (this.props.task.msg.length > 33) {
-      return this.props.task.msg.slice(0, 33) + '...'
+    if (this.props.task.msg.length > 34) {
+      return this.props.task.msg.slice(0, 30) + '...'
     } else {
       return this.props.task.msg
     }

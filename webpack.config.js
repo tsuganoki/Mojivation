@@ -1,6 +1,6 @@
 const webpack = require('webpack');
 const config = {
-    entry:  __dirname + '/static/js/index.jsx',
+    entry:  __dirname + './client/static/js/index.jsx',
     output: {
         path: __dirname + '/dist',
         filename: 'bundle.js',
@@ -14,7 +14,11 @@ const config = {
 	      test: /\.jsx?/,
 	      exclude: /node_modules/,
 	      use: 'babel-loader'
-	    }
+	    },
+        {
+                test:/\.css$/,
+                use:['style-loader','css-loader']
+            }
 	  ]
 	}
 };

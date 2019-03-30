@@ -110,7 +110,13 @@ def login_required(f):
 def index_wp():
     # flash("iwp flashed message")
 
-    return render_template('index-wp.html')
+    return render_template('index-wp.html') #I don't remember why I built two different index pages, but I think index.html is the more correct one
+    # return render_template('index.html')
+    # return render_template('indexr.html')
+
+
+
+
 
 @app.route('/r')
 @app.route('/indexr')
