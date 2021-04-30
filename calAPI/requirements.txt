@@ -29,7 +29,7 @@ pytz==2018.5
 requests==2.19.1
 requests-oauthlib==1.0.0
 rfc3339==6.0
-rsa==4.0
+rsa==4.7
 six==1.11.0
 SQLAlchemy==1.2.8
 uritemplate==3.0.0
